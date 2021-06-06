@@ -1,6 +1,9 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book, ChevronDown, FileText } from 'react-feather'
+import { ArrowRight, Book as BookIcon, ChevronDown, FileText } from 'react-feather'
+import { Chapter } from '../public/@types/book';
+import Book from '../public/components/book';
+import BookChapter from '../public/components/book_chapter';
 import BookInput from '../public/components/book_input';
 import styles from '../styles/Home.module.css'
 
@@ -16,16 +19,29 @@ export default function Home() {
 					fontFamily: 'Bodoni Moda',
 					fontSize: '1.2rem'
 				},
-				content: {
-					text: 'The Fallen Leaf School had several methods of contacting the other schools, and some of the Akura Golda had techniques or constructs intended to spy on far-off locations. They were often slow or blurry because of the suppresion field, but they all indicated the same thing: the Golden Sword School had left days ago, if no weeks.',
-					format: {
-						fontFamily: 'PT Serif',
-						fontSize: '1rem',
-						color: '#55595e',
-						marginBottom: '5px',
-						marginTop: '0px'
+				// paragraphs...
+				content: [
+					{
+						text: 'The Fallen Leaf School had several methods of contacting the other schools, and some of the Akura Golda had techniques or constructs intended to spy on far-off locations. They were often slow or blurry because of the suppresion field, but they all indicated the same thing: the Golden Sword School had left days ago, if no weeks.',
+						format: {
+							fontFamily: 'PT Serif',
+							fontSize: '1rem',
+							color: '#55595e',
+							marginBottom: '5px',
+							marginTop: '0px'
+						}
+					},
+					{
+						text: '"My oh my", cried Mercy, "Where must they have gone, I sure hope they\'re alright."',
+						format: {
+							fontFamily: 'PT Serif',
+							fontSize: '1rem',
+							color: '#55595e',
+							marginBottom: '5px',
+							marginTop: '0px'
+						}
 					}
-				}
+				]
 			}
 		]
 	};
@@ -53,7 +69,7 @@ export default function Home() {
 						</div>
 
 						<div className={styles.openFolder}>
-							<Book size={18} color={"#597298"}/>
+							<BookIcon size={18} color={"#597298"}/>
 							<p>Publication</p>
 						</div>
 
@@ -79,25 +95,7 @@ export default function Home() {
 				
 			</div>
 
-			<div className={styles.editorContent}>
-				{/* Content... */}
-
-				<div className={styles.book}>
-					<div>
-						<h2 
-						contentEditable
-						style={{
-							...book.chapters[0].format
-						}}>{book.chapters[0].title}</h2>
-
-						<BookInput value={book.chapters[0]} />
-					</div>
-				</div>
-
-				<div className={styles.bookTools}>
-					helper
-				</div>
-			</div>
+			<Book content={book}/>
 		</div>
 	)
 }

@@ -1,3 +1,70 @@
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url('../public/fonts/Bodoni_Moda/BodoniModa-VariableFont_opsz\,wght.ttf');
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "Bodoni Moda Italic";
+  src: url('../public/fonts/Bodoni_Moda/BodoniModa-Italic-VariableFont_opsz\,wght.ttf');
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "Inconsolata";
+  src: url('../public/fonts/Inconsolata/variable.ttf');
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  src: url('../public/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf');
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "Playfair Display Italic";
+  src: url('../public/fonts/Playfair_Display/PlayfairDisplay-Italic-VariableFont_wght.ttf');
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "PT Serif";
+  src: url('../public/fonts/PT_Serif/PTSerif-Regular.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "PT Serif";
+  src: url('../public/fonts/PT_Serif/PTSerif-Bold.ttf');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "PT Serif Italic";
+  src: url('../public/fonts/PT_Serif/PTSerif-Italic.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "PT Serif Italic";
+  src: url('../public/fonts/PT_Serif/PTSerif-BoldItalic.ttf');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  src: url('../public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf');
+  font-weight: 1 999;
+}
+
+@font-face {
+  font-family: "Public Sans Italic";
+  src: url('../public/fonts/Public_Sans/PublicSans-Italic-VariableFont_wght.ttf');
+  font-weight: 1 999;
+}
+
+
 html,
 body {
   padding: 0;

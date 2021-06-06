@@ -1,66 +1,51 @@
 
 import Head from 'next/head'
+import { ArrowRight, ChevronDown, FileText } from 'react-feather'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next TypeScript App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+	return (
+		<div className={styles.container}>
+			<div className={styles.header}>
+				{/* Header */}
+				<div className={styles.logo}>
+					<p>transcribe</p>
+				</div>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+				<div className={styles.project}>
+					<div>
+						<h2>Wintersteel</h2>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+						<ArrowRight size={18} strokeWidth={2}/>
+					</div>
+					
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+					<div className={styles.indentedFolder}>
+						<div className={styles.folderHeader}>
+							<p>project</p>
+							<ChevronDown size={18}/>
+						</div>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+						<div>
+							<FileText size={18} color={"#929296"}/>
+							<p>Planning</p>
+						</div>
+					</div>
+					
+				</div>
+				
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+				<div className={styles.toolbar}>
+					<div>
+						<p>Ben White</p>
+					</div>
+				</div>
+				
+			</div>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+			<div>
+				{/* Content... */}
+			</div>
+		</div>
+	)
 }

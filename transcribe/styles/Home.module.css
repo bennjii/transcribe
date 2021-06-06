@@ -64,11 +64,11 @@
   margin: 0;
 
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .project > div:first-of-type {
-  background-color: rgba(39, 95, 179, 0.247);
+  background-color: #c5d3ea83; /*rgba(39, 95, 179, 0.247); */
   color: #597298;
   
   border-radius: 5px;
@@ -104,9 +104,88 @@
   gap: .5rem;
 }
 
+.indentedFolder > div:not(:first-of-type) p {
+  color: #929296;
+}
+
 .indentedFolder p {
   margin-top: .5rem;
   margin-bottom: .5rem;
 
   font-size: .95rem;
+}
+
+.openFolder {
+  border-radius: 5px;
+  background-color: #c5d3ea83;
+
+  color: #597298 !important;
+  margin: 0 !important;
+  padding: 0rem 1rem;
+}
+
+.openFolder p {
+  color: #597298 !important;
+}
+
+.indentedFolder > div:not(:first-of-type):hover {
+  cursor: pointer;
+}
+
+.editorContent {
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.book {
+  background-color: rgba(143, 151, 188, 0.137);
+  height: 100vh;
+  width: 100%;
+
+  overflow: scroll;
+
+  padding: 2rem;
+  display: flex;
+
+  justify-content: center;
+}
+
+.book > div {
+  background-color: #fff;
+
+  border-radius: 5px;
+
+  padding: 1rem 2rem;
+
+  padding-bottom: 62.5%;
+
+  aspect-ratio: 5 8;
+
+  /* Pixel perfect - Lachie West */
+
+  width: 480px;
+  height: 760px;
+
+  font-family: "PT Serif";
+
+  box-shadow: 2px 0px 16px #5972980e;
+}
+
+.book p {
+  font-weight: 300;
+  color: #929296;
+}
+
+.bookTools {
+  width: 350px;
+}
+
+.bookInput {
+  border: none;
+  outline: none;
+
+  width: 100%;
+  resize: none;
 }

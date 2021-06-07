@@ -8,7 +8,7 @@ const BookChapter: React.FC<{ chapter: number, content: Chapter }> = ({ chapter,
     const [ chapterValue, setChapterValue ] = useState(content);
 
     return (
-        <div>
+        <div className={styles.page}>
             <h2 
             contentEditable
             style={{

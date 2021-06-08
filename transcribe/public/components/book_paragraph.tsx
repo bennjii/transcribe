@@ -11,17 +11,21 @@ const BookParagraph: React.FC<{ paragraph: number, content: Paragraph, callback:
 
     return (
         <div 
-            contentEditable
             ref={input_field}
-            onChange={() => {
+            onInput={(e) => {
+                console.log(e)
                 setHeight(input_field.current.scrollHeight)
             }}
             onKeyDown={(e) => {
+                console.log(e);
+
                 if(e.code == "Backspace" && paragraphState.text == '') {
                     callback(paragraph, content.format, -1)
                 }
 
                 if(e.code == "Enter") {
+                    console.log("Attempting the unknown")
+
                     callback(paragraph, content.format, 1);
                     input_field.current.blur();
                 }

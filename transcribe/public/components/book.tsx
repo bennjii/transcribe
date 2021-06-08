@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useRef, useState } from "react";
+import { TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
 import { Bold, ChevronDown, Italic, Underline } from "react-feather";
 import styles from '../../styles/Home.module.css'
 import { Book as BookType, Chapter } from "../@types/book";
@@ -8,6 +8,24 @@ import BookInput from "./book_input";
 
 const Book: React.FC<{ content: BookType }> = ({ content }) => {
     const [ bookState, setBookState ] = useState(content);
+    const [ editorState, setEditorState ] = useState({
+        words: 0,
+        pages: 1,
+        chapter: 0
+    });
+    
+    useEffect(() => {
+        let word_count = 0;
+
+        bookState.chapters.forEach(e => {
+            e.content.forEach(_e => {
+                console.log(_e.text.match(/\s/g).length)
+                word_count += (_e.text.match(/\s/g) || []).length
+            });
+        });
+
+        setEditorState({ ...editorState, words: word_count })
+    }, [bookState]);
 
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState }}>
@@ -51,7 +69,7 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
 
                         <div>
                             <p>1 Page</p>
-                            <p>53 Words</p>
+                            <p>{editorState.words} Words</p>
                         </div>
                     </div>  
                     

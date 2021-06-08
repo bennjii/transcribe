@@ -2,6 +2,7 @@ import { TextareaHTMLAttributes, useRef, useState } from "react";
 import styles from '../../styles/Home.module.css'
 import { Chapter } from "../@types/book";
 import BookInput from "./book_input";
+import BookInputQuill from "./book_input_quill";
 
 const BookChapter: React.FC<{ chapter: number, content: Chapter }> = ({ chapter, content }) => {
     const input_field = useRef(null);
@@ -15,7 +16,7 @@ const BookChapter: React.FC<{ chapter: number, content: Chapter }> = ({ chapter,
                 ...content.format
             }}>{content.title}</h2>
 
-            <BookInput value={chapterValue} chapter={chapter} />
+            <BookInputQuill value={chapterValue} chapter={chapter} />
         </div>
     )
 }

@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, ChevronDown, FileText, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, ChevronDown, Circle, FileText, Settings } from 'react-feather'
 import { Chapter } from '../public/@types/book';
 import Book from '../public/components/book';
 import BookChapter from '../public/components/book_chapter';

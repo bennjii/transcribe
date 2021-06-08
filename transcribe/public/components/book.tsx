@@ -5,6 +5,7 @@ import { Book as BookType, Chapter } from "../@types/book";
 import BookContext from "../@types/book_context";
 import BookChapter from "./book_chapter";
 import BookInput from "./book_input";
+import CustomToolbar from "./custom_toolbar";
 
 const Book: React.FC<{ content: BookType }> = ({ content }) => {
     const [ bookState, setBookState ] = useState(content);
@@ -41,9 +42,7 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
 
                                 <ChevronDown size={18}/>
                             </div>
-                            <Bold size={18}/>
-                            <Italic size={18}/>
-                            <Underline size={18}/>
+                            <CustomToolbar />
                         </div>
 
                         <div className={styles.syncStatus}>

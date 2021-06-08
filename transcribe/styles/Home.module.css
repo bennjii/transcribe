@@ -35,6 +35,13 @@
   margin: 0;
 }
 
+.logo {
+  display: flex;
+  flex-direction: row !important;
+
+  align-items: center;
+}
+
 .toolbar {
   display: flex;
   flex-direction: row !important;
@@ -244,6 +251,7 @@
   gap: 1rem;
 
   min-width: 350px;
+  font-family: "PT Serif";
 }
 
 .bookStats > div {
@@ -297,6 +305,8 @@
   align-items: center;
 
   color: var(--acent-text-color);
+
+  font-family: "PT Serif";
 }
 
 .syncTrue {

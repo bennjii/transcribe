@@ -82,6 +82,29 @@ a {
   box-sizing: border-box;
 }
 
+#toolbar button {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+}
+
+#toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-gap: .8rem;
+  gap: .8rem;
+}
+
+.ql-editor {
+  outline: none;
+}
+
+.ql-active {
+  color: var(--acent-text-color) !important;
+}
+
 :root {
   --border-color: rgba(31, 29, 36, 0.089); 
   --acent-text-color: #597298;

@@ -8,6 +8,8 @@ import _ from 'underscore'
 import ReactQuill from "react-quill";
 
 import parserHTML from 'parser-html'
+import { toJSON, toDOM } from 'dom-to-json'
+import { Search } from "react-feather";
 
 const BookInputQuill: React.FC<{ value: Chapter, chapter: number }> = ({ value, chapter }) => {
     const { book, callback } = useContext(BookContext);
@@ -15,21 +17,62 @@ const BookInputQuill: React.FC<{ value: Chapter, chapter: number }> = ({ value, 
     const [ rawDataState, setRawDataState ] = useState('');
 
     const nextGeneration = (e) => {
-        console.log(e.name, e.data);
-
-        e.children.forEach(__ => {
+        if(!e.children) return e.data
+        
+        return e.children.forEach(__ => {
             nextGeneration(__);
         });
     }   
 
+    const reCreate = (e) => {
+        console.log(e)
+        return `<${e.name}>${e.data} ${e.children?.map(__ => reCreate(__))}</${e.name}>`
+    }
+
     const handleChange = (raw_content) => {
+        raw_content = raw_content.replace(/<br>/g, '<br></br>');
+        console.log("[NEW]\n")
+
+        // DOM Object
+        const parsed = new DOMParser().parseFromString(raw_content, 'text/html');
+
+        // JSON Object
+        const json = toJSON(parsed);
+
+        // DOM Object from JSON (TESTING)
+        const comp = toDOM(json);
+
+        // String from STE
+        const serializer = new XMLSerializer();
+        const re_string = serializer.serializeToString(parsed);
+
+        // Full Loop
+        console.log(raw_content, re_string)
+
+        // DOM Parser can be used to create final book object, which can be displayed in a reading mode
+        // before being printed or converted to PDF or Word Document (XML).
+
+        // However, by using https://www.npmjs.com/package/dom-to-json - we can bypass the use of a DOM
+        // And store the data as a steralized JSON format, better for data storage.
+
         parserHTML.parse(raw_content, (result) => {
-            console.log(result);
-            
-            result?.forEach(element => {
+            // Parser contains integrity conversion error where elements embeeded duoubly within a parent object
+            // containing preceeding children, e.g. <p>Hello, <b>Sir</b> - What can i do for you</p>
+            // the ' - What can i do for you' is lost. Fix immenently required; how? Idk.
+
+            // Verify Integrity
+            const integ = result?.forEach(element => {
                 nextGeneration(element);
             });
+
+            // Confirm No Data Loss
+            const re_creation = result?.forEach(element => {
+                return reCreate(element)
+            });
+
+            console.log("Compare \n\t", raw_content, "\n\t", re_creation)
         });
+
 
         return false;
 

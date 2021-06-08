@@ -81,3 +81,21 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --border-color: rgba(31, 29, 36, 0.089); 
+  --acent-text-color: #597298;
+  --acent-bg-color: #c5d3ea83; 
+
+  --acent-shadow-color: #5972982c;
+  --acent-page-bg: rgb(231 235 255 / 65%);
+
+  --white-pure: #fff;
+  --highlight-color: wheat;
+
+  --text-color: #131214;
+  --text-muted: #535557;
+  --text-inactive: #929296;
+
+  --highlight-color: rgb(223, 229, 255);
+}

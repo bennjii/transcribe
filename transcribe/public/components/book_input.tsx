@@ -1,18 +1,24 @@
 import { TextareaHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
-import { ContentEditableEvent } from "react-contenteditable";
-import { createNew } from "typescript";
 import styles from '../../styles/Home.module.css'
 import { Chapter } from "../@types/book";
 import BookContext from "../@types/book_context";
 import BookParagraph from "./book_paragraph";
 
+import _ from 'underscore'
+
 const BookInput: React.FC<{ value: Chapter, chapter: number }> = ({ value, chapter }) => {
     const { book, callback } = useContext(BookContext);
     const [ chapterState, setChapterState ] = useState(value);
 
+    const [ savedChapterState, setSavedChapterState ] = useState(value);
+
+    // useEffect(() => {
+    //     setChapterState(value);
+    // }, [value])
+
     useEffect(() => {
-        setChapterState(value);
-    }, [value])
+        callback({ ...book, chapters: [...book.chapters.slice(0, chapter), savedChapterState, ...book.chapters.slice(chapter+1, book.chapters.length)]});
+    }, [savedChapterState])
 
     const createNewParagraph = (index, format, method) => {
         console.log("New paragraph!");
@@ -29,13 +35,37 @@ const BookInput: React.FC<{ value: Chapter, chapter: number }> = ({ value, chapt
         setChapterState({ ...chapterState });
     }   
 
+    const handleChange = (e) => {
+        const content_ = [];
+
+        for(const element of e.target.children) {
+            const styles = element.style.cssText;
+            const content = element.textContent;
+
+            const styles_obj = {};
+
+            styles.split(";").forEach(e => {
+                const duality = e.split(":");
+                const key = snakeToCammel(duality[0]);
+                
+                if(key) styles_obj[snakeToCammel(duality[0])] = duality[1].trim();
+            })
+
+            content_.push({
+                text: content,
+                format: styles_obj
+            })
+        }
+
+        setSavedChapterState({ ...savedChapterState, content: content_ });
+    }
+    
+
     return (
-        <div 
+        <span 
             className={styles.bookInput}
             contentEditable
-            onInput={(e) => {
-                console.log(e.target.children)
-            }}
+            onInput={_.debounce(handleChange, 100)}
             >
                 { 
                     chapterState.content.map((e, i) => {
@@ -44,8 +74,19 @@ const BookInput: React.FC<{ value: Chapter, chapter: number }> = ({ value, chapt
                         )
                     }) 
                 }
-        </div>
+        </span>
     )
+}
+
+const snakeToCammel = (name: string) => {
+    name = name.replace(/"/g, "");
+    name = name.trim();
+
+    if(name !== "")
+        return name.replace(/(\-\w)/g, function(m) {
+            return m[1].toUpperCase()
+        });
+    else return null;
 }
 
 export default BookInput;

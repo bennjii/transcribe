@@ -2,7 +2,7 @@
   display: grid;
   height: 100vh;
 
-  grid-template-columns: 250px auto;
+  grid-template-columns: 16% auto;
   overflow: hidden;
 }
 
@@ -10,17 +10,17 @@
   font-family: "PT Serif";
   font-weight: 400;
 
-  font-size: 1rem;
+  font-size: 1.1rem;
 
   display: flex;
   flex-direction: column;
   height: 100%; 
 
-  border-right: 1px solid rgba(31, 29, 36, 0.089);
+  border-right: 1px solid var(--border-color);
 }
 
 .header > div:first-of-type {
-  border-bottom: 1px solid rgba(31, 29, 36, 0.089);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header > div {
@@ -37,11 +37,15 @@
 
 .toolbar {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
 
-  border-top: 1px solid rgba(31, 29, 36, 0.089);
-  background-color: rgba(253, 255, 240, 0.247);
+  border-top: 1px solid var(--border-color);
+}
+
+.toolbar svg {
+  cursor: pointer;
 }
 
 .toolbar * {
@@ -71,8 +75,8 @@
 }
 
 .project > div:first-of-type {
-  background-color: #c5d3ea83; /*rgba(39, 95, 179, 0.247); */
-  color: #597298;
+  background-color: var(--acent-bg-color); /*rgba(39, 95, 179, 0.247); */
+  color: var(--acent-text-color);
   
   border-radius: 5px;
   padding: 1rem 2rem;
@@ -96,7 +100,7 @@
   font-weight: 400;
   font-size: .95rem;
 
-  color: #535557;
+  color: var(--text-muted);
 }
 
 .indentedFolder > div:not(:first-of-type) {
@@ -110,7 +114,7 @@
 }
 
 .indentedFolder > div:not(:first-of-type) p {
-  color: #929296;
+  color: var(--text-inactive);
 }
 
 .indentedFolder p {
@@ -122,15 +126,15 @@
 
 .openFolder {
   border-radius: 5px;
-  background-color: #c5d3ea83;
+  background-color: var(--acent-bg-color);
 
-  color: #597298 !important;
+  color: var(--acent-text-color) !important;
   margin: 0 !important;
   padding: 0rem 1rem;
 }
 
 .openFolder p {
-  color: #597298 !important;
+  color: var(--acent-text-color) !important;
 }
 
 .indentedFolder > div:not(:first-of-type):hover {
@@ -162,24 +166,23 @@
 
 .book {
   display: grid;
-  grid-template-rows: 61.38px 100%;
 
-  height: 100%;
-  flex: 1;
+  grid-template-rows: 61.38px 1fr;
+  grid-template-columns: 100%;
 
-  overflow: scroll;
+  height: 100vh;
   position: relative;
 }
 
 .pages {
-  background-color: rgba(143, 151, 188, 0.137);
-  height: 100vh;
+  background-color: var(--acent-page-bg);
+  height: 100%;
   width: 100%;
 
-  overflow: scroll;
+  overflow: auto;
 
   padding: 2rem;
-  padding-top: calc(2rem + 61.38px);
+  /* padding-top: calc(2rem + 61.38px); */
   display: flex;
 
   align-items: center;
@@ -190,24 +193,21 @@
 }
 
 .bookOverTools {
-  width: 100%;
-  height: 100%;
-
   padding: 1.2rem 2rem;
-  border-bottom: 1px solid rgba(31, 29, 36, 0.089);
+  border-bottom: 1px solid var(--border-color);
 
   display: flex;
   flex-direction: row;
 
-  position: fixed;
+  position: sticky;
 
   top: 0;
   height: 61.38px;
-  width: 83%; 
+
+  width: -webkit-fill-available;
 
   z-index: 2;
   align-self: center;
-
   align-items: center;
   justify-content: space-between;
 
@@ -223,21 +223,26 @@
   height: 50px;
 
   display: flex;
+
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 
   margin: 2rem;
   padding: 0rem 1rem;
+
   border-radius: 5px;
-  background-color: #ffffff;
-  border: 1px solid #ededef;
 
-  color: #535557;
+  background-color: var(--acent-bg-color);
+  /* border: 1px solid #677ea1; */
+  color: var(--acent-text-color);
+
   font-size: .9rem;
-  font-weight: 400;
+  font-weight: 600;
 
+  grid-gap: 1rem;
   gap: 1rem;
+
   min-width: 350px;
 }
 
@@ -250,7 +255,8 @@
 }
 
 .bookStats p {
-  font-weight: 400 !important;
+  font-weight: 600 !important;
+  color: var(--acent-text-color) !important;
 }
 
 .bookOverTools h2 {
@@ -282,19 +288,23 @@
 }
 
 .syncStatus {
-  background-color: #7fe7964b;
-  padding: .4rem 1rem;
+  background-color: var(--acent-bg-color);
+  padding: .2rem 1rem;
   border-radius: 55px;
 
-  color: rgb(61, 207, 93)
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  color: var(--acent-text-color);
 }
 
 .syncTrue {
-  height: 5px;
-  width: 5px;
+  height: 6px;
+  width: 6px;
 
   border-radius: 50%;
-  background-color: rgb(127, 231, 150);
+  background-color: var(--acent-text-color);
 }
 
 .syncFalse {
@@ -306,28 +316,34 @@
 }
 
 .page {
-  background-color: #fff;
-  border: 1px solid #ededef;
+  background-color: var(--white-pure);
+  /* border: 1px solid #ededef; */
 
   border-radius: 5px;
   padding: 1rem 2rem;
-  padding-bottom: 62.5%;
+  /* padding-bottom: 62.5%; */
 
   aspect-ratio: 5 8;
 
   /* Pixel perfect - Lachie West */
 
-  width: 480px;
-  height: 760px;
+  min-width: 480px;
+  max-width: 480px;
+  max-height: 760px;
+  min-height: 760px;
 
   font-family: "PT Serif";
 
-  box-shadow: 2px 0px 16px #5972980e;
+  box-shadow: 2px 0px 16px var(--acent-shadow-color);
 }
 
 .book p {
   font-weight: 300;
-  color: #929296;
+  color: var(--text-inactive);
+}
+
+.book *::selection {
+  background-color: var(--highlight-color);
 }
 
 .bookTools {

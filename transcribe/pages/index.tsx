@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, ChevronDown, FileText } from 'react-feather'
+import { ArrowRight, Book as BookIcon, ChevronDown, FileText, Settings } from 'react-feather'
 import { Chapter } from '../public/@types/book';
 import Book from '../public/components/book';
 import BookChapter from '../public/components/book_chapter';
@@ -69,7 +69,7 @@ export default function Home() {
 						</div>
 
 						<div className={styles.openFolder}>
-							<BookIcon size={18} color={"#597298"}/>
+							<BookIcon size={18} color={"var(--acent-text-color)"}/>
 							<p>Publication</p>
 						</div>
 
@@ -91,6 +91,8 @@ export default function Home() {
 					<div>
 						<p>Ben White</p>
 					</div>
+
+					<Settings size={18} color={"var(--text-muted)"}/>
 				</div>
 				
 			</div>

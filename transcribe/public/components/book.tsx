@@ -19,8 +19,7 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
 
         bookState.chapters.forEach(e => {
             e.content.forEach(_e => {
-                console.log(_e.text.match(/\s/g).length)
-                word_count += (_e.text.match(/\s/g) || []).length
+                word_count += (_e.text.trim().match(/\s/g) || []).length
             });
         });
 
@@ -65,10 +64,10 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                     </div>
 
                     <div className={styles.bookStats}>
-                        <p>Chapter 1</p>
+                        <p>Chapter {editorState.chapter+1}</p>
 
                         <div>
-                            <p>1 Page</p>
+                            <p>{editorState.pages} Page</p>
                             <p>{editorState.words} Words</p>
                         </div>
                     </div>  

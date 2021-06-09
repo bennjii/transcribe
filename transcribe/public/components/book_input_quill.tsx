@@ -15,9 +15,12 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
     const [ savedState, setSavedState ] = useState(null);
 
     useEffect(() => {
-        console.log(savedState);
+        if(!savedState) return;
 
-        setChapterState(savedState)
+        console.log(savedState)
+        console.log({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]});
+
+        callback({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]})
     }, [savedState])
 
     const handleChange = (raw_content) => {

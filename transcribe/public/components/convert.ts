@@ -52,9 +52,9 @@ const toJSON = (node: Document) => {
 
 const JSONtoString = (json_content) => {
     if(!json_content || !process.browser) return null;
+    if(json_content == undefined || json_content == null) return null;
 
     // Create DOM Object
-    console.log(json_content)
     const parsed = toDOM(json_content.childNodes[0].childNodes[1]);
 
     const serializer = new XMLSerializer();

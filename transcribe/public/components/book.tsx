@@ -5,6 +5,7 @@ import { Book as BookType } from "../@types/book";
 import BookContext from "../@types/book_context";
 import BookChapter from "./book_chapter";
 import BookInput from "./book_input";
+import { JSONtoString } from "./convert";
 import CustomToolbar from "./custom_toolbar";
 
 const Book: React.FC<{ content: BookType }> = ({ content }) => {
@@ -18,11 +19,11 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
     useEffect(() => {
         let word_count = 0;
 
-        // bookState.chapters.forEach(e => {
-        //     e.content.forEach(_e => {
-        //         word_count += (_e.text.trim().match(/\s/g) || []).length
-        //     });
-        // });
+        bookState.chapters.forEach(e => {
+            const string = JSONtoString(e.content);
+
+            if(e.content) word_count += (string.trim().match(/\s/g) || []).length
+        });
 
         setEditorState({ ...editorState, words: word_count })
     }, [bookState]);

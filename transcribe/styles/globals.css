@@ -87,6 +87,14 @@ a {
   margin: 0;
   background-color: transparent;
   border: none;
+
+  width: 18px;
+  height: 18px;
+}
+
+#toolbar button svg {
+  height: 100%;
+  width: 100%;
 }
 
 #toolbar {

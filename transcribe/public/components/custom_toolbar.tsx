@@ -4,14 +4,13 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
     return (
         <div id="toolbar">
             <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
-                <option value="Header 1"/>
-                <option value="Header 2" />
-                <option value="Text" selected />
+                <option value="1" />
+                <option value="2" />
+                <option selected />
             </select>
 
-            <button className="ql-bold"><Bold size={18}/></button>
-            <button className="ql-italic"><Italic size={18}/></button>
-            <button className="ql-underscore"><Underline size={18}/></button>
+            <button className="ql-bold" />
+            <button className="ql-italic" />
 
             <select className="ql-color">
                 <option value="red" />
@@ -22,7 +21,26 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
                 <option value="#d0d1d2" />
                 <option selected />
             </select>
+
+            <button className="ql-customBold">
+                <Bold size={18}/>
+            </button>
         </div>
+
+        // <div id="toolbar">
+        //     <select className="ql-size">
+        //         <option value="small"></option>
+
+        //         <option selected></option>
+        //         <option value="large"></option>
+        //         <option value="huge"></option>
+        //     </select>
+
+        //     <button className="ql-bold"></button>
+
+        //     <button className="ql-script" value="sub"></button>
+        //     <button className="ql-script" value="super"></button>
+        // </div>
     )
 }
 

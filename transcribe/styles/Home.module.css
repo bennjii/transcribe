@@ -53,6 +53,9 @@
 
 .toolbar svg {
   cursor: pointer;
+
+  height: auto;
+  width: auto;
 }
 
 .toolbar * {

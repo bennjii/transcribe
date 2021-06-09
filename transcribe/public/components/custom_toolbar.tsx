@@ -1,6 +1,5 @@
 import { Bold, Italic, Underline } from "react-feather";
 
-
 const CustomToolbar: React.FC<{  }> = ({ }) => {
     return (
         <div id="toolbar">
@@ -22,7 +21,6 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
                 <option value="violet" />
                 <option value="#d0d1d2" />
                 <option selected />
-
             </select>
         </div>
     )

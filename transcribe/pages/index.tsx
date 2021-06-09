@@ -1,10 +1,11 @@
 
 import Head from 'next/head'
 import { ArrowRight, Book as BookIcon, ChevronDown, Circle, FileText, Settings } from 'react-feather'
-import { Chapter } from '../public/@types/book';
+// import { Chapter } from '../public/@types/book';
 import Book from '../public/components/book';
 import BookChapter from '../public/components/book_chapter';
 import BookInput from '../public/components/book_input';
+import { stringToJSON } from '../public/components/convert';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -20,28 +21,7 @@ export default function Home() {
 					fontSize: '1.2rem'
 				},
 				// paragraphs...
-				content: [
-					{
-						text: 'The Fallen Leaf School had several methods of contacting the other schools, and some of the Akura Golda had techniques or constructs intended to spy on far-off locations. They were often slow or blurry because of the suppresion field, but they all indicated the same thing: the Golden Sword School had left days ago, if no weeks.',
-						format: {
-							fontFamily: 'PT Serif',
-							fontSize: '1rem',
-							color: '#55595e',
-							marginBottom: '5px',
-							marginTop: '0px'
-						}
-					},
-					{
-						text: '"My oh my", cried Mercy, "Where must they have gone, I sure hope they\'re alright."',
-						format: {
-							fontFamily: 'PT Serif',
-							fontSize: '1rem',
-							color: '#55595e',
-							marginBottom: '5px',
-							marginTop: '0px'
-						}
-					}
-				]
+				content: stringToJSON('<p>The Fallen Leaf School had several methods of contacting the other schools, and some of the Akura Golda had techniques or constructs intended to spy on far-off locations. They were often slow or blurry because of the suppresion field, but they all indicated the same thing: the Golden Sword School had left days ago, if no weeks.</p>')
 			}
 		]
 	};

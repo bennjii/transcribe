@@ -105,6 +105,15 @@ a {
   color: var(--acent-text-color) !important;
 }
 
+.ql-hidden {
+  display: none;
+}
+
+.ql-clipboard {
+  visibility: hidden;
+  opacity: 0;
+}
+
 :root {
   --border-color: rgba(31, 29, 36, 0.089); 
   --acent-text-color: #597298;

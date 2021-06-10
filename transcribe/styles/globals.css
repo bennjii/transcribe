@@ -101,10 +101,23 @@ a {
   display: flex;
   flex-direction: row;
   align-items: center;
-  grid-gap: .8rem;
-  gap: .8rem;
+
+  gap: 1rem;
 
   border: none;
+}
+
+#toolbar > div {
+  display: flex;
+  flex-direction: row;
+
+  gap: .6rem;
+  align-items: center;
+}
+
+.ql-picker-options {
+  border-radius: 5px;
+  padding: .5rem 1rem !important;
 }
 
 .ql-editor {

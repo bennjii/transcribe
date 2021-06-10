@@ -12,7 +12,7 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
     const { book, callback } = useContext(BookContext);
     const input_ref = useRef();
 
-    const [ chapterState, setChapterState ] = useState(JSONtoString(value.content)); // Object Value
+    const [ chapterState, setChapterState ] = useState(value.content); // Object Value
     const [ savedState, setSavedState ] = useState(null);
 
     useEffect(() => {
@@ -22,9 +22,13 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
     }, [savedState])
 
     const handleChange = (raw_content) => {
-        if(!raw_content) return false;
+        //@ts-expect-error
+        setChapterState(input_ref?.current?.getEditor()?.editor?.delta);
 
-        setSavedState(stringToJSON(raw_content));
+        // if(!raw_content) return false;
+        
+        //@ts-expect-error
+        setSavedState(input_ref?.current?.getEditor()?.editor?.delta);
         
         // DOM Parser can be used to create final book object, which can be displayed in a reading mode
         // before being printed or converted to PDF or Word Document (XML).
@@ -66,8 +70,8 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
             defaultValue={chapterState} 
             onChange={handleChange}
             modules={{
-                toolbar: //toolbarOptions
-                    { container: '#toolbar' }  // Selector for toolbar container
+                // table: true,
+                toolbar: { container: '#toolbar' }  // Selector for toolbar container
                     // handlers: {
                     //     customBold: function(value) {
                     //         console.log(this.quill)
@@ -79,17 +83,6 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
             }}
             />
     ) : null;
-}
-
-const snakeToCammel = (name: string) => {
-    name = name.replace(/"/g, "");
-    name = name.trim();
-
-    if(name !== "")
-        return name.replace(/(\-\w)/g, function(m) {
-            return m[1].toUpperCase()
-        });
-    else return null;
 }
 
 export default BookInputQuill;

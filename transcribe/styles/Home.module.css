@@ -35,11 +35,21 @@
   margin: 0;
 }
 
+.logo h4 {
+  color: var(--acent-text-color);
+  font-family: "Public Sans";
+
+  margin: 0;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
 .logo {
   display: flex;
   flex-direction: row !important;
 
   align-items: center;
+  justify-content: space-between;
 }
 
 .toolbar {
@@ -200,6 +210,9 @@
 
   gap: 1rem;
   position: relative;
+  
+  /* Default Zoom of 150% */
+  zoom: 150%;
 }
 
 .bookOverTools {
@@ -250,8 +263,7 @@
   font-size: .9rem;
   font-weight: 600;
 
-  grid-gap: 1rem;
-  gap: 1rem;
+  gap: 2rem;
 
   min-width: 350px;
   font-family: "PT Serif";

@@ -107,4 +107,17 @@ const toDOM = (obj) => {
     }
     return node;
 }
+
+const snakeToCammel = (name: string) => {
+    name = name.replace(/"/g, "");
+    name = name.trim();
+
+    if(name !== "")
+        return name.replace(/(\-\w)/g, function(m) {
+            return m[1].toUpperCase()
+        });
+    else return null;
+}
+
+
 export { stringToJSON, JSONtoString }

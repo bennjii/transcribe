@@ -1,5 +1,6 @@
 import { TextareaHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
 import styles from '../../styles/Home.module.css'
+import 'react-quill/dist/quill.snow.css';
 import BookContext from "../@types/book_context";
 
 import _ from 'underscore'
@@ -16,9 +17,6 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
 
     useEffect(() => {
         if(!savedState) return;
-
-        console.log(savedState)
-        console.log({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]});
 
         callback({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]})
     }, [savedState])
@@ -37,7 +35,29 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
 
     if(!process.browser) return null;
 
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote'],                // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+    
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+      
+        ['clean']                                         // remove formatting button
+      ];
+
     const ReactQuill = require('react-quill');
+    const { Quill } = require('react-quill');
+    
+    if(process.browser) {
+        const Font = ReactQuill.Quill.import('formats/font');
+        Font.whitelist = ['pt-serif', 'public-sans', 'arial']
+
+        ReactQuill.Quill.register(Font, true);
+    }
+
     return process.browser ? (
         <ReactQuill 
             ref={input_ref}
@@ -46,15 +66,15 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
             defaultValue={chapterState} 
             onChange={handleChange}
             modules={{
-                toolbar: {
-                    container: '#toolbar',  // Selector for toolbar container
+                toolbar: //toolbarOptions
+                    { container: '#toolbar' }  // Selector for toolbar container
                     // handlers: {
                     //     customBold: function(value) {
                     //         console.log(this.quill)
                     //         this.quill.formatText(this.quill.selection.savedRange.index, this.quill.selection.savedRange.length, 'bold', 'bold', '');
                     //      }
                     // }
-                },
+                ,
                 /// TAB INSERT \t
             }}
             />

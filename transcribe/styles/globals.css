@@ -103,14 +103,20 @@ a {
   align-items: center;
   grid-gap: .8rem;
   gap: .8rem;
+
+  border: none;
 }
 
 .ql-editor {
   outline: none;
+  border: none;
+
+  padding: 0 !important;
 }
 
 .ql-active {
   color: var(--acent-text-color) !important;
+  stroke: var(--acent-text-color) !important;
 }
 
 .ql-hidden {
@@ -120,6 +126,33 @@ a {
 .ql-clipboard {
   visibility: hidden;
   opacity: 0;
+}
+
+.ql-picker:not(.ql-icon-picker) {
+  border-radius: 5px;
+  border: 1px solid #ededef;
+  padding: .4rem 1rem;
+  font-size: .9rem;
+  padding-right: .6rem;
+  padding-left: .5rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  grid-gap: 1rem;
+  gap: 1rem;
+
+  width: 125px !important;
+
+  color: var(--text-muted);
+
+  height: 35px !important;
+}
+
+.ql-container {
+  border: none !important;
 }
 
 :root {
@@ -138,4 +171,36 @@ a {
   --text-inactive: #929296;
 
   --highlight-color: rgb(223, 229, 255);
+}
+
+span.ql-picker-item[data-label="public-sans"]::before {
+  content: "Public Sans" !important;
+  font-family: "Public Sans" !important;
+}
+
+span.ql-picker-item[data-label="pt-serif"]::before {
+  content: "PT Serif" !important;
+  font-family: "PT Serif" !important;
+}
+
+span[data-label="arial"]::before {
+  content: "Arial" !important;
+  font-family: "Arial" !important;
+}
+
+.ql-picker-item:not(.ql-icon-picker)::before {
+  font-family: "Public Sans";
+}
+/* Set content font-families */
+
+.ql-font-pt-serif {
+  font-family: "PT Serif";
+}
+
+.ql-font-public-sans {
+  font-family: "Public Sans";
+}
+
+.ql-font-arial {
+  font-family: "Arial";
 }

@@ -38,11 +38,6 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                         <h2>Publication</h2>
 
                         <div className={styles.bookToolTable}> 
-                            <div className={styles.selector}>
-                                PT Serif
-
-                                <ChevronDown size={18}/>
-                            </div>
                             <CustomToolbar />
                         </div>
 

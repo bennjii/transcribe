@@ -2,11 +2,17 @@
 
 ### Editor
 IP  Add Custom Toolbar                         
-        - Custom Font
-        - Bold, Italic, Underline
-        - Header, BodyText...
-        - Insert SVG Images
-        - Insert Images
+        - Custom Font ✓
+        - Bold, Italic, Underline ✓
+        - Header, BodyText... ✓
+        - Custom Colours ☐
+        - Insert SVG Images ☐
+        - Insert Images ☐
+    
+    Custom / Propietary JSON Converter and Formatting
+        - Save data from editor ✓
+        - Store efficently ✓
+        - Retrieval w/ 100% conversion (0% loss) ✓
 
     Add Tab Functionality 
         - Indent Page, etc...

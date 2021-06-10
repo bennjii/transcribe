@@ -10,7 +10,6 @@ const BookChapter: React.FC<{ chapter: number, content: any }> = ({ chapter, con
     return (
         <div className={styles.page}>
             <h2 
-            contentEditable
             style={{
                 ...content.format
             }}>{content.title}</h2>

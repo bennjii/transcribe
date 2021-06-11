@@ -44,20 +44,8 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                 {/* Content... */}
 
                 <div className={styles.book}>			
-                    <div className={styles.bookOverTools}>
-                        <h2>Publication</h2>
-
-                        <div className={styles.bookToolTable}> 
-                            <CustomToolbar />
-                        </div>
-
-                        <div className={styles.syncStatus}>
-                            Saved
-
-                            <div className={styles.syncTrue}>
-
-                            </div>
-                        </div>
+                    <div>
+                        
                     </div>
 
                     <div className={styles.pages} style={{ zoom: `${editorState.zoom_level * 100}%` }}>

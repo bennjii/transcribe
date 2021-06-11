@@ -60,6 +60,10 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
         Font.whitelist = ['pt-serif', 'public-sans', 'arial']
 
         ReactQuill.Quill.register(Font, true);
+
+        const Size = ReactQuill.Quill.import('attributors/style/size');
+        Size.whitelist = ['12px', '14px', '16px', '18px'];
+        ReactQuill.Quill.register(Size, true);
     }
 
     return process.browser ? (

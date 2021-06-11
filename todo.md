@@ -5,9 +5,10 @@ IP  Add Custom Toolbar
         - Custom Font ✓
         - Bold, Italic, Underline ✓
         - Header, BodyText... ✓
-        - Custom Colours ☐
+        - Custom Colours    ☐
         - Insert SVG Images ☐
-        - Insert Images ☐
+        - Insert Images     ☐
+        - Insert Tables     ☐
     
     Custom / Propietary JSON Converter and Formatting
         - Save data from editor ✓

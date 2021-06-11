@@ -108,7 +108,7 @@
   justify-content: space-between;
 }
 
-.folderHeader {
+.folderTitle {
   display: flex;
   flex-direction: row;
 
@@ -116,14 +116,14 @@
   justify-content: space-between;
 }
 
-.folderHeader p {
+.folderTitle p {
   font-weight: 400;
   font-size: .95rem;
 
   color: var(--text-muted);
 }
 
-.indentedFolder > div:not(:first-of-type) {
+/* .folderStructure > div:not(:first-of-type) {
   margin-left: 1rem;
 
   display: flex;
@@ -133,18 +133,65 @@
   gap: .5rem;
 }
 
-.indentedFolder > div:not(:first-of-type) p {
-  color: var(--text-inactive);
+.folderStructure > div:not(:first-of-type):hover {
+  background-color: var(--acent-bg-color);
 }
 
-.indentedFolder p {
+.folderStructure > div:not(:first-of-type) p {
+  color: var(--text-inactive);
+} */
+
+.folderStructure p {
   margin-top: .5rem;
   margin-bottom: .5rem;
 
   font-size: .95rem;
 }
 
-.openFolder {
+.folder {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  gap: 2px;
+}
+
+.folderHeader {
+  color: var(--text-inactive);
+}
+
+.folder > div:not(:first-of-type){
+  margin-left: 1rem;
+}
+
+.folderHeader, .openFolderHeader, .subFile, .file, .openFile {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  gap: .5rem;
+}
+
+.file, .subFile {
+  margin-left: 1rem;
+}
+
+.openFile {
+  border-radius: 5px;
+  background-color: rgba(var(--acent-rgb), 0.1);
+
+  color: var(--acent-text-color) !important;
+  margin: 0 !important;
+  padding: 0rem 1rem;
+  cursor: default;
+}
+
+.folderHeader {
+  margin: 0 !important;
+  padding: 0rem 1rem;
+}
+
+.openFolderHeader {
   border-radius: 5px;
   background-color: var(--acent-bg-color);
 
@@ -153,7 +200,7 @@
   padding: 0rem 1rem;
 }
 
-.openFolder p {
+.openFolderHeader p {
   color: var(--acent-text-color) !important;
 }
 
@@ -412,4 +459,15 @@
   justify-content: space-between;
 
   gap: 1rem;
+}
+
+.chapterSectionHeader {
+  background: var(--acent-bg-color);
+  border-radius: 5px;
+  padding: .5rem 1rem;
+  color: var(--acent-text-color);
+}
+
+.book {
+  height: calc(100vh - 62px) !important;
 }

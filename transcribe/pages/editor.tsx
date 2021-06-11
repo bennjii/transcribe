@@ -1,11 +1,12 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, ChevronDown, Circle, FileText, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, FileText, Folder, Settings } from 'react-feather'
 // import { Chapter } from '../public/@types/book';
 import Book from '../public/components/book';
 import BookChapter from '../public/components/book_chapter';
 import BookInput from '../public/components/book_input';
 import { stringToJSON } from '../public/components/convert';
+import CustomToolbar from '../public/components/custom_toolbar';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -56,25 +57,52 @@ export default function Home() {
 					</div>
 					
 
-					<div className={styles.indentedFolder}>
-						<div className={styles.folderHeader}>
+					<div className={styles.folderStructure}>
+						<div className={styles.folderTitle}>
 							<p>Wintersteel</p>
 							{/* <ChevronDown size={18}/> */}
 						</div>
+						
+						<div className={styles.folder}>
+							<div className={styles.openFolderHeader}>
+								<ChevronDown size={18} color={"var(--acent-text-color)"} />
+								<p>Manuscript</p>
+							</div>
 
-						<div className={styles.openFolder}>
-							<BookIcon size={18} color={"var(--acent-text-color)"}/>
-							<p>Publication</p>
+							<div>
+								<div className={styles.openFile}>
+									<BookIcon size={18} color={"var(--acent-text-color)"}/>
+
+									<p>Prologue</p>
+								</div>
+
+								<div className={styles.subFile}>
+									<BookIcon size={18} color={"var(--text-color)"}/>
+
+									<p>Prologue</p>
+								</div>
+
+								<div className={styles.subFile}>
+									<BookIcon size={18} color={"var(--text-color)"}/>
+
+									<p>Prologue</p>
+								</div>
+							</div>
+						</div>
+						
+						<div className={styles.folder}>
+							<div className={styles.folderHeader}>
+								<Folder size={18} color={"var(--text-inactive)"}/>
+								<p>Planning</p>
+							</div>
+							
 						</div>
 
-						<div>
-							<FileText size={18} color={"#929296"}/>
-							<p>Planning</p>
-						</div>
-
-						<div>
-							<FileText size={18} color={"#929296"}/>
-							<p>Story Overview</p>
+						<div className={styles.folder}>
+							<div className={styles.folderHeader}>
+								<Folder size={18} color={"var(--text-inactive)"}/>
+								<p>Research</p>
+							</div>
 						</div>
 					</div>
 					
@@ -91,7 +119,24 @@ export default function Home() {
 				
 			</div>
 
-			<Book content={local_book ?? book}/>
+			<div>
+				<div className={styles.bookOverTools}>
+					<div className={styles.bookToolTable}> 
+						<CustomToolbar />
+					</div>
+
+					<div className={styles.syncStatus}>
+						Saved
+
+						<div className={styles.syncTrue}>
+
+						</div>
+					</div>
+				</div>
+
+				<Book content={local_book ?? book}/>
+			</div>
+			
 		</div>
 	)
 }

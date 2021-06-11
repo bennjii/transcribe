@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, FileText, Folder, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Folder, Settings } from 'react-feather'
 // import { Chapter } from '../public/@types/book';
 import Book from '../public/components/book';
 import BookChapter from '../public/components/book_chapter';
@@ -79,13 +79,19 @@ export default function Home() {
 								<div className={styles.subFile}>
 									<BookIcon size={18} color={"var(--text-color)"}/>
 
-									<p>Prologue</p>
+									<p>Chapter 1</p>
 								</div>
 
 								<div className={styles.subFile}>
 									<BookIcon size={18} color={"var(--text-color)"}/>
 
-									<p>Prologue</p>
+									<p>Chapter 2/3</p>
+								</div>
+
+								<div className={styles.subFile}>
+									<Edit3 size={18} color={"var(--text-color)"}/>
+
+									<p>Fight Scene 1</p>
 								</div>
 							</div>
 						</div>
@@ -119,7 +125,7 @@ export default function Home() {
 				
 			</div>
 
-			<div>
+			<div className={styles.content}>
 				<div className={styles.bookOverTools}>
 					<div className={styles.bookToolTable}> 
 						<CustomToolbar />

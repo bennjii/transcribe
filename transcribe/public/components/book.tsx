@@ -1,5 +1,5 @@
 import { TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
-import { Bold, ChevronDown, Italic, Minus, Plus, Underline } from "react-feather";
+import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon } from "react-feather";
 
 import styles from '../../styles/Home.module.css'
 import { Book as BookType } from "../@types/book";
@@ -10,7 +10,6 @@ import BookChapter from "./book_chapter";
 import CustomToolbar from "./custom_toolbar";
 
 const Book: React.FC<{ content: BookType }> = ({ content }) => {
-    console.log("recieved", content)
     const [ bookState, setBookState ] = useState(content);
     const [ editorState, setEditorState ] = useState({
         words: 0,
@@ -44,11 +43,29 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                 {/* Content... */}
 
                 <div className={styles.book}>			
-                    <div>
-                        
+                    <div className={styles.bookCaptionBar}>
+                        <div>
+                            <BookIcon size={18} color={"var(--acent-text-color)"} />
+
+                            <p>Prologue</p>
+                        </div>
+
+                        <div className={styles.fixedPageSpec}>
+                            <Plus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level < 2.5 ? editorState.zoom_level + 0.1 : 2.5 })}/>
+
+                            <p><b>{Math.round(editorState.zoom_level * 100)}%</b></p>
+
+                            <Minus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level > 0.5 ? editorState.zoom_level - 0.1 : 0.5 })} />
+                        </div>
+
+                        <div className={styles.fixedPageSpec}>
+                            <p><b>{editorState.pages}</b> Page</p>
+                            <p><b>{editorState.words}</b> Words</p>
+                            <p><b>{editorState.chars}</b> Characters</p>
+                        </div>
                     </div>
 
-                    <div className={styles.pages} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
+                    <div className={styles.pages} id={"Prologue"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
                         {
                             bookState.chapters.map((e, i: number) => {
                                 return <BookChapter key={`Chapter${i}BOOK-CHAPTER`} chapter={i} content={e} />
@@ -56,6 +73,7 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                         }
                     </div>
 
+                    {/* 
                     <div className={styles.bookStats}>
                         <p>Chapter {editorState.chapter+1}</p>
 
@@ -74,13 +92,9 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                                 <Minus size={18} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level > 0.5 ? editorState.zoom_level - 0.1 : 0.5 })} />
                             </div>
                         </div>
-                    </div>  
-                    
+                    </div>   
+                    */}
                 </div>
-
-                {/* <div className={styles.bookTools}>
-                    helper
-                </div> */}
             </div>
         </BookContext.Provider>
     )

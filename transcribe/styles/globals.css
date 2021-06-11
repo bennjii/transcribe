@@ -123,6 +123,8 @@ a {
   gap: 1rem;
 
   border: none;
+
+  font-family: 'Public Sans';
 }
 
 #toolbar > div {

@@ -75,7 +75,7 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
             onChange={handleChange}
             modules={{
                 // table: true,
-                toolbar: { container: '#toolbar' }  // Selector for toolbar container
+                toolbar: { container: '#toolbar' } 
                     // handlers: {
                     //     customBold: function(value) {
                     //         console.log(this.quill)
@@ -83,8 +83,20 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
                     //      }
                     // }
                 ,
-                /// TAB INSERT \t
             }}
+            onBlur={(...args) => {
+                const selection = args[0];
+                
+                if(input_ref.current) {
+                    // This cant happen all the time, only when the focus is removed by elements in the toolbar.
+
+                    console.log(input_ref.current);
+                    // input_ref.current.editor.selection.focus(); // Sets focus after blur
+
+                    console.log(input_ref.current.editor.selection)
+                }
+            }}
+            scrollingContainer={`#Prologue`}
             />
     ) : null;
 }

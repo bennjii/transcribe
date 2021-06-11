@@ -78,8 +78,13 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                         </div>
 
                         <div>
-                            <Plus size={18} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level < 2.5 ? editorState.zoom_level + 0.1 : 2.5 })}/>
-                            <Minus size={18} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level > 0.5 ? editorState.zoom_level - 0.1 : 0.5 })} />
+                            <div>
+                                <Plus size={18} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level < 2.5 ? editorState.zoom_level + 0.1 : 2.5 })}/>
+                            </div>
+                            
+                            <div>
+                                <Minus size={18} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level > 0.5 ? editorState.zoom_level - 0.1 : 0.5 })} />
+                            </div>
                         </div>
                     </div>  
                     

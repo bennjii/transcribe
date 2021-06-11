@@ -277,6 +277,20 @@
   gap: 1rem;
 }
 
+.bookStats > div > div {
+  background-color: var(--white-pure);
+  border-radius: 50%;
+
+  height: 22px;
+  width: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
 .bookStats p {
   font-weight: 600 !important;
   color: var(--acent-text-color) !important;

@@ -531,3 +531,7 @@
 .book {
   grid-template-rows: 35px 1fr;
 }
+
+.export {
+  cursor: pointer;
+}

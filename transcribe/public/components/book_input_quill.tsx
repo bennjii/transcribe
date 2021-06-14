@@ -1,12 +1,8 @@
-import { TextareaHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
-import styles from '../../styles/Home.module.css'
+import { useContext, useEffect, useRef, useState } from "react";
 import 'react-quill/dist/quill.snow.css';
 import BookContext from "../@types/book_context";
 
 import _ from 'underscore'
-import ReactQuill, {Quill} from 'react-quill';
-
-import { JSONtoString, stringToJSON } from "./convert";
 
 const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chapter }) => {
     const { book, callback } = useContext(BookContext);
@@ -74,7 +70,7 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
             defaultValue={chapterState} 
             onChange={handleChange}
             modules={{
-                // table: true,
+                // table: true, // npm i react-quill-with-table
                 toolbar: { container: '#toolbar' } 
                     // handlers: {
                     //     customBold: function(value) {
@@ -92,7 +88,8 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
 
                     console.log(input_ref.current);
                     // input_ref.current.editor.selection.focus(); // Sets focus after blur
-
+                    
+                    //@ts-ignore
                     console.log(input_ref.current.editor.selection)
                 }
             }}

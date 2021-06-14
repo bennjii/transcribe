@@ -36,6 +36,24 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
                 <option value="right"></option>
             </select>
 
+            <select className="ql-color">
+                <option value="#000000"></option>
+                <option value="#202737"></option>
+                <option value="#3F4960"></option>
+                <option value="#636977"></option>
+            </select>
+
+            <div>
+                <button className="ql-link"></button>
+                <button className="ql-image"></button>
+            </div>
+
+            <div>
+                <button className="ql-table"></button>
+                <button className="ql-remove-table"></button>
+                <button className="ql-underline"></button>  
+            </div>
+
             <button className="ql-clean"></button>
         </div>
     )

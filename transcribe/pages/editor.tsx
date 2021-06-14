@@ -70,25 +70,25 @@ export default function Home() {
 							</div>
 
 							<div>
-								<div className={styles.openFile}>
+								<div className={styles.openFile} draggable >
 									<BookIcon size={18} color={"var(--acent-text-color)"}/>
 
 									<p>Prologue</p>
 								</div>
 
-								<div className={styles.subFile}>
+								<div className={styles.subFile} draggable>
 									<BookIcon size={18} color={"var(--text-color)"}/>
 
 									<p>Chapter 1</p>
 								</div>
 
-								<div className={styles.subFile}>
+								<div className={styles.subFile} draggable>
 									<BookIcon size={18} color={"var(--text-color)"}/>
 
 									<p>Chapter 2/3</p>
 								</div>
 
-								<div className={styles.subFile}>
+								<div className={styles.subFile} draggable>
 									<Edit3 size={18} color={"var(--text-color)"}/>
 
 									<p>Fight Scene 1</p>
@@ -140,7 +140,12 @@ export default function Home() {
 					</div>
 				</div>
 
-				<Book content={local_book ?? book}/>
+				<div>
+					<Book content={local_book ?? book}/>
+
+					{/* <Book content={local_book ?? book}/> */}
+				</div>
+				
 			</div>
 			
 		</div>

@@ -11,13 +11,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
         const userListener = client
             .from(`users:id=eq.${client.auth.user().id}`) // :id=eq.${client.auth.user().id}
             .on('*', (payload) => {
-                client
-                    .storage
-                    .from('user-icons')
-                    .createSignedUrl(payload.new.avatarURL, 12800)
-                    .then(icon => { 
-                        setData({ ...payload.new, icon: icon.signedURL })
-                    })   
+                setData({ ...payload.new }) 
             })
             .subscribe()
 
@@ -32,14 +26,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
             .select('*')
             .eq('id', client.auth.user().id)
             .then(e => {
-                client
-                    .storage
-                    .from('user-icons')
-                    .createSignedUrl(e.data[0].avatarURL, 12800)
-                    .then(icon => { 
-                        setData({ ...e.data[0], icon: icon.signedURL });
-                    })   
-
+                setData({ ...e.data[0] });
                 // setData(e.data[0]); // I mean they should be the first user right????
             });
     }, [])

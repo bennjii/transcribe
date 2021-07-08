@@ -1,6 +1,5 @@
 
 import { SupabaseClient } from '@supabase/supabase-js'
-import clientStyles from '../../styles/Home.module.css'
 import styles from '@styles/Auth.module.css'
 import { useState } from 'react'
 

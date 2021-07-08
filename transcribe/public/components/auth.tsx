@@ -25,7 +25,7 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     }, [authState])
 
 	return (
-		<div className={styles.auth}>
+		<div className={styles.auth + " " + styles.container}>
             <div className={styles.authBox}>
                 <div className={styles.authLeft}>
                     {

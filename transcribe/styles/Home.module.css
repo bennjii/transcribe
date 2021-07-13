@@ -6,7 +6,7 @@
   font-weight: 500;
 
   color: #fff;
-  background-color: var(--color-primary);
+  background-color: rgba(var(--color-primary-rgb), 1);
 
   position: relative;
   display: flex;
@@ -74,7 +74,7 @@
   display: grid;
   height: 100vh;
 
-  grid-template-columns: 16% auto;
+  grid-template-columns: clamp(200px, 16%, 400px) auto;
   overflow: hidden;
 }
 
@@ -500,8 +500,8 @@
 
   min-width: 480px;
   max-width: 480px;
-  max-height: 760px;
-  min-height: 760px;
+  /* max-height: 760px;
+  min-height: 760px; */
 
   font-family: "PT Serif";
 
@@ -610,7 +610,13 @@
 
 .projectView {
   background-color: #F5F7F9;
-  padding: 2rem 4rem;
+  padding: 4rem 4rem;
+
+  font-family: 'Public Sans' !important;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .projectView h1 {
@@ -618,4 +624,88 @@
   font-size: 1.3rem;
   color: #101011;
   margin: 0;
+}
+
+.userComponent {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1.6rem 1.6rem !important;
+  border-top: 1px solid var(--border-color);
+}
+
+.userComponent p {
+  margin: 0;
+}
+
+.headerIntermediary {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1 1;
+  background-color: rgba(156, 143, 188, 0.055);
+}
+
+.projectCard {
+  border: 1px solid var(--border-color);
+  background-color: var(--white-pure);
+
+  min-width: 350px;
+  width: 25%;
+  border-radius: 5px;
+  overflow: hidden;
+
+  box-shadow: 0px 0px 2px 1px var(--background-modifier-active);
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.projectCard > div:not(.cardTitle) {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  gap: 2.2rem;
+
+  border-bottom: 1px solid var(--border-color);
+  /* border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color); */
+}
+
+.projectCard > div:not(.cardTitle):last-of-type {
+  border-bottom: none;
+}
+
+.projectCard > div:not(.cardTitle) > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .6rem;
+}
+
+.projectCard > div p {
+  margin: 0;
+}
+
+.cardTitle {
+  background-color: #132742;
+  height: 150px;
+
+  padding: 1.5rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.cardTitle h1 {
+  font-family: 'PT Serif';
+  font-weight: 300;
+  font-size: 1.6rem;
+
+  color: var(--white-pure);
 }

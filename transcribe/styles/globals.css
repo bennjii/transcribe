@@ -139,8 +139,8 @@
   --deprecated-store-bg: #36393f;
   --deprecated-quickswitcher-input-background: #72767d;
   --deprecated-quickswitcher-input-placeholder: hsla(0,0%,100%,0.3);
-  --deprecated-text-input-bg: rgba(0,0,0,0.1);
-  --deprecated-text-input-border: rgba(0,0,0,0.3);
+  --deprecated-text-input-bg: rgba(0, 0, 0, 0.021);
+  --deprecated-text-input-border: rgba(0, 0, 0, 0.123);
   --deprecated-text-input-border-hover: #040405;
   --deprecated-text-input-border-disabled: #202225;
   --deprecated-text-input-prefix: #dcddde;

@@ -9,6 +9,8 @@ import { stringToJSON } from '../public/components/convert';
 import CustomToolbar from '../public/components/custom_toolbar';
 import styles from '../styles/Home.module.css'
 
+import Header from '@components/header'
+
 export default function Home() {
 	// Import this from a databse later - just for proof of concept.
     const local_book = process.browser ? JSON.parse(localStorage.getItem(`transcribe-editor_${'1'}`)) : null;
@@ -45,9 +47,7 @@ export default function Home() {
 			
 			<div className={styles.header}>
 				{/* Header */}
-				<div className={styles.logo}>
-					<p>transcribe</p> <h4>beta</h4>
-				</div>
+				<Header />
 
 				<div className={styles.project}>
 					<div>

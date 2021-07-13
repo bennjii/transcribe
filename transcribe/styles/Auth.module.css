@@ -1,6 +1,6 @@
 .auth {
     /* background-color: var(--background-floating); */
-    background-color: var(--background-tertiary);
+    background-color: var(--acent-page-bg);
     color: var(--white);
 
     height: 100%;
@@ -17,9 +17,26 @@
 
     font-family: 'Public Sans';
 
+    /* 
     background-image: url("https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2532&q=80");
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; 
+    */
+}
+
+.auth > h1 {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+
+    padding: 2rem 3rem;
+    margin: 0;
+
+    font-family: "PT Serif";
+    font-weight: 300;
+    font-size: 1.2rem;
+
+    color: var(--acent-text-color);
 }
 
 .authBox {
@@ -28,8 +45,10 @@
     /* box-shadow: var(--elevation-high); */
     background-color: var(--background-floating);
 
-    border-radius: 0px;
+    border-radius: 5px;
     padding: 2rem;
+
+    border: 1px solid var(--border-color);
 }
 
 .auth h4 {
@@ -81,7 +100,6 @@
     flex-direction: column;
 
     width: 100%;
-
     font-family: "Public Sans" !important;
 }
 

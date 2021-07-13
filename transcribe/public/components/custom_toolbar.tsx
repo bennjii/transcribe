@@ -48,10 +48,14 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
                 <button className="ql-image"></button>
             </div>
 
-            <div>
+            {/* <div>
                 <button className="ql-table"></button>
                 <button className="ql-remove-table"></button>
                 <button className="ql-underline"></button>  
+            </div> */}
+
+            <div>
+                <button className="ql-page-break"></button>
             </div>
 
             <button className="ql-clean"></button>

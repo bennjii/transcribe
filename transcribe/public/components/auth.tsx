@@ -25,6 +25,8 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
 
 	return (
 		<div className={styles.auth + " " + styles.container}>
+            <h1>transcribe</h1>
+            
             <div className={styles.authBox}>
                 <div className={styles.authLeft}>
                     {
@@ -92,6 +94,8 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                                             if(u.error)  {
                                                 setAuthError(u.error?.message)
                                                 callback();
+
+                                                return;
                                             }
                                             else setAuthError(null)
 
@@ -101,6 +105,8 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                                                     username: authInputState.username
                                                 }
                                             ]).then(e => {
+                                                console.log(e);
+
                                                 callback();
                                                 setAuthState('auth-email')
                                             });

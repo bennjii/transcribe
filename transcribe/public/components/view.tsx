@@ -4,6 +4,10 @@ import { createContext, useEffect, useState } from 'react'
 import Button from '@components/button'
 
 import Head from 'next/head'
+import { LogOut } from 'react-feather'
+import { skipPartiallyEmittedExpressions } from 'typescript'
+import Header from './header'
+import ProjectCard from './project_card'
 
 const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     const [ data, setData ] = useState(null);
@@ -24,9 +28,16 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     useEffect(() => {
         client
             .from('users')
-            .select('*')
+            .select(`
+                id,
+                username,
+                creation_date,
+                projects:project ( name )
+            `)
             .eq('id', client.auth.user().id)
             .then(e => {
+                console.log(e)
+                
                 setData({ ...e.data[0] });
             });
     }, [])
@@ -40,19 +51,23 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                 </Head>
                 
                 <div className={styles.header}>
-                    {/* Header */}
-                    <div className={styles.logo}>
-                        <p>transcribe</p>
-                    </div>
+                    <Header />
 
-                    <div>
+                    <div className={styles.headerIntermediary}>
 
                     </div>
 
-                    <div>
-                        <Button title="Logout" onClick={() => {
+                    <div className={styles.userComponent}>
+                        <p>
+                            {
+                                data?.username
+                            }
+                        </p>
+                        <div onClick={() => {
                             client.auth.signOut();
-                        }}></Button>
+                        }}>
+                            <LogOut size={13} color={"var(--text-color)"}/>
+                        </div>
                     </div>
                 </div>
 
@@ -62,7 +77,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                     <div>
                         {
                             data?.projects?.map(e => {
-                                return <div>{e.title}</div>
+                                return <ProjectCard content={e} key={`Card-${e.name}`}/>
                             })
                         }
                     </div>

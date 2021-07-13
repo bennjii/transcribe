@@ -16,15 +16,19 @@
     align-items: center;
 
     font-family: 'Public Sans';
+
+    background-image: url("https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2532&q=80");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .authBox {
     width: auto;
 
-    box-shadow: var(--elevation-high);
+    /* box-shadow: var(--elevation-high); */
     background-color: var(--background-floating);
 
-    border-radius: 5px;
+    border-radius: 0px;
     padding: 2rem;
 }
 

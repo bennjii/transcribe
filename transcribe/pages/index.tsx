@@ -18,8 +18,8 @@ const Index = () => {
 	const session = supabase.auth.session()
 	
 	const [ cssProperties, setCssProperties ] = useState({
-		"--color-primary": "#7289da",
-		"--color-primary-rgb": "114, 137, 218"
+		"--color-primary": "var(--acent-bg-color)",
+		"--color-primary-rgb": "89, 114, 152"
 	}) // Fetch User prefernces
 
 	const [ user, setUser ] = useState(supabase.auth.user());

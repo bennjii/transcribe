@@ -105,6 +105,7 @@
 
 .logo p {
   margin: 0;
+  cursor: pointer;
 }
 
 .logo h4 {
@@ -254,6 +255,10 @@
 
 .file, .subFile {
   margin-left: 1rem;
+}
+
+.subFile {
+  cursor: pointer;
 }
 
 .openFile {
@@ -568,6 +573,9 @@
 
   gap: .5rem;
   padding: 0 1rem;
+
+  z-index: 500;
+  box-shadow: 0px 0px 15px 2px #444a501f;
 }
 
 .bookCaptionBar > div {
@@ -632,7 +640,8 @@
   justify-content: space-between;
   align-items: center;
 
-  padding: 1.6rem 1.6rem !important;
+  padding: 1.2rem 2rem;
+  padding: 1.4rem 1.4rem !important;
   border-top: 1px solid var(--border-color);
 }
 
@@ -650,6 +659,7 @@
 
 .projectCard {
   border: 1px solid var(--border-color);
+
   background-color: var(--white-pure);
 
   min-width: 350px;
@@ -657,10 +667,17 @@
   border-radius: 5px;
   overflow: hidden;
 
-  box-shadow: 0px 0px 2px 1px var(--background-modifier-active);
-  border-top: none;
+  /* box-shadow: 0px 0px 2px 1px var(--background-modifier-active); */
+  /* border-top: none;
   border-right: none;
-  border-left: none;
+  border-left: none; */
+}
+
+.projectCard:hover {
+  cursor: pointer;
+
+  border-color: #bab8c2;
+  background-color: #fafbfb;
 }
 
 .projectCard > div:not(.cardTitle) {

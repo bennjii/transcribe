@@ -8,6 +8,7 @@ import { LogOut } from 'react-feather'
 import { skipPartiallyEmittedExpressions } from 'typescript'
 import Header from './header'
 import ProjectCard from './project_card'
+import UserComponent from './user_component'
 
 const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     const [ data, setData ] = useState(null);
@@ -32,13 +33,12 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                 id,
                 username,
                 creation_date,
-                projects:project ( name )
+                projects:projects ( name, id, owner, creation_date, last_edited )
             `)
             .eq('id', client.auth.user().id)
             .then(e => {
-                console.log(e)
-                
-                setData({ ...e.data[0] });
+                console.log(e);
+                if(!e.error) setData(e.data[0]);
             });
     }, [])
     
@@ -57,18 +57,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
 
                     </div>
 
-                    <div className={styles.userComponent}>
-                        <p>
-                            {
-                                data?.username
-                            }
-                        </p>
-                        <div onClick={() => {
-                            client.auth.signOut();
-                        }}>
-                            <LogOut size={13} color={"var(--text-color)"}/>
-                        </div>
-                    </div>
+                    <UserComponent user={data}/>
                 </div>
 
                 <div className={styles.projectView}>
@@ -87,7 +76,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     else 
         return (
             <div>
-                loading thingy
+                <p><i>transcribe</i></p>
             </div>
         )
 }

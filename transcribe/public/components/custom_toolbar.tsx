@@ -55,7 +55,7 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
             </div> */}
 
             <div>
-                <button className="ql-page-break"></button>
+                {/* <button className="ql-page-break"></button> */}
             </div>
 
             <button className="ql-clean"></button>

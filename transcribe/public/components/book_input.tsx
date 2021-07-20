@@ -1,12 +1,12 @@
 import { TextareaHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
 import styles from '../../styles/Home.module.css'
-import { Chapter } from "../@types/book";
+// import { Chapter } from "../@types/book";
 import BookContext from "../@types/book_context";
 import BookParagraph from "./book_paragraph";
 
 import _ from 'underscore'
 
-const BookInput: React.FC<{ value: Chapter, chapter: number }> = ({ value, chapter }) => {
+const BookInput: React.FC<{ value: any, chapter: number }> = ({ value, chapter }) => {
     const { book, callback } = useContext(BookContext);
     const [ chapterState, setChapterState ] = useState(value);
 

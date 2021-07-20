@@ -1,9 +1,9 @@
 import { TextareaHTMLAttributes, useContext, useRef, useState } from "react";
 import styles from '../../styles/Home.module.css'
-import { Paragraph } from "../@types/book";
+// import { Paragraph } from "../@types/book";
 import BookContext from "../@types/book_context";
 
-const BookParagraph: React.FC<{ paragraph: number, content: Paragraph, callback: Function }> = ({ paragraph, content, callback }) => {
+const BookParagraph: React.FC<{ paragraph: number, content: any, callback: Function }> = ({ paragraph, content, callback }) => {
     const input_field = useRef(null);
     
     const [ height, setHeight ] = useState(input_field?.current?.scrollHeight);

@@ -7,7 +7,7 @@ const Header: React.FC<{ }> = ({ }) => {
     return (
         <div className={styles.logo}>
             <p onClick={() => {
-                router.push('./');
+                router.push('/');
             }}>transcribe</p> 
             <h4>beta</h4>
         </div>

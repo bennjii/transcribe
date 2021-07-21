@@ -130,8 +130,15 @@
   flex-direction: row !important;
   justify-content: space-between;
   align-items: center;
+  border: none;
+  
+  gap: .7rem;
+  border: none !important;
+}
 
-  border-top: 1px solid var(--border-color);
+.toolbarHidden {
+  height: 0px !important;
+  overflow: hidden;
 }
 
 .toolbar svg {
@@ -319,7 +326,7 @@
 .book {
   display: grid;
 
-  grid-template-rows: 61.38px 1fr;
+  grid-template-rows: 38px 1fr;
   grid-template-columns: 100%;
 
   height: 100vh;
@@ -563,18 +570,17 @@
 }
 
 .bookCaptionBar {
-  height: 35px;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: .5rem;
+  height: 38px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  grid-gap: .5rem;
+  /* gap: .5rem; */
   padding: 0 1rem;
-
-  z-index: 500;
+  z-index: 1;
+  -webkit-box-shadow: 0px 0px 15px 2px #444a501f;
   box-shadow: 0px 0px 15px 2px #444a501f;
 }
 
@@ -592,8 +598,9 @@
 }
 
 .fixedPageSpec {
-  display: grid !important;
+  /* display: grid !important; */
   width: auto;
+  justify-content: center;
 
   grid-template-columns: auto auto auto;
 }
@@ -608,12 +615,13 @@
   cursor: pointer;
 }
 
-.book {
+/* .book {
   grid-template-rows: 35px 1fr;
-}
+} */
 
 .export {
   cursor: pointer;
+  justify-content: center;
 }
 
 .projectView {

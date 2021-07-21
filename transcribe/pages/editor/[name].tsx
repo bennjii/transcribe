@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Folder, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Settings } from 'react-feather'
 
 import Book from '@components/book';
 import BookChapter from '@components/book_chapter';
@@ -15,12 +15,13 @@ import { useEffect } from 'react';
 import { supabase } from '@root/client';
 import { useState } from 'react';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { Project } from '@public/@types/project';
+import { File, Folder, Project } from '@public/@types/project';
 import FileStructure from '@components/file_structure';
 import ProjectContext from '@public/@types/project_context';
 import FileComponent from '@components/file_component';
 
 import { recursivelyIdentify } from '@public/@types/project'
+import Editor from '@components/editor';
 
 export const getStaticPaths: GetStaticPaths = async (a) => {
     const projects = await supabase
@@ -59,14 +60,14 @@ export const getStaticProps: GetStaticProps = async (
 
 export default function Home({ project }) {
     const [ projectState, setProjectState ] = useState<Project>(project);
-	const [ activeEditor, setActiveEditor ] = useState(null);
+	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(null);
 	const [ user, setUser ] = useState(null);
 
 	useEffect(() => {
 		// find id and set them to active editors...
-		if (!activeEditor) setActiveEditor(recursivelyIdentify(projectState));
-		else if(activeEditor.id !== projectState.active_file && activeEditor) setActiveEditor(recursivelyIdentify(projectState));
-	}, [projectState])
+		if (!activeEditor) recursivelyIdentify(projectState, setActiveEditor);
+		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
+	}, [, projectState.active_file])
 
 	useEffect(() => {
         supabase
@@ -108,7 +109,7 @@ export default function Home({ project }) {
 	};
 
 	return (
-		<ProjectContext.Provider value={{ project: projectState, callback: setProjectState }}>
+		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor }}>
 			<div className={styles.container}>
 				<Head>
 					<title>Wintersteel</title>
@@ -219,8 +220,6 @@ export default function Home({ project }) {
 
 					<div>
 						<Book content={local_book ?? book}/>
-
-						{/* <Book content={local_book ?? book}/> */}
 					</div>
 					
 				</div>

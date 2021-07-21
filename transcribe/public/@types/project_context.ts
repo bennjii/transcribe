@@ -1,10 +1,12 @@
 import { createContext } from "react";
 import { Book } from "./book";
-import { Project } from "./project";
+import { File, Folder, Project } from "./project";
 
 const ProjectContext = createContext<{ 
     project: Project,
-    callback: Function
+    projectCallback: Function,
+    editor: File | Folder,
+    editorCallback: Function
 }>(null);
 
 export default ProjectContext

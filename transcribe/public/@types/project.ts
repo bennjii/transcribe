@@ -10,7 +10,6 @@ export type Project = {
     // Parent Folder
     file_structure: Folder,
 
-
     // Current
     active_file: EmbeddedString
 }
@@ -20,6 +19,8 @@ export type EmbeddedString = string;
 export type File = {
     name: string,
     is_folder: false,
+
+    title_format: any
 
     // Is eaither a document (straight words) or a vision board (creative ideas) or an artifact which can be 
     // thought of as a dictionary for ideas that is refrenceable through the documents.
@@ -37,24 +38,26 @@ export type Folder = {
     name: string,
     id: string,
 
+    type: "folder" | "book",
+
     // Is a parent
     is_folder: true,
     children?: (File | Folder)[],
+    active_sub_file: string
 }
 
-export const recursivelyIdentify = (state: Project) => {
-    const ID = state.active_file;
-
-    console.log(reccursion(state.file_structure, ID));
-
-    if(state.file_structure.id == ID) return state.file_structure;
-    else return reccursion(state.file_structure, ID)
+export const recursivelyIdentify = (state: Project, editorCallback: Function) => {
+    if(state.file_structure.id == state.active_file) return state.file_structure;
+    else return reccursion(state.file_structure, state, editorCallback)
 } 
 
-const reccursion = (element, id) => {
+const reccursion = (element, state: Project, editorCallback: Function) => {
     return element?.children?.forEach(element => {
-        console.log(element);
-        if(element.id == id) return element;
-        else return reccursion(element, id);
+        if(element.id == state.active_file) { 
+            editorCallback(element);
+        }
+
+        if(element.id == state.active_file) return;
+        else return reccursion(element, state, editorCallback);
     });
 }

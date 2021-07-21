@@ -7,9 +7,15 @@ import { saveAs } from 'file-saver';
 
 import BookContext from "../@types/book_context";
 import BookChapter from "./book_chapter";
+import { useContext } from "react";
+import ProjectContext from "@public/@types/project_context";
+import Editor from "./editor";
+import { File } from "@public/@types/project";
 
 const Book: React.FC<{ content: BookType }> = ({ content }) => {
-    const [ bookState, setBookState ] = useState(content);
+    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+
+    const [ bookState, setBookState ] = useState(editor);
     const [ editorState, setEditorState ] = useState({
         words: 0,
         chars: 0,
@@ -22,20 +28,30 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
         let word_count = 0;
         let char_count = 0;
 
-        bookState.chapters.forEach(e => {
-            e.content.ops.forEach(_e => {
-                const string = _e.insert;
+        // if(bookState.children)
+        //     bookState?.children.forEach(e => {
+        //         e.data?.ops.forEach(_e => {
+        //             const string = _e.insert;
+                    
+        //             if(typeof string !== 'string') return;
+                    
+        //             if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
+        //             if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
+        //         })
+        //     });
+        // else
+        //     bookState.data.ops.forEach(_e => {
+        //         const string = _e.insert;
                 
-                if(typeof string !== 'string') return;
+        //         if(typeof string !== 'string') return;
                 
-                if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
-                if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
-            })
-        });
+        //         if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
+        //         if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
+        //     });
 
         setEditorState({ ...editorState, words: word_count, chars: char_count });
 
-        localStorage.setItem(`transcribe-editor_${'1'}`, JSON.stringify(bookState));
+        localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [bookState]);
 
     return (
@@ -48,7 +64,7 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                         <div>
                             <BookIcon size={18} color={"var(--acent-text-color)"} />
 
-                            <p>Prologue</p>
+                            <p>{editor?.name}</p>
                         </div>
 
                         <div className={styles.export} onClick={() => {
@@ -85,7 +101,6 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
 
                             <p>Download</p>
                         </div>
-                        
 
                         <div className={styles.fixedPageSpec}>
                             <Plus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level < 2.5 ? editorState.zoom_level + 0.1 : 2.5 })}/>
@@ -95,7 +110,7 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                             <Minus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level > 0.5 ? editorState.zoom_level - 0.1 : 0.5 })} />
                         </div>
 
-                        <div className={styles.fixedPageSpec}>
+                        <div className={styles.fixedPageSpec} style={{ justifyContent: "flex-end" }}>
                             <p><b>{editorState.pages}</b> Page</p>
                             <p><b>{editorState.words}</b> Words</p>
                             <p><b>{editorState.chars}</b> Characters</p>
@@ -103,12 +118,16 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
 
                         
                     </div>
-
-                    <div className={styles.pages} id={"Prologue"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
+                    
+                    <div className={styles.pages} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
                         {
-                            bookState.chapters.map((e, i: number) => {
-                                return <BookChapter key={`Chapter${i}BOOK-CHAPTER`} chapter={i} content={e} />
+                            editor?.type == "book"
+                            ?
+                            editor.children.map((chapter: File, index: number) => {
+                                return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
                             })
+                            :
+                            <Editor />
                         }
                     </div>
                 </div>

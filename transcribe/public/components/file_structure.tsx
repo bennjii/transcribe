@@ -6,18 +6,16 @@ import { Folder } from '@public/@types/project';
 import ProjectContext from '@public/@types/project_context';
 import { useContext } from 'react';
 import FileComponent from './file_component';
+import FolderComponent from './folder_component';
 
 const FileStructure: React.FC<{ current_folder: Folder }> = ({ current_folder }) => {
-    const { project, callback } = useContext(ProjectContext);
+    const { project, projectCallback } = useContext(ProjectContext);
 
     return (
         <div className={styles.folder}>
             {
                 current_folder.is_folder 
-                && <div className={styles.folderHeader}>
-                    <FolderIcon size={18} color={"var(--text-inactive)"}/>
-                    <p>{current_folder?.name}</p>
-                </div>
+                && <FolderComponent data={current_folder}/>
             }
 
             <div>

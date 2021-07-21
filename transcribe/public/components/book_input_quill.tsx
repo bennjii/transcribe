@@ -3,19 +3,34 @@ import 'react-quill/dist/quill.snow.css';
 import BookContext from "../@types/book_context";
 
 import _ from 'underscore'
+import ProjectContext from "@public/@types/project_context";
+import { File, Folder } from "@public/@types/project";
+import { validateLocaleAndSetLanguage } from "typescript";
 
-const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chapter }) => {
-    const { book, callback } = useContext(BookContext);
+const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, chapter }) => {
+    const { editor, editorCallback } = useContext(ProjectContext);
+
+    if(!value) return <></>;
+    else console.log(value);
+
     const input_ref = useRef();
 
-    const [ chapterState, setChapterState ] = useState(value.content); // Object Value
+    const [ chapterState, setChapterState ] = useState(value?.data); // Object Value
     const [ savedState, setSavedState ] = useState(null);
 
     useEffect(() => {
-        if(!savedState) return;
+        setChapterState(value?.data)
+    }, [value])
 
-        callback({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]})
-    }, [savedState])
+    // useEffect(() => {
+    //     if(editor.active_sub_file == value.id) input_ref.current.focus();
+    // }, [editor.active_sub_file])
+
+    // useEffect(() => {
+    //     if(!savedState) return;
+
+    //     callback({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]})
+    // }, [savedState])
 
     const handleChange = (raw_content) => {
         //@ts-expect-error
@@ -34,19 +49,6 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
     }
 
     if(!process.browser) return null;
-
-    var toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote'],                // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
-    
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      
-        [{ 'font': [] }],
-        [{ 'align': [] }],
-      
-        ['clean']                                         // remove formatting button
-      ];
 
     const ReactQuill = require('react-quill');
     const { Quill } = require('react-quill');
@@ -67,18 +69,19 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
             ref={input_ref}
             tabIndex={1}
             theme={"snow"}
-            defaultValue={chapterState} 
+            defaultValue={value?.data} 
+            placeholder={"Start Typing Here..."}
             onChange={handleChange}
             modules={{
                 // table: true, // npm i react-quill-with-table
-                toolbar: { container: '#toolbar' } 
+                toolbar: { container: `#toolbar-${value.id}` } 
                     // handlers: {
                     //     customBold: function(value) {
                     //         console.log(this.quill)
                     //         this.quill.formatText(this.quill.selection.savedRange.index, this.quill.selection.savedRange.length, 'bold', 'bold', '');
                     //      }
                     // }
-                ,
+                
             }}
             onBlur={(...args) => {
                 const selection = args[0];
@@ -93,7 +96,13 @@ const BookInputQuill: React.FC<{ value: any, chapter: number }> = ({ value, chap
                     console.log(input_ref.current.editor.selection)
                 }
             }}
-            scrollingContainer={`#Prologue`}
+            onFocus={() => {
+                //@ts-expect-error
+                if(editor.active_sub_file != value.id) {
+                    editorCallback({ ...editor, active_sub_file: value.id });
+                }
+            }}
+            scrollingContainer={`#EditorDocument`}
             />
     ) : null;
 }

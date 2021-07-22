@@ -67,7 +67,7 @@ export default function Home({ project }) {
 		// find id and set them to active editors...
 		if (!activeEditor) recursivelyIdentify(projectState, setActiveEditor);
 		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
-	}, [, projectState.active_file])
+	}, [])
 
 	useEffect(() => {
         supabase

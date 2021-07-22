@@ -52,12 +52,19 @@ export const recursivelyIdentify = (state: Project, editorCallback: Function) =>
 } 
 
 const reccursion = (element, state: Project, editorCallback: Function) => {
-    return element?.children?.forEach(element => {
-        if(element.id == state.active_file) { 
-            editorCallback(element);
+    return element?.children?.forEach(_element => {
+        if(_element.id == state.active_file) { 
+            // editorCallback(_element);
+            if(element.type == 'book') {
+                editorCallback({ ...element, active_sub_file: state.active_file });
+            }else {
+                editorCallback(_element);
+            }
+
+            return;
         }
 
-        if(element.id == state.active_file) return;
-        else return reccursion(element, state, editorCallback);
+        if(_element.id == state.active_file) return;
+        else return reccursion(_element, state, editorCallback);
     });
 }

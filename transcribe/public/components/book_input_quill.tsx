@@ -23,8 +23,8 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     }, [value])
 
     // useEffect(() => {
-    //     if(editor.active_sub_file == value.id) input_ref.current.focus();
-    // }, [editor.active_sub_file])
+    //     if(editor?.active_sub_file == value.id) input_ref.current.focus();
+    // }, [editor?.active_sub_file])
 
     // useEffect(() => {
     //     if(!savedState) return;

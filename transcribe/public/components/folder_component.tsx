@@ -13,7 +13,7 @@ const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
         <div className={`${editor?.id == data.id ? styles.openFolderHeader : styles.folderHeader}`} onClick={() => {
             if(data.type == 'book') { 
                 projectCallback({ ...project, active_file: data.id });
-                editorCallback({ ...data, active_sub_file: "1" });
+                editorCallback({ ...data, active_sub_file: data.children[0].id });
             }
             // editorCallback(data);
         }} draggable>

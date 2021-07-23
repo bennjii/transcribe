@@ -5,7 +5,6 @@ import BookContext from "../@types/book_context";
 import _ from 'underscore'
 import ProjectContext from "@public/@types/project_context";
 import { File, Folder } from "@public/@types/project";
-import { validateLocaleAndSetLanguage } from "typescript";
 
 const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, chapter }) => {
     const { editor, editorCallback } = useContext(ProjectContext);

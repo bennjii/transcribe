@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
+import { memo, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
 import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download } from "react-feather";
 
 import styles from '../../styles/Home.module.css'
@@ -10,7 +10,7 @@ import BookChapter from "./book_chapter";
 import { useContext } from "react";
 import ProjectContext from "@public/@types/project_context";
 import Editor from "./editor";
-import { File } from "@public/@types/project";
+import { File, Folder } from "@public/@types/project";
 
 const Book: React.FC<{ content: BookType }> = ({ content }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
@@ -53,6 +53,21 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [bookState]);
+
+    const MemoEditor = memo((props: any) => {
+        return (
+            props ?     
+                props?.type == "book" && props?.active_sub_file
+                ?
+                props?.children?.map((chapter: File, index: number) => {
+                    return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
+                })
+                :
+                <Editor />
+            :
+            <></>
+        )
+    })
 
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState }}>
@@ -115,15 +130,13 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
                             <p><b>{editorState.words}</b> Words</p>
                             <p><b>{editorState.chars}</b> Characters</p>
                         </div>
-
-                        
                     </div>
                     
                     <div className={styles.pages} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
-                        {
-                            editor?.type == "book"
+                        {  
+                            editor?.type == "book" && editor?.active_sub_file
                             ?
-                            editor.children.map((chapter: File, index: number) => {
+                            editor?.children?.map((chapter: File, index: number) => {
                                 return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
                             })
                             :

@@ -137,8 +137,9 @@
 }
 
 .toolbarHidden {
-  height: 0px !important;
-  overflow: hidden;
+  /* height: 0px !important;
+  overflow: hidden; */
+  display: none;
 }
 
 .toolbar svg {

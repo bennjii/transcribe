@@ -7,16 +7,18 @@ import styles from '@styles/Home.module.css'
 const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
     const { editor } = useContext(ProjectContext);
 
+    console.log('...redrawn...')
+
     return (
         <div 
             id={`toolbar-${id}`} 
             //@ts-expect-error
-            className={`${styles.toolbar} ${editor?.active_sub_file !== id && styles.toolbarHidden}`} 
+            className={`${styles.toolbar} ${(editor?.active_sub_file !== id && editor?.id !== id && id !== 'single') && styles.toolbarHidden} ql-toolbar ql-snow`} 
         >
             <select className="ql-font" onSelect={e => e.preventDefault()}>
-                <option value="arial" selected onClick={e => e.preventDefault()}>Arial</option>
+                <option value="arial" onClick={e => e.preventDefault()}>Arial</option>
                 <option value="pt-serif">PT Serif</option>
-                <option value="public-sans">Public Sans</option>
+                <option value="public-sans" selected>Public Sans</option>
             </select>
 
             <select className="ql-header">  
@@ -31,7 +33,7 @@ const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
                 <option value="16px">16px</option>
                 <option value="14px">14px</option>
                 <option value="13px" selected >13px</option>
-                <option value="12px">13px</option>
+                <option value="12px">12px</option>
             </select>
 
             <div>

@@ -13,7 +13,7 @@ const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
         <div 
             id={`toolbar-${id}`} 
             //@ts-expect-error
-            className={`${styles.toolbar} ${(editor?.active_sub_file !== id && editor?.id !== id && id !== 'single') && styles.toolbarHidden} ql-toolbar ql-snow`} 
+            className={`${styles.toolbar} ${(editor?.active_sub_file !== id && editor?.id !== id && id !== 'single') && styles.toolbarHidden} ql-toolbar ql-snow`}
         >
             <select className="ql-font" onSelect={e => e.preventDefault()}>
                 <option value="arial" onClick={e => e.preventDefault()}>Arial</option>

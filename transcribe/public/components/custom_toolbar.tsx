@@ -3,6 +3,9 @@ import { memo, useContext } from "react";
 import { Bold, Italic, Underline } from "react-feather";
 import RawToolbar from "./raw_toolbar";
 
+import 'react-quill/dist/quill.snow.css';
+import styles from '@styles/Home.module.css'
+
 const CustomToolbar: React.FC<{  }> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
@@ -11,21 +14,24 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
             <RawToolbar id={'single'} />
         )
 
-    const MemoisedToolbar = memo(props => (
+    return (
         <div>
             { 
                 editor?.children.map(e => {
                     return (
-                        <div key={`TOOLBAR-${e.id}`}>
-                            <RawToolbar id={e.id} />
-                        </div>
+                        <>
+                            <div 
+                                key={`TOOLBAR-${e.id}`}
+                                
+                            >    
+                                <RawToolbar id={e.id} />
+                            </div>
+                        </>
                     )
                 })
             }
         </div>
-    ));
-
-    return <MemoisedToolbar /> 
+    )
 }
 
 export default CustomToolbar;

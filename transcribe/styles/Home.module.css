@@ -513,8 +513,8 @@
 
   min-width: 480px;
   max-width: 480px;
-  /* max-height: 760px;
-  min-height: 760px; */
+  /* max-height: 760px; */
+  min-height: 760px; 
 
   font-family: "PT Serif";
 

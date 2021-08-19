@@ -10,12 +10,12 @@ import BookChapter from "./book_chapter";
 import { useContext } from "react";
 import ProjectContext from "@public/@types/project_context";
 import Editor from "./editor";
-import { File, Folder } from "@public/@types/project";
+import { File, Folder, Project } from "@public/@types/project";
 
-const Book: React.FC<{ content: BookType }> = ({ content }) => {
+const Book: React.FC<{ }> = ({  }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
-    const [ bookState, setBookState ] = useState(editor);
+    const [ bookState, setBookState ] = useState(null);
     const [ editorState, setEditorState ] = useState({
         words: 0,
         chars: 0,
@@ -25,20 +25,27 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
     });
     
     useEffect(() => {
+        setBookState(editor);
+    }, [editor]);
+
+    useEffect(() => {
         let word_count = 0;
         let char_count = 0;
 
-        // if(bookState.children)
-        //     bookState?.children.forEach(e => {
-        //         e.data?.ops.forEach(_e => {
-        //             const string = _e.insert;
+        if(bookState?.children) {
+            bookState?.children.forEach(e => {
+                console.log(e);
+                // e.data?.ops.forEach(_e => {
+                //     const string = _e.insert;
                     
-        //             if(typeof string !== 'string') return;
+                //     if(typeof string !== 'string') return;
                     
-        //             if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
-        //             if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
-        //         })
-        //     });
+                //     if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
+                //     if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
+                // })
+            });
+        }
+            
         // else
         //     bookState.data.ops.forEach(_e => {
         //         const string = _e.insert;
@@ -52,20 +59,20 @@ const Book: React.FC<{ content: BookType }> = ({ content }) => {
         setEditorState({ ...editorState, words: word_count, chars: char_count });
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
-    }, [bookState]);
+    }, [bookState])
 
     const MemoEditor = memo((props: any) => {
         return (
             props ?     
                 props?.type == "book" && props?.active_sub_file
                 ?
-                props?.children?.map((chapter: File, index: number) => {
-                    return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
-                })
+                    props?.children?.map((chapter: File, index: number) => {
+                        return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
+                    })
                 :
-                <Editor />
+                    <Editor />
             :
-            <></>
+                <></>
         )
     })
 

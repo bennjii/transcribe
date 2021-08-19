@@ -8,9 +8,9 @@ import { File, Folder } from "@public/@types/project";
 
 const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, chapter }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
+    const { book, callback } = useContext(BookContext);
 
     if(!value) return <></>;
-    else console.log(value);
 
     const input_ref = useRef();
 
@@ -21,16 +21,6 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
         setChapterState(value?.data)
     }, [value])
 
-    // useEffect(() => {
-    //     if(editor?.active_sub_file == value.id) input_ref.current.focus();
-    // }, [editor?.active_sub_file])
-
-    // useEffect(() => {
-    //     if(!savedState) return;
-
-    //     callback({ ...book, chapters: [ ...book.chapters.splice(0, chapter), { ...value, content: savedState }, ...book.chapters.splice(chapter+1, book.chapters.length) ]})
-    // }, [savedState])
-
     const handleChange = (raw_content) => {
         //@ts-expect-error
         setChapterState(input_ref?.current?.getEditor()?.editor?.delta);
@@ -39,12 +29,22 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
         
         //@ts-expect-error
         setSavedState(input_ref?.current?.getEditor()?.editor?.delta);
-        
-        // DOM Parser can be used to create final book object, which can be displayed in a reading mode
-        // before being printed or converted to PDF or Word Document (XML).
 
-        // However, by using https://www.npmjs.com/package/dom-to-json - we can bypass the use of a DOM
-        // And store the data as a steralized JSON format, better for data storage.
+        console.log(book.type)
+
+        
+
+        if(book.type == "book") {
+            const index = book.children.findIndex(e => e.id == value.id)
+
+            if(~index) {
+                callback({
+                    ...book,
+                    children: [...book.children.slice(0, index - 1), { ...value, data: chapterState } , ...book.children.slice(index - 1, book.children.length) ]
+                })
+            }
+        }
+        
     }
 
     if(!process.browser) return null;

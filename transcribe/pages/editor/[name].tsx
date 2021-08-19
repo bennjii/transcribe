@@ -83,31 +83,6 @@ export default function Home({ project }) {
             });
     }, [])
 
-	// Import this from a databse later - just for proof of concept.
-    const local_book = process.browser ? JSON.parse(localStorage.getItem(`transcribe-editor_${'1'}`)) : null;
-
-	const book = {
-		name: 'Wintersteel',
-		cover: 'http://...',
-		chapters: [
-			{
-				title: 'Chapter 1',
-				format: {
-					fontFamily: 'Bodoni Moda',
-					fontSize: '1.2rem'
-				},
-				// paragraphs...
-				content: {
-                    ops: [
-                        {
-                            insert: 'The Fallen Leaf School had several methods of contacting the other schools, and some of the Akura Golds had techniques or constructs intended to spy on far-off locations.'
-                        }
-                    ]
-                }
-			}
-		]
-	};
-
 	return (
 		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor }}>
 			<div className={styles.container}>
@@ -145,56 +120,6 @@ export default function Home({ project }) {
 									)
 								})
 							}
-							
-							
-							{/* <div className={styles.folder}>
-								<div className={styles.openFolderHeader}>
-									<ChevronDown size={18} color={"var(--acent-text-color)"} />
-									<p>Manuscript</p>
-								</div>
-
-								<div>
-									<div className={styles.openFile} draggable >
-										<BookIcon size={18} color={"var(--acent-text-color)"}/>
-
-										<p>Prologue</p>
-									</div>
-
-									<div className={styles.subFile} draggable>
-										<BookIcon size={18} color={"var(--text-color)"}/>
-
-										<p>Chapter 1</p>
-									</div>
-
-									<div className={styles.subFile} draggable>
-										<BookIcon size={18} color={"var(--text-color)"}/>
-
-										<p>Chapter 2/3</p>
-									</div>
-
-									<div className={styles.subFile} draggable>
-										<Edit3 size={18} color={"var(--text-color)"}/>
-
-										<p>Fight Scene 1</p>
-									</div>
-								</div> 
-							</div>
-
-							<div className={styles.folder}>
-								<div className={styles.folderHeader}>
-									<Folder size={18} color={"var(--text-inactive)"}/>
-									<p>Planning</p>
-								</div>
-								
-							</div>
-
-							<div className={styles.folder}>
-								<div className={styles.folderHeader}>
-									<Folder size={18} color={"var(--text-inactive)"}/>
-									<p>Research</p>
-								</div>
-							</div>  */}
-							
 						</div>
 						
 					</div>
@@ -219,7 +144,7 @@ export default function Home({ project }) {
 					</div>
 
 					<div>
-						<Book content={local_book ?? book}/>
+						<Book />
 					</div>
 					
 				</div>

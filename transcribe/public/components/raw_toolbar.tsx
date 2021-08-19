@@ -7,8 +7,6 @@ import styles from '@styles/Home.module.css'
 const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
     const { editor } = useContext(ProjectContext);
 
-    console.log('...redrawn...')
-
     return (
         <div 
             id={`toolbar-${id}`} 

@@ -39,10 +39,6 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
         //@ts-expect-error
         setSavedState(input_ref?.current?.getEditor()?.editor?.delta);
 
-        console.log(book.type)
-
-        
-
         if(book.type == "book") {
             const index = book.children.findIndex(e => e.id == value.id)
 
@@ -93,15 +89,15 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
             onBlur={(...args) => {
                 const selection = args[0];
                 
-                if(input_ref.current) {
-                    // This cant happen all the time, only when the focus is removed by elements in the toolbar.
+                // if(input_ref.current) {
+                //     // This cant happen all the time, only when the focus is removed by elements in the toolbar.
 
-                    console.log(input_ref.current);
-                    // input_ref.current.editor.selection.focus(); // Sets focus after blur
+                //     console.log(input_ref.current);
+                //     // input_ref.current.editor.selection.focus(); // Sets focus after blur
                     
-                    //@ts-ignore
-                    console.log(input_ref.current.editor.selection)
-                }
+                //     //@ts-ignore
+                //     console.log(input_ref.current.editor.selection)
+                // }
             }}
             onFocus={() => {
                 //@ts-expect-error

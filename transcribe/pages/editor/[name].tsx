@@ -11,7 +11,7 @@ import styles from '@styles/Home.module.css'
 
 import Header from '@components/header'
 import UserComponent from '@components/user_component';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { supabase } from '@root/client';
 import { useState } from 'react';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
@@ -22,6 +22,9 @@ import FileComponent from '@components/file_component';
 
 import { recursivelyIdentify } from '@public/@types/project'
 import Editor from '@components/editor';
+import debounce from '@public/@types/debounce';
+
+import _ from 'underscore'
 
 export const getStaticPaths: GetStaticPaths = async (a) => {
     const projects = await supabase
@@ -62,12 +65,32 @@ export default function Home({ project }) {
     const [ projectState, setProjectState ] = useState<Project>(project);
 	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(null);
 	const [ user, setUser ] = useState(null);
+	const [ synced, setSynced ] = useState(false);
 
 	useEffect(() => {
 		// find id and set them to active editors...
 		if (!activeEditor) recursivelyIdentify(projectState, setActiveEditor);
 		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
 	}, [])
+
+	const verif = useCallback(
+		_.debounce((state) => {
+			console.log(state);
+
+			supabase
+				.from('projects')
+				.update(state)
+				.match({ id: state.id })
+				.then(e => {
+					console.log(e);
+				});
+		}, 10000)
+		, []
+	);
+
+	useEffect(() => {
+		verif(projectState);
+	}, [projectState.file_structure])
 
 	useEffect(() => {
 		if(supabase.auth.user()) 
@@ -134,13 +157,23 @@ export default function Home({ project }) {
 						<div className={styles.bookToolTable}> 
 							<CustomToolbar />
 						</div>
-
+						
 						<div className={styles.syncStatus}>
-							Saved
+							{
+								synced ? 
+								<>
+									Saved
 
-							<div className={styles.syncTrue}>
+									<div className={styles.syncTrue}>
 
-							</div>
+									</div>
+								</>
+								:
+								<>
+									Unsaved
+								</>
+							}
+							
 						</div>
 					</div>
 

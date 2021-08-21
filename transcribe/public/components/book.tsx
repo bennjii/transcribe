@@ -62,7 +62,7 @@ const Book: React.FC<{ }> = ({  }) => {
 
         // Book has been updated! Let's propogate the changes up the tree, to the root project node.
         if(bookState) {
-            let updated_file = project.file_structure;
+            let updated_file = JSON.parse(JSON.stringify(project.file_structure));
 
             // Loop & Replace Relevancy
             const rec = (element, state: Project) => {

@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import styles from '@styles/Home.module.css'
 
 const CustomToolbar: React.FC<{  }> = ({ }) => {
-    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+    const { editor, editorCallback } = useContext(ProjectContext);
 
     if(!editor || !editor.is_folder)
         return (

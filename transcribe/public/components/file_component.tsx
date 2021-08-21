@@ -7,7 +7,7 @@ import styles from '@styles/Home.module.css'
 import { File, Project } from '@public/@types/project'
 
 const FileComponent: React.FC<{ data: File }> = ({ data }) => {
-    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+    const { project, editor, editorCallback } = useContext(ProjectContext);
 
     return (
         <div 

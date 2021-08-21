@@ -16,6 +16,15 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
 
     const [ chapterState, setChapterState ] = useState(value?.data); // Object Value
     const [ savedState, setSavedState ] = useState(null);
+    
+    useEffect(() => {
+        //@ts-expect-error
+        if(editor?.active_sub_file == value.id) {
+            //@ts-expect-error
+            input_ref.current?.focus();
+        }
+        //@ts-expect-error
+    }, [editor?.active_sub_file])
 
     useEffect(() => {
         setChapterState(value?.data)
@@ -40,7 +49,7 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
             if(~index) {
                 callback({
                     ...book,
-                    children: [...book.children.slice(0, index - 1), { ...value, data: chapterState } , ...book.children.slice(index - 1, book.children.length) ]
+                    children: [...book.children.slice(0, index), { ...value, data: chapterState } , ...book.children.slice(index + 1, book.children.length) ]
                 })
             }
         }
@@ -66,7 +75,6 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     return process.browser ? (
         <ReactQuill 
             ref={input_ref}
-            tabIndex={1}
             theme={"snow"}
             defaultValue={value?.data} 
             placeholder={"Start Typing Here..."}

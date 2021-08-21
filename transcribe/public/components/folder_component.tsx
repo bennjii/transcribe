@@ -12,6 +12,7 @@ const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
     return (
         <div className={`${editor?.id == data.id ? styles.openFolderHeader : styles.folderHeader}`} onClick={() => {
             if(data.type == 'book') { 
+                console.log("Heres the book, we are setting to relative to the project", project);
                 projectCallback({ ...project, active_file: data.id });
                 editorCallback({ ...data, active_sub_file: data.children[0].id });
             }

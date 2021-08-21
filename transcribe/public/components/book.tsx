@@ -15,7 +15,7 @@ import { File, Folder, Project } from "@public/@types/project";
 const Book: React.FC<{ }> = ({  }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
-    const [ bookState, setBookState ] = useState(null);
+    const [ bookState, setBookState ] = useState<File | Folder>(null);
     const [ editorState, setEditorState ] = useState({
         words: 0,
         chars: 0,
@@ -32,19 +32,22 @@ const Book: React.FC<{ }> = ({  }) => {
         let word_count = 0;
         let char_count = 0;
 
-        if(bookState?.children) {
-            bookState?.children.forEach(e => {
-                console.log(e);
-                // e.data?.ops.forEach(_e => {
-                //     const string = _e.insert;
+        setEditorState({ ...editorState, words: word_count, chars: char_count });
+
+        // Book has been updated, lets update the character and word counts.
+        // if(bookState?.children) {
+        //     bookState?.children.forEach(e => {
+        //         console.log(e.data)
+        //         // e.data?.ops.forEach(_e => {
+        //         //     const string = _e.insert;
                     
-                //     if(typeof string !== 'string') return;
+        //         //     if(typeof string !== 'string') return;
                     
-                //     if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
-                //     if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
-                // })
-            });
-        }
+        //         //     if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
+        //         //     if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
+        //         // })
+        //     });
+        // }
             
         // else
         //     bookState.data.ops.forEach(_e => {
@@ -56,7 +59,29 @@ const Book: React.FC<{ }> = ({  }) => {
         //         if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
         //     });
 
-        setEditorState({ ...editorState, words: word_count, chars: char_count });
+
+        // Book has been updated! Let's propogate the changes up the tree, to the root project node.
+        if(bookState) {
+            let updated_file = project.file_structure;
+
+            // Loop & Replace Relevancy
+            const rec = (element, state: Project) => {
+                return element?.children?.forEach((_element, i) => {
+                    if(_element.id == bookState.id) element.children[i] = bookState;
+            
+                    if(_element.id == bookState.id) return;
+                    else return rec(_element, state);
+                });
+            }
+
+            rec(updated_file, project);
+    
+            // Propogate Changes!
+            projectCallback({
+                ...project,
+                file_structure: updated_file
+            })
+        }
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [bookState])

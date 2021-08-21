@@ -70,17 +70,18 @@ export default function Home({ project }) {
 	}, [])
 
 	useEffect(() => {
-        supabase
-            .from('users')
-            .select(`
-                id,
-                username,
-                creation_date
-            `)
-            .eq('id', supabase.auth.user().id)
-            .then(e => {                
-                setUser({ ...e.data[0] });
-            });
+		if(supabase.auth.user()) 
+			supabase
+				.from('users')
+				.select(`
+					id,
+					username,
+					creation_date
+				`)
+				.eq('id', supabase.auth.user().id)
+				.then(e => {                
+					setUser({ ...e.data[0] });
+				});
     }, [])
 
 	return (

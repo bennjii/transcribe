@@ -14,9 +14,9 @@ const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
             className={`${styles.toolbar} ${(editor?.active_sub_file !== id && editor?.id !== id && id !== 'single') && styles.toolbarHidden} ql-toolbar ql-snow`}
         >
             <select className="ql-font" onSelect={e => e.preventDefault()}>
-                <option value="arial" onClick={e => e.preventDefault()}>Arial</option>
+                <option value="arial" onClick={e => e.preventDefault()} selected>Arial</option>
                 <option value="pt-serif">PT Serif</option>
-                <option value="public-sans" selected>Public Sans</option>
+                <option value="public-sans" >Public Sans</option>
             </select>
 
             <select className="ql-header">  

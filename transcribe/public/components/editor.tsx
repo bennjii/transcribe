@@ -9,7 +9,7 @@ import { File } from "@public/@types/project";
 import styles from '@styles/Home.module.css'
 
 const Editor: React.FC<{ }> = ({ }) => {
-    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+    const { editor, editorCallback } = useContext(ProjectContext);
 
     const input_ref = useRef();
 

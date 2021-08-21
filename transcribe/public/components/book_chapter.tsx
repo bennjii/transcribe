@@ -10,7 +10,7 @@ const BookChapter: React.FC<{ chapter: number, content: File }> = ({ chapter, co
     const input_field = useRef(null);
     const [ chapterValue, setChapterValue ] = useState(content);
 
-    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+    const { editor, editorCallback } = useContext(ProjectContext);
 
     return (
         <div className={styles.page}>

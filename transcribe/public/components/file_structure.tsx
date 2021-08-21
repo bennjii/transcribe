@@ -9,8 +9,6 @@ import FileComponent from './file_component';
 import FolderComponent from './folder_component';
 
 const FileStructure: React.FC<{ current_folder: Folder }> = ({ current_folder }) => {
-    const { project, projectCallback } = useContext(ProjectContext);
-
     return (
         <div className={styles.folder}>
             {

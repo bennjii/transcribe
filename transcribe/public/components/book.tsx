@@ -11,6 +11,10 @@ import { useContext } from "react";
 import ProjectContext from "@public/@types/project_context";
 import Editor from "./editor";
 import { File, Folder, Project } from "@public/@types/project";
+import ReactQuill, { Quill } from "react-quill";
+
+import Delta from 'quill-delta'
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
 const Book: React.FC<{ }> = ({  }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
@@ -29,10 +33,7 @@ const Book: React.FC<{ }> = ({  }) => {
     }, [editor]);
 
     useEffect(() => {
-        let word_count = 0;
-        let char_count = 0;
-
-        setEditorState({ ...editorState, words: word_count, chars: char_count });
+        
 
         // Book has been updated, lets update the character and word counts.
         // if(bookState?.children) {
@@ -82,6 +83,29 @@ const Book: React.FC<{ }> = ({  }) => {
                 file_structure: updated_file
             })
         }
+
+        let word_count = 0;
+        let char_count = 0;
+
+        // For Exporting, Concatonate all deltas with a splicing intermediary.
+        // https://github.com/quilljs/delta/#concat
+
+        //@ts-expect-error
+        if(bookState?.children) {
+            //@ts-expect-error
+            bookState.children.forEach(element => {
+                if(element.data) {
+                    const html = new QuillDeltaToHtmlConverter(element.data.ops, {}).convert();
+
+                    console.log(html);
+
+                    word_count += (html?.trim().match(/(\w+[^>\s])/g) || []).length;
+                    char_count += (html?.trim().match(/\S/g) || []).length;
+                }
+            });
+        }
+
+        setEditorState({ ...editorState, words: word_count, chars: char_count });
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [bookState])

@@ -202,6 +202,11 @@
   dependencies:
     "@types/node" "*"
 
+"@yaireo/relative-time@^1.0.1":
+  "integrity" "sha512-18Q2wOQiDVwTWtJGNZHi3ec+9gO1YFbExnpGzCXg/R0OHdUH9/HwSDHWFthFuRPhpWdo9QO0l0shj1REHcnumA=="
+  "resolved" "https://registry.npmjs.org/@yaireo/relative-time/-/relative-time-1.0.1.tgz"
+  "version" "1.0.1"
+
 "ajv@^6.12.3":
   "integrity" "sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g=="
   "resolved" "https://registry.npmjs.org/ajv/-/ajv-6.12.6.tgz"
@@ -1586,6 +1591,11 @@
   "resolved" "https://registry.npmjs.org/fast-diff/-/fast-diff-1.1.2.tgz"
   "version" "1.1.2"
 
+"fast-diff@1.2.0":
+  "integrity" "sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w=="
+  "resolved" "https://registry.npmjs.org/fast-diff/-/fast-diff-1.2.0.tgz"
+  "version" "1.2.0"
+
 "fast-json-stable-stringify@^2.0.0":
   "integrity" "sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw=="
   "resolved" "https://registry.npmjs.org/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz"
@@ -2213,6 +2223,11 @@
   "integrity" "sha1-euMBfpOWIqwxt9fX3LGzTbFpDTU="
   "resolved" "https://registry.npmjs.org/lodash.bind/-/lodash.bind-4.2.1.tgz"
   "version" "4.2.1"
+
+"lodash.clonedeep@^4.5.0":
+  "integrity" "sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8="
+  "resolved" "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz"
+  "version" "4.5.0"
 
 "lodash.defaults@^4.0.1", "lodash.defaults@^4.2.0":
   "integrity" "sha1-0JF4cW/+pN3p5ft7N/bwgCJ0WAw="
@@ -2853,6 +2868,15 @@
     "deep-equal" "^1.0.1"
     "extend" "^3.0.2"
     "fast-diff" "1.1.2"
+
+"quill-delta@^4.2.2":
+  "integrity" "sha512-qjbn82b/yJzOjstBgkhtBjN2TNK+ZHP/BgUQO+j6bRhWQQdmj2lH6hXG7+nwwLF41Xgn//7/83lxs9n2BkTtTg=="
+  "resolved" "https://registry.npmjs.org/quill-delta/-/quill-delta-4.2.2.tgz"
+  "version" "4.2.2"
+  dependencies:
+    "fast-diff" "1.2.0"
+    "lodash.clonedeep" "^4.5.0"
+    "lodash.isequal" "^4.5.0"
 
 "quill-to-pdf@^1.0.7":
   "integrity" "sha512-aHB4m7r9Vb0da2JldFSMGge2Sa8oUYFBMxXl0Ne/p9O33Xav+jkqKsE6yYLfw+3BLtKwqJyEUv9bzYvmvU746w=="

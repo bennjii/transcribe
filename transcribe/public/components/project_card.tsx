@@ -1,6 +1,6 @@
 import { File, MessageSquare } from 'react-feather'
 import styles from '../../styles/Home.module.css'
-
+import RelativeTime from '@yaireo/relative-time'
 import Link from 'next/link'
 
 const ProjectCard: React.FC<{ content: any }> = ({ content }) => {
@@ -30,9 +30,7 @@ const ProjectCard: React.FC<{ content: any }> = ({ content }) => {
                 </div>
 
                 <div>
-                    Last Edited: {
-                        Math.round((new Date().getTime() - new Date(content.last_edited).getTime()) / 1000 / 60 / 60)
-                    } Hours ago
+                    Last Edited: { new RelativeTime().from(new Date(content.last_edited)) }
                 </div>
             </div>
         </Link>

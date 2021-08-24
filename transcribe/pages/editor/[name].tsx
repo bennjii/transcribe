@@ -75,20 +75,23 @@ export default function Home({ project }) {
 
 	const verif = useCallback(
 		_.debounce((state) => {
-			console.log(state);
-
 			supabase
 				.from('projects')
-				.update(state)
+				.update({
+					...state,
+					last_edited: new Date() 
+				})
 				.match({ id: state.id })
 				.then(e => {
-					console.log(e);
+					if(e.data) setSynced(true);
+					else setSynced(false);
 				});
-		}, 10000)
+		}, 200)
 		, []
 	);
 
 	useEffect(() => {
+		setSynced(false);
 		verif(projectState);
 	}, [projectState.file_structure])
 

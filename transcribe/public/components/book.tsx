@@ -108,7 +108,7 @@ const Book: React.FC<{ }> = ({  }) => {
         setEditorState({ ...editorState, words: word_count, chars: char_count });
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
-    }, [bookState])
+    }, [, bookState])
 
     const MemoEditor = memo((props: any) => {
         return (

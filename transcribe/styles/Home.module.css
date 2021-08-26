@@ -658,14 +658,6 @@
   margin: 0;
 }
 
-.headerIntermediary {
-  display: flex;
-  flex-direction: column;
-
-  flex: 1 1;
-  background-color: rgba(156, 143, 188, 0.055);
-}
-
 .projectCard {
   border: 1px solid var(--border-color);
 
@@ -734,4 +726,40 @@
   font-size: 1.6rem;
 
   color: var(--white-pure);
+}
+
+.headerIntermediary {
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem !important;
+
+  gap: .8rem;
+
+  flex: 1 1;
+  background-color: rgba(156, 143, 188, 0.055);
+
+  font-family: 'Public Sans';
+}
+
+.navItem {
+  display: flex;
+  flex-direction: row;
+
+  /* justify-content: space-between; */
+  align-items: center;
+
+  font-size: .95rem;
+  gap: 1rem;
+
+  padding: .8rem 1rem;
+  border-radius: 5px;
+
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.navActive {
+  background-color: var(--acent-bg-color);
+  color: var(--acent-text-color);
 }

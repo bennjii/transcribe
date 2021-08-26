@@ -25,8 +25,11 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
 
     const handleChange = (raw_content) => {
         //@ts-expect-error
-        console.log(input_ref?.current?.getEditor()?.editor?.delta);
-
+        if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
+        
+        //@ts-expect-error
+        console.log(`It appears a change has occured in the editor... ${raw_content}`, input_ref?.current?.getEditor()?.editor?.delta);
+    
         //@ts-expect-error
         value.data = input_ref?.current?.getEditor()?.editor?.delta;
 
@@ -35,7 +38,7 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
             callback({
                 ...book
             });
-            
+
             // const index = book.children.findIndex(e => e.id == value.id);
 
             // console.log(book);

@@ -47,15 +47,17 @@ export const getStaticProps: GetStaticProps = async (
   ) => {
     const INDEX = context.params.name;
 
+	const project = await supabase
+		.from('projects')
+		.select()
+		.eq('id', INDEX)
+		.then(e => {
+			return e.data[0];
+		});
+
     return {
         props: {
-            project: await supabase
-                        .from('projects')
-                        .select()
-                        .eq('id', INDEX)
-                        .then(e => {
-                            return e.data[0];
-                        }),
+            project: project,
             index: INDEX
         }
     }
@@ -75,6 +77,8 @@ export default function Home({ project }) {
 
 	const verif = useCallback(
 		_.debounce((state) => {
+			alert('Synced.');
+
 			supabase
 				.from('projects')
 				.update({

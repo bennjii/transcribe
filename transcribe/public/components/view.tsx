@@ -4,15 +4,19 @@ import { createContext, useEffect, useState } from 'react'
 import Button from '@components/button'
 
 import Head from 'next/head'
-import { LogOut } from 'react-feather'
+import { Bookmark, Home, List, LogOut, Rss } from 'react-feather'
 import { skipPartiallyEmittedExpressions } from 'typescript'
 import Header from './header'
 import ProjectCard from './project_card'
 import UserComponent from './user_component'
+import NavItem from './nav_item'
+import HomeContext from '@public/@types/home_context'
+import Viewer from './view_viewer'
 
 const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     const [ data, setData ] = useState(null);
-    
+    const [ activePage, setActivePage ] = useState('home-page');
+
     useEffect(() => {
         const userListener = client
             .from(`users:id=eq.${client.auth.user().id}`) // :id=eq.${client.auth.user().id}
@@ -44,34 +48,32 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     
     if(data)
         return (
-            <div className={styles.container}>
-                <Head>
-                    <title>transcribe</title>
-                    <meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
-                </Head>
-                
-                <div className={styles.header}>
-                    <Header />
+            <HomeContext.Provider value={{ page: activePage, pageCallback: setActivePage, info: data, __infoCallback: setData }}>
+                <div className={styles.container}>
+                    <Head>
+                        <title>transcribe</title>
+                        <meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
+                    </Head>
+                    
+                    <div className={styles.header}>
+                        <Header />
 
-                    <div className={styles.headerIntermediary}>
+                        <div className={styles.headerIntermediary}>
+                            <NavItem name={"Home"} link={"home-page"} icon={<Home size={18} />}/>
 
+                            <NavItem name={"Projects"} link={"projects-page"} icon={<List size={18} />}/>
+
+                            <NavItem name={"Resources"} link={"resources-page"} icon={<Bookmark size={18} />}/>
+
+                            <NavItem name={"Releases"} link={"releases-page"} icon={<Rss size={18} /> }/>
+                        </div>
+
+                        <UserComponent user={data}/>
                     </div>
 
-                    <UserComponent user={data}/>
-                </div>
-
-                <div className={styles.projectView}>
-                    <h1>Your Projects</h1>
-
-                    <div>
-                        {
-                            data?.projects?.map(e => {
-                                return <ProjectCard content={e} key={`Card-${e.name}`}/>
-                            })
-                        }
-                    </div>
-                </div>
-            </div>        
+                    <Viewer />
+                </div>   
+            </HomeContext.Provider>     
         )
     else 
         return (

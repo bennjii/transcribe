@@ -91,9 +91,9 @@ const Book: React.FC<{ }> = ({  }) => {
         // https://github.com/quilljs/delta/#concat
 
         //@ts-expect-error
-        if(bookState?.children) {
+        if(editor?.children) {
             //@ts-expect-error
-            bookState.children.forEach(element => {
+            editor.children.forEach(element => {
                 if(element.data) {
                     const html = new QuillDeltaToHtmlConverter(element.data.ops, {}).convert();
 

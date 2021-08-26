@@ -13,8 +13,7 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     if(!value) return <></>;
 
     const input_ref = useRef();
-    const [ chapterState, setChapterState ] = useState(value?.data); // Object Value
-    
+
     useEffect(() => {
         //@ts-expect-error
         if(editor?.active_sub_file == value.id) {
@@ -24,27 +23,30 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
         //@ts-expect-error
     }, [editor?.active_sub_file])
 
-    useEffect(() => {
-        // setChapterState(value?.data)
-    }, [value])
-
     const handleChange = (raw_content) => {
         //@ts-expect-error
-        value.data = input_ref?.current?.getEditor()?.editor?.delta;
-        
+        console.log(input_ref?.current?.getEditor()?.editor?.delta);
+
         //@ts-expect-error
-        setChapterState(input_ref?.current?.getEditor()?.editor?.delta);
+        value.data = input_ref?.current?.getEditor()?.editor?.delta;
 
         if(book?.type == "book") {
-            const index = book.children.findIndex(e => e.id == value.id)
+            // console.log(book);
+            callback({
+                ...book
+            });
+            
+            // const index = book.children.findIndex(e => e.id == value.id);
 
-            if(~index) {
-                callback({
-                    ...book,
-                    //@ts-expect-error
-                    children: [...book.children.slice(0, index), { ...value, data: input_ref?.current?.getEditor()?.editor?.delta } , ...book.children.slice(index + 1, book.children.length) ]
-                })
-            }
+            // console.log(book);
+
+            // if(~index) {
+            //     callback({
+            //         ...book,
+            //         //@ts-expect-error
+            //         children: [...book.children.slice(0, index), { ...value, data: input_ref?.current?.getEditor()?.editor?.delta } , ...book.children.slice(index + 1, book.children.length) ]
+            //     })
+            // }
         }
     }
 

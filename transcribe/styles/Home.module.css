@@ -335,7 +335,8 @@
 }
 
 .pages {
-  background-color: var(--acent-page-bg);
+  /* background-color: var(--acent-page-bg); */
+  background-color: rgb(248, 249, 250);
   height: 100%;
   width: 100%;
 
@@ -352,7 +353,7 @@
   position: relative;
   
   /* Default Zoom of 150% */
-  zoom: 150%;
+  zoom: 150%; 
 }
 
 .bookOverTools {
@@ -503,12 +504,11 @@
   background-color: var(--white-pure);
   /* border: 1px solid #ededef; */
 
-  border-radius: 5px;
+  /* border-radius: 5px; */
   padding: 1rem 2rem;
   /* padding-bottom: 62.5%; */
 
   aspect-ratio: 5 8;
-
   /* Pixel perfect - Lachie West */
 
   min-width: 480px;
@@ -518,7 +518,8 @@
 
   font-family: "PT Serif";
 
-  box-shadow: 2px 0px 16px var(--acent-shadow-color);
+  /* box-shadow: 2px 0px 16px var(--acent-shadow-color); */
+  box-shadow: rgb(60 64 67 / 15%) 0px 1px 3px 1px;
 }
 
 .book p {
@@ -575,14 +576,16 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  /* align-items: center; */
-  /* justify-content: space-between; */
+
   grid-gap: .5rem;
   /* gap: .5rem; */
   padding: 0 1rem;
   z-index: 1;
-  -webkit-box-shadow: 0px 0px 15px 2px #444a501f;
-  box-shadow: 0px 0px 15px 2px #444a501f;
+  
+  /*-webkit-box-shadow: 0px 0px 15px 2px #444a501f;
+  box-shadow: 0px 0px 15px 2px #444a501f; */
+
+  box-shadow: rgb(60 64 67 / 15%) 0px 1px 3px 1px;
 }
 
 .bookCaptionBar > div {

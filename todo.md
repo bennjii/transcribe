@@ -16,7 +16,7 @@ IP  Add Custom Toolbar
         - Retrieval w/ 100% conversion (0% loss) ✓
 
     Add Tab Functionality 
-        - Indent Page, etc...
+        - Indent Page, etc... ✓
 
     Optimise Rendering for Per-Chapter
         _A: Create Paginated Rendering for Chapters with Seemless Transitioning.

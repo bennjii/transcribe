@@ -77,8 +77,6 @@ export default function Home({ project }) {
 
 	const verif = useCallback(
 		_.debounce((state) => {
-			alert('Synced.');
-
 			supabase
 				.from('projects')
 				.update({

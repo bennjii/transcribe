@@ -33,24 +33,9 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
         //@ts-expect-error
         value.data = input_ref?.current?.getEditor()?.editor?.delta;
 
-        if(book?.type == "book") {
-            // console.log(book);
-            callback({
-                ...book
-            });
-
-            // const index = book.children.findIndex(e => e.id == value.id);
-
-            // console.log(book);
-
-            // if(~index) {
-            //     callback({
-            //         ...book,
-            //         //@ts-expect-error
-            //         children: [...book.children.slice(0, index), { ...value, data: input_ref?.current?.getEditor()?.editor?.delta } , ...book.children.slice(index + 1, book.children.length) ]
-            //     })
-            // }
-        }
+        callback({
+            ...book
+        });
     }
 
     if(!process.browser) return null;
@@ -60,12 +45,12 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     
     if(process.browser) {
         const Font = ReactQuill.Quill.import('formats/font');
-        Font.whitelist = ['pt-serif', 'public-sans', 'arial']
+        Font.whitelist = ['pt-serif', 'public-sans', 'arial', 'times-new-roman']
 
         ReactQuill.Quill.register(Font, true);
 
         const Size = ReactQuill.Quill.import('attributors/style/size');
-        Size.whitelist = ['12px', '14px', '16px', '18px'];
+        Size.whitelist = ['11px', '12px', '13px', '14px', '16px', '18px'];
         ReactQuill.Quill.register(Size, true);
     }
 

@@ -15,8 +15,9 @@ import ReactQuill, { Quill } from "react-quill";
 
 import Delta from 'quill-delta'
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import jsPDF from "jspdf";
 
-const Book: React.FC<{ }> = ({  }) => {
+const Book: React.FC<{}> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     const [ bookState, setBookState ] = useState<File | Folder>(null);
@@ -33,34 +34,6 @@ const Book: React.FC<{ }> = ({  }) => {
     }, [editor]);
 
     useEffect(() => {
-        
-
-        // Book has been updated, lets update the character and word counts.
-        // if(bookState?.children) {
-        //     bookState?.children.forEach(e => {
-        //         console.log(e.data)
-        //         // e.data?.ops.forEach(_e => {
-        //         //     const string = _e.insert;
-                    
-        //         //     if(typeof string !== 'string') return;
-                    
-        //         //     if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
-        //         //     if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
-        //         // })
-        //     });
-        // }
-            
-        // else
-        //     bookState.data.ops.forEach(_e => {
-        //         const string = _e.insert;
-                
-        //         if(typeof string !== 'string') return;
-                
-        //         if(e.content) word_count += (string?.trim().match(/\S+/g) || []).length
-        //         if(e.content) char_count += (string?.trim().match(/\S/g) || []).length
-        //     });
-
-
         // Book has been updated! Let's propogate the changes up the tree, to the root project node.
         if(bookState) {
             let updated_file = JSON.parse(JSON.stringify(project.file_structure));
@@ -110,21 +83,6 @@ const Book: React.FC<{ }> = ({  }) => {
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [, bookState])
 
-    const MemoEditor = memo((props: any) => {
-        return (
-            props ?     
-                props?.type == "book" && props?.active_sub_file
-                ?
-                    props?.children?.map((chapter: File, index: number) => {
-                        return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
-                    })
-                :
-                    <Editor />
-            :
-                <></>
-        )
-    })
-
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState }}>
             <div className={styles.editorContent}>
@@ -138,34 +96,56 @@ const Book: React.FC<{ }> = ({  }) => {
                             <p>{editor?.name}</p>
                         </div>
 
-                        <div className={styles.export} onClick={() => {
-                                // var QuillDeltaToHtmlConverter = require('quill-delta-to-html').QuillDeltaToHtmlConverter;
-                                
-                                // const { pdfExporter } = require('quill-to-pdf');
-                                // const Epub = require("epub-gen");
+                        <div className={styles.export} onClick={async () => {
+                                console.log(bookState);
 
-                                // const htmlBookState = { ...bookState };
+                                //@ts-expect-error                                
+                                if(bookState?.children) {
+                                    const pdfExporter = require('quill-to-pdf').pdfExporter;
+                                    const doc = new jsPDF({
+                                        orientation: 'portrait',
+                                    });
 
-                                // bookState.chapters.forEach(async (e, i) => {
-                                //     console.log(e.content);
+                                    const book = [];
 
-                                //     const converter = new QuillDeltaToHtmlConverter(e.content.ops, { });
-                                //     const html = converter.convert();
+                                    //@ts-expect-error
+                                    bookState?.children.map((e, i) => {
+                                        book.push(...e.data.ops)
+                                    });
 
-                                //     htmlBookState.chapters[i] = { data: html, title: e.title };
+                                    console.log(book);
+                                    
+                                    const html = new QuillDeltaToHtmlConverter(book, {}).convert();
+                                    // const pdf = await pdfExporter.generatePdf(new Delta({ ops: book }));
+                                    // saveAs(pdf, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
 
-                                //     // console.log(html);
-                                //     // const blob = await pdfExporter.generatePdf(e.content);
-                                //     // saveAs(blob, 'publication.pdf');
-                                // });
+                                    const book_elem = document.createElement("div")
+                                        book_elem.innerHTML = html;
 
-                                // new Epub(htmlBookState).promise.then(
-                                //     (e) => {
-                                //         console.log("Ebook Generated Successfully!");
-                                //         console.log(e);
-                                //     },
-                                //     err => console.error("Failed to generate Ebook because of ", err)
-                                // );
+                                    console.log(book_elem);
+
+                                    doc.html(book_elem, {
+                                        callback: function (doc) {
+                                            doc.save(`${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
+                                        },
+                                        margin: [1,1,1,1],
+                                        // fontFaces: [{
+                                        //     family: "Public Sans",
+                                        //     style: 'normal',
+                                        //     src: [{
+                                        //         url: "./public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf",
+                                        //         format: "truetype"
+                                        //     }]
+                                        // }],
+                                        filename: `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`,
+                                        x: 10,
+                                        y: 10
+                                    })
+
+                                    // doc.addFileToVFS("MyFont.ttf", );
+                                    // doc.addFont("public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf", "Public Sans", "normal");
+                                    console.log(html);
+                                }
                             }}>
 
                             <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />

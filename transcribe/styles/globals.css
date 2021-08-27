@@ -163,6 +163,53 @@ a {
   box-sizing: border-box;
 }
 
+@page {
+  margin: 0;
+  padding: 0;
+  width: auto;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+    background: none;
+  }
+
+  .pageHeaderTitle {
+    page-break-after: always;
+  }
+
+  #EditorDocument {
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+
+    zoom: 1;
+  }
+
+  #EditorDocument > div {
+    padding: 0;
+    margin: 0;
+    page-break-after: always;
+  }
+
+  #EditorDocument, #EditorDocument * {
+    visibility: visible;
+  }
+
+  #EditorDocument {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+  }
+}
+
 #toolbar button {
   padding: 0;
   margin: 0;
@@ -240,7 +287,7 @@ a {
   grid-gap: 1rem;
   gap: 1rem;
 
-  width: 125px !important;
+  width: 180px !important;
 
   color: var(--text-muted);
 
@@ -279,6 +326,11 @@ a {
   border: none !important;
 }
 
+span.ql-picker-item[data-label="times-new-roman"]::before {
+  content: "Times" !important;
+  font-family: "Times New Roman" !important;
+}
+
 span.ql-picker-item[data-label="public-sans"]::before {
   content: "Public Sans" !important;
   font-family: "Public Sans" !important;
@@ -311,9 +363,23 @@ span[data-label="arial"]::before {
   font-family: "Arial";
 }
 
+.ql-font-times-new-roman {
+  font-family: "Times New Roman";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="11px"]::before {
+  content: '11px';
+  font-size: 11px !important;
+}
+
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
   content: '12px';
   font-size: 12px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="13px"]::before {
+  content: '13px';
+  font-size: 13px !important;
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {

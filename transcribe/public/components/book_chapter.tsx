@@ -15,6 +15,7 @@ const BookChapter: React.FC<{ chapter: number, content: File }> = ({ chapter, co
     return (
         <div className={styles.page}>
             <h2 
+            className="pageHeaderTitle"
             style={
                 content?.title_format
             }>{content?.name}</h2>

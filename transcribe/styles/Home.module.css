@@ -506,20 +506,59 @@
 
   /* border-radius: 5px; */
   padding: 1rem 2rem;
+
+  padding: 2rem;
   /* padding-bottom: 62.5%; */
 
-  aspect-ratio: 5 8;
+  /* aspect-ratio: 5 8; */
   /* Pixel perfect - Lachie West */
 
   min-width: 480px;
   max-width: 480px;
-  /* max-height: 760px; */
-  min-height: 760px; 
 
-  font-family: "PT Serif";
+  /* min-height: 760px; */
+  /* max-height: 760px; */
+  /* min-height: 760px;  */
 
   /* box-shadow: 2px 0px 16px var(--acent-shadow-color); */
   box-shadow: rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+}
+
+.page h2 {
+  /* margin: 0; */
+
+  font-size: 1.2rem;
+  font-weight: 400;
+
+  margin-top: 0;
+
+  font-family: "Bondi Moda";
+
+  background-color: rgba(var(--acent-rgb), 0.1);
+  padding: .5rem 1rem;
+}
+
+.page > input {
+  font-size: 1.2rem;
+  font-weight: 400;
+
+  font-family: "Bondi Moda";
+
+  background-color: var(--acent-bg-color);
+  padding: .5rem 1rem;
+
+  outline: none;
+  border: none;
+
+  width: 100%;
+
+  margin-top: 0 !important;
+
+  display: block;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .book p {
@@ -623,9 +662,22 @@
   grid-template-rows: 35px 1fr;
 } */
 
-.export {
-  cursor: pointer;
+.centerActions {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
   justify-content: center;
+
+  gap: 2rem !important;
+}
+
+.centerActions > div {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  gap: .5rem;
 }
 
 .projectView {
@@ -766,3 +818,28 @@
   background-color: var(--acent-bg-color);
   color: var(--acent-text-color);
 }
+
+.exportModalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* .addChapter {
+  position: fixed;
+
+  align-self: flex-end;
+  justify-self: flex-end;
+
+  border-radius: 50%;
+  background-color: var(--acent-bg-color);
+
+  height: 30px;
+  width: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+} */

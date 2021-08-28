@@ -24,7 +24,7 @@ const FileStructure: React.FC<{ current_folder: Folder }> = ({ current_folder })
                             <FileStructure current_folder={data} key={`FILESTRUCT-${data.id}`}/>
                             :
                             //@ts-expect-error
-                            <FileComponent data={data} key={`FILE-${data.id}`}/>
+                            <FileComponent data={data} key={`FILE-${data.id}`} parent={current_folder}/>
                         )
                     })
                 }

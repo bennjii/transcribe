@@ -12,25 +12,21 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
 
     if(!value) return <></>;
 
-    const input_ref = useRef();
+    const input_ref = useRef(null);
 
     useEffect(() => {
         //@ts-expect-error
         if(editor?.active_sub_file == value.id) {
-            //@ts-expect-error
             input_ref.current?.focus();
         }
         //@ts-expect-error
     }, [editor?.active_sub_file])
 
     const handleChange = (raw_content) => {
-        //@ts-expect-error
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
         
-        //@ts-expect-error
         console.log(`It appears a change has occured in the editor... ${raw_content}`, input_ref?.current?.getEditor()?.editor?.delta);
     
-        //@ts-expect-error
         value.data = input_ref?.current?.getEditor()?.editor?.delta;
 
         callback({

@@ -37,9 +37,9 @@ IP  Add Custom Toolbar
 
 ### Transcribe 
     Offload content to Database
-        - Add Authentication
-        - Add Main Homepage for Users
-        - Load Content from Database e.g. Project Files
+        - Add Authentication ✓
+        - Add Main Homepage for Users ✓
+        - Load Content from Database e.g. Project Files ✓
 
     Add Artifact Sheets
         - Create UI Components

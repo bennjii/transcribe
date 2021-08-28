@@ -4,9 +4,9 @@ import { Bold, Book, File as FileIcon, FileText, Italic, Underline } from "react
 
 import styles from '@styles/Home.module.css'
 
-import { File, Project } from '@public/@types/project'
+import { File, Folder, Project } from '@public/@types/project'
 
-const FileComponent: React.FC<{ data: File }> = ({ data }) => {
+const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent }) => {
     const { project, editor, editorCallback } = useContext(ProjectContext);
 
     return (
@@ -15,7 +15,7 @@ const FileComponent: React.FC<{ data: File }> = ({ data }) => {
         className={`${(editor?.id == data.id || editor?.active_sub_file == data.id) ? styles.openFile : styles.subFile}`} 
         onClick={() => {
             //@ts-expect-error
-            if(editor.active_sub_file == data.id || editor.id == data.id) return;
+            if(editor?.active_sub_file == data.id || editor?.id == data.id) return;
 
             let book_parent;
 
@@ -39,16 +39,25 @@ const FileComponent: React.FC<{ data: File }> = ({ data }) => {
 
             if(book_parent) {
                 console.log("DOUBLY", book_parent);
+                project.active_file = book_parent;
                 editorCallback({ ...book_parent, active_sub_file: data.id });
             }else {
+                project.active_file = data.id;
                 console.log("SINGLY", book_parent);
                 editorCallback(data);
             }
         }} draggable>
-            <FileIcon 
-            size={18} 
-            //@ts-expect-error
-            color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}/>
+            {
+                parent?.type == "book" ?
+                <></>
+                :
+                <FileIcon 
+                    size={18} 
+                    //@ts-expect-error
+                    color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}
+                    />
+            }
+            
 
             <p>{data.name}</p>
         </div>

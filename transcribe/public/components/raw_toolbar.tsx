@@ -39,15 +39,17 @@ const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
             <div>
                 <button className="ql-bold"></button>
                 <button className="ql-italic"></button>
-                <button className="ql-underline"></button>  
+                <button className="ql-underline"></button> 
+                <button className="ql-strike"></button> 
             </div>
 
-            <select className="ql-align">
-                <option selected></option>
-                <option value="justify"></option>
-                <option value="center"></option>
-                <option value="right"></option>
-            </select>
+            <div className="ql-formats">
+                <button className="ql-script" value="sub"></button>
+                <button className="ql-script" value="super"></button>
+            </div>
+
+            <button className="ql-direction" value="rtl"></button>
+            <select className="ql-align"></select>
 
             <select className="ql-color">
                 <option value="#000000"></option>
@@ -59,6 +61,7 @@ const RawToolbar: React.FC<{ id: string }> = ({ id }) => {
             <div>
                 <button className="ql-link"></button>
                 <button className="ql-image"></button>
+                <button className="ql-formula"></button>
             </div>
 
             {/* <div>

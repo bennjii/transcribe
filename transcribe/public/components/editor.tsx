@@ -8,19 +8,24 @@ import { File } from "@public/@types/project";
 
 import styles from '@styles/Home.module.css'
 
-const Editor: React.FC<{ }> = ({ }) => {
+const Editor: React.FC<{ value: File }> = ({ value }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
+    const { book, callback } = useContext(BookContext);
 
-    const input_ref = useRef();
+    const input_ref = useRef(null);
+    const title_ref = useRef(null);
 
     const handleChange = (raw_content) => {
-        // //@ts-expect-error
-        // setChapterState(input_ref?.current?.getEditor()?.editor?.delta);
-
-        // // if(!raw_content) return false;
+        if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
         
-        // //@ts-expect-error
-        // setSavedState(input_ref?.current?.getEditor()?.editor?.delta);
+        console.log(`It appears a change has occured in the editor... ${raw_content}`, input_ref?.current?.getEditor()?.editor?.delta);
+
+        //@ts-expect-error
+        editor.data = input_ref?.current?.getEditor()?.editor?.delta;
+
+        callback({
+            ...book
+        });
     }
 
     if(!process.browser) return null;
@@ -30,48 +35,51 @@ const Editor: React.FC<{ }> = ({ }) => {
     
     if(process.browser) {
         const Font = ReactQuill.Quill.import('formats/font');
-        Font.whitelist = ['pt-serif', 'public-sans', 'arial']
+        Font.whitelist = ['pt-serif', 'public-sans', 'arial', 'times-new-roman']
 
         ReactQuill.Quill.register(Font, true);
 
         const Size = ReactQuill.Quill.import('attributors/style/size');
-        Size.whitelist = ['12px', '14px', '16px', '18px'];
+        Size.whitelist = ['11px', '12px', '13px', '14px', '16px', '18px'];
         ReactQuill.Quill.register(Size, true);
     }
 
     return process.browser ? (
         <div className={styles.page}>
-            <h2 
-            //@ts-expect-error
-            style={editor?.title_styles}
-            >{editor?.name}</h2>
+            <input 
+                type="text"
+                ref={title_ref}
+                defaultValue={editor?.name}
+                onChange={(e) => {
+                    console.log(e);
+                    
+                    editor.name = title_ref.current?.value;
+                    console.log(title_ref.current?.value)
+                }}
+            />
 
             <ReactQuill 
                 ref={input_ref}
-                tabIndex={1}
                 theme={"snow"}
-                //@ts-expect-error
                 defaultValue={editor?.data} 
                 placeholder={"Start Typing Here..."}
                 onChange={handleChange}
                 modules={{
-                    toolbar: { container: '#toolbar-single' } 
+                    // table: true, // npm i react-quill-with-table
+                    toolbar: { container: `#toolbar-single` } 
+                        // handlers: {
+                        //     customBold: function(value) {
+                        //         console.log(this.quill)
+                        //         this.quill.formatText(this.quill.selection.savedRange.index, this.quill.selection.savedRange.length, 'bold', 'bold', '');
+                        //      }
+                        // }
+                    
                 }}
                 onBlur={(...args) => {
                     const selection = args[0];
-                    
-                    if(input_ref.current) {
-                        // This cant happen all the time, only when the focus is removed by elements in the toolbar.
-
-                        console.log(input_ref.current);
-                        // input_ref.current.editor.selection.focus(); // Sets focus after blur
-                        
-                        //@ts-ignore
-                        console.log(input_ref.current.editor.selection)
-                    }
                 }}
                 scrollingContainer={`#EditorDocument`}
-                />
+                />  
         </div>
         
     ) : null;

@@ -9,9 +9,16 @@ import styles from '@styles/Home.module.css'
 const CustomToolbar: React.FC<{  }> = ({ }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
 
-    if(!editor || !editor.is_folder)
+    if(!editor) 
         return (
-            <RawToolbar id={'single'} />
+            <></>
+        )
+
+    if(!editor.is_folder)
+        return (
+            <div key={`TOOLBAR-${editor?.id}`}>
+                <RawToolbar id={'single'} />
+            </div>   
         )
 
     return (

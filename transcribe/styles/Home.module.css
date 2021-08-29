@@ -546,7 +546,7 @@
   font-size: 1.2rem;
   font-weight: 400;
 
-  font-family: "Bondi Moda";
+  font-family: "Bondi Moda" !important;
 
   background-color: var(--acent-bg-color);
   padding: .5rem 1rem;

@@ -38,12 +38,10 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
             reccursion(project.file_structure, project, editorCallback);
 
             if(book_parent) {
-                console.log("DOUBLY", book_parent);
                 project.active_file = book_parent.id;
                 editorCallback({ ...book_parent, active_sub_file: data.id });
             }else {
                 project.active_file = data.id;
-                console.log("SINGLY", book_parent);
                 editorCallback(data);
             }
         }} draggable>

@@ -19,6 +19,8 @@ import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import jsPDF from "jspdf";
 import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import BookDocument from "./book_document";
+import ExportModal from "./export_modal";
+import PrefrenceModal from "./prefrence_modal";
 
 const Book: React.FC<{}> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
@@ -143,84 +145,16 @@ const Book: React.FC<{}> = ({ }) => {
         }
     }
 
-    const { visible, setVisible, bindings } = useModal();
+    const { visible: exportVisible, setVisible: setExportVisible, bindings: exportBindings } = useModal();
+    const { visible: prefrencesVisible, setVisible: setPrefrencesVisible, bindings: prefrenceBindings } = useModal();
 
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState }}>
             <div className={styles.editorContent} >
                 {/* Content... */}
 
-                <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}>
-                    <div className={styles.printModal} id="print">
-                        <div>
-                            {/* Layout Types */}
-                            
-                        </div>
-                    </div>
-
-                    <Modal.Title>Export  '{bookState?.name}'</Modal.Title>
-                    <Text p style={{ marginTop: 0 }}>Choose how to generate and export your book.</Text>
-
-                    <Modal.Content className={styles.exportModalContent}>
-                        <Divider align="start">theme</Divider>
-                        <Radio.Group value="theme-1" useRow>
-                            <Grid.Container gap={2} justify="center">
-                                <Grid xs={12}>
-                                    <Radio value="theme-1" style={{ color: '#597298 !important' }}>
-                                        Book 1
-                                        <Radio.Desc>Old Theme</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                                
-                                <Grid xs={12}>
-                                    <Radio value="theme-2">
-                                        Book 2
-                                        <Radio.Desc>Modern Theme</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                            </Grid.Container>
-                        </Radio.Group>
-
-                        <Divider align="start">format</Divider>
-                        <Radio.Group value="pdf" useRow>
-                            <Grid.Container gap={2} justify="center">
-                                <Grid xs={12}>
-                                    <Radio value="pdf" defaultChecked>
-                                        PDF
-                                        <Radio.Desc>General Export</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                                
-                                <Grid xs={12}>
-                                    <Radio value="html">
-                                        HTML
-                                        <Radio.Desc>Website Export</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-
-                                <Grid xs={12}>
-                                    <Radio value="txt">
-                                        TXT
-                                        <Radio.Desc>Raw Text</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-
-                                <Grid xs={12}>
-                                    <Radio value="ebook">
-                                        EBook
-                                        <Radio.Desc>Ebook Format</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                            </Grid.Container>
-                        </Radio.Group>
-                    </Modal.Content>
-                    <Modal.Action passive onClick={() => setVisible(false)}>
-                        Cancel
-                    </Modal.Action>
-                    <Modal.Action loading={false} onClick={() => exportBook()}>
-                        Export
-                    </Modal.Action>
-                </Modal>
+                <ExportModal modal={{ exportVisible, setExportVisible, exportBindings }}/>
+                <PrefrenceModal modal={{ prefrencesVisible, setPrefrencesVisible, prefrenceBindings }}/>
 
                 <div className={styles.book}>			
                     <div className={styles.bookCaptionBar}>
@@ -256,7 +190,7 @@ const Book: React.FC<{}> = ({ }) => {
                             }
 
                             <div className={styles.export} onClick={async () => {
-                                setVisible(!visible)
+                                setExportVisible(!exportVisible)
                                 console.log(bookState);
 
                             }}>
@@ -266,7 +200,7 @@ const Book: React.FC<{}> = ({ }) => {
                             </div>
 
                             <div className={styles.export} onClick={async () => {
-                                setVisible(!visible)
+                                setPrefrencesVisible(!prefrencesVisible)
                                 console.log(bookState);
 
                             }}>

@@ -84,8 +84,8 @@ IP  Add Custom Toolbar
         - Parameters: {  default book, author, title, attributes, book no., publisher, rename project, project title, project description, etc... + Project Pref. e.g. theme, mode, default fonts, load custom fonts, etc.  }
 
     New Items
-        - Allow for creation of documents
-        - Choose Document Types + Document Modal
+        - Allow for creation of documents ✓
+        - Choose Document Types + Document Modal ✓
 
     New User Functionality
         - Tooltips
@@ -95,7 +95,7 @@ IP  Add Custom Toolbar
 
     Different File Types
         _A Functionality for Vision Boards 
-        - Plain Editable Document
+        - Plain Editable Document ✓
         - Artifacts (Backend Smooth Integration), In Documents, able to search and pull for arficats as refrence material. These can be plain documents with linkers.
 
     Shareability

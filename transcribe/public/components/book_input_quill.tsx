@@ -25,8 +25,15 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     const handleChange = (raw_content) => {
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
         
-        console.log(`It appears a change has occured in the editor... ${raw_content}`, input_ref?.current?.getEditor()?.editor?.delta);
-    
+        const format = input_ref?.current?.getEditor().getFormat()
+
+        if(Object.entries(format).length === 0) {
+            input_ref?.current?.getEditor()?.format('color', "#202737");
+            input_ref?.current?.getEditor()?.format('size', "11px");
+            input_ref?.current?.getEditor()?.format('font', "public-sans");
+        }
+        
+        // Set Data.
         value.data = input_ref?.current?.getEditor()?.editor?.delta;
 
         callback({
@@ -82,6 +89,8 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
                 // }
             }}
             onFocus={() => {
+                
+
                 //@ts-expect-error
                 if(editor.active_sub_file != value.id) {
                     editorCallback({ ...editor, active_sub_file: value.id });

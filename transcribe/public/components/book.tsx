@@ -1,5 +1,5 @@
 import { memo, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
-import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen } from "react-feather";
+import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3 } from "react-feather";
 
 import styles from '../../styles/Home.module.css'
 import { Book as BookType } from "../@types/book";
@@ -93,6 +93,56 @@ const Book: React.FC<{}> = ({ }) => {
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [, bookState]);
 
+    const exportBook = () => {
+        // @ts-expect-error                                
+        if(bookState?.children) {
+            const pdfExporter = require('quill-to-pdf').pdfExporter;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+            });
+
+            const book = [];
+
+            //@ts-expect-error
+            bookState?.children.map((e, i) => {
+                book.push(...e.data.ops)
+            });
+
+            console.log(book);
+            
+            const html = new QuillDeltaToHtmlConverter(book, {}).convert();
+            // const pdf = await pdfExporter.generatePdf(new Delta({ ops: book }));
+            // saveAs(pdf, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
+
+            const book_elem = document.createElement("div")
+                book_elem.innerHTML = html;
+
+            console.log(book_elem);
+
+            doc.html(book_elem, {
+                callback: function (doc) {
+                    doc.save(`${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
+                },
+                margin: [1,1,1,1],
+                // fontFaces: [{
+                //     family: "Public Sans",
+                //     style: 'normal',
+                //     src: [{
+                //         url: "./public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf",
+                //         format: "truetype"
+                //     }]
+                // }],
+                filename: `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`,
+                x: 10,
+                y: 10
+            })
+
+            // doc.addFileToVFS("MyFont.ttf", );
+            // doc.addFont("public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf", "Public Sans", "normal");
+            console.log(html);
+        }
+    }
+
     const { visible, setVisible, bindings } = useModal();
 
     return (
@@ -167,7 +217,7 @@ const Book: React.FC<{}> = ({ }) => {
                     <Modal.Action passive onClick={() => setVisible(false)}>
                         Cancel
                     </Modal.Action>
-                    <Modal.Action loading={false}>
+                    <Modal.Action loading={false} onClick={() => exportBook()}>
                         Export
                     </Modal.Action>
                 </Modal>
@@ -209,57 +259,20 @@ const Book: React.FC<{}> = ({ }) => {
                                 setVisible(!visible)
                                 console.log(bookState);
 
-                                // // @ts-expect-error                                
-                                // if(bookState?.children) {
-                                //     const pdfExporter = require('quill-to-pdf').pdfExporter;
-                                //     const doc = new jsPDF({
-                                //         orientation: 'portrait',
-                                //     });
-
-                                //     const book = [];
-
-                                //     //@ts-expect-error
-                                //     bookState?.children.map((e, i) => {
-                                //         book.push(...e.data.ops)
-                                //     });
-
-                                //     console.log(book);
-                                    
-                                //     const html = new QuillDeltaToHtmlConverter(book, {}).convert();
-                                //     // const pdf = await pdfExporter.generatePdf(new Delta({ ops: book }));
-                                //     // saveAs(pdf, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
-
-                                //     const book_elem = document.createElement("div")
-                                //         book_elem.innerHTML = html;
-
-                                //     console.log(book_elem);
-
-                                //     doc.html(book_elem, {
-                                //         callback: function (doc) {
-                                //             doc.save(`${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
-                                //         },
-                                //         margin: [1,1,1,1],
-                                //         // fontFaces: [{
-                                //         //     family: "Public Sans",
-                                //         //     style: 'normal',
-                                //         //     src: [{
-                                //         //         url: "./public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf",
-                                //         //         format: "truetype"
-                                //         //     }]
-                                //         // }],
-                                //         filename: `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`,
-                                //         x: 10,
-                                //         y: 10
-                                //     })
-
-                                //     // doc.addFileToVFS("MyFont.ttf", );
-                                //     // doc.addFont("public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf", "Public Sans", "normal");
-                                //     console.log(html);
-                                // }
                             }}>
                                 <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
 
                                 <p>Export</p>
+                            </div>
+
+                            <div className={styles.export} onClick={async () => {
+                                setVisible(!visible)
+                                console.log(bookState);
+
+                            }}>
+                                <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
+
+                                <p>Prefrences</p>
                             </div>
                         </div>
                         

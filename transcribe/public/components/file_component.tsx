@@ -51,7 +51,7 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
                 parent?.type == "book" ?
                 <></>
                 :
-                <FileIcon 
+                <FileText 
                     size={18} 
                     //@ts-expect-error
                     color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}

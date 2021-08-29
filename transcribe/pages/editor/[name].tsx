@@ -88,7 +88,7 @@ export default function Home({ project }) {
 					if(e.data) setSynced(true);
 					else setSynced(false);
 				});
-		}, 500)
+		}, 3000)
 		, []
 	);
 

@@ -18,6 +18,7 @@ import Delta from 'quill-delta'
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import jsPDF from "jspdf";
 import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
+import BookDocument from "./book_document";
 
 const Book: React.FC<{}> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
@@ -287,7 +288,7 @@ const Book: React.FC<{}> = ({ }) => {
                             })
                             :
                             //@ts-expect-error
-                            !editor?.is_folder ? <Editor content={editor} /> : <></>
+                            !editor?.is_folder ? <BookDocument content={editor} /> : <></>
                         }
                     </div>
                 </div>

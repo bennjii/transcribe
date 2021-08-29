@@ -1,6 +1,6 @@
 import ProjectContext from "@public/@types/project_context";
 import { useContext } from "react";
-import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon } from "react-feather";
+import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon, BookOpen } from "react-feather";
 
 import styles from '@styles/Home.module.css'
 
@@ -20,7 +20,7 @@ const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
         }} draggable>
             {
                 data.type == 'book' ?
-                <BookIcon size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} />
+                editor?.id == data.id ? <BookOpen size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} /> : <BookIcon size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} />
                 :
                 <FolderIcon size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
             }

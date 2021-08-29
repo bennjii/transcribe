@@ -1,4 +1,5 @@
 import styles from '@styles/Home.module.css'
+import Head from 'next/head';
 import { Router, useRouter } from 'next/router';
 
 const Header: React.FC<{ }> = ({ }) => {
@@ -6,6 +7,11 @@ const Header: React.FC<{ }> = ({ }) => {
 
     return (
         <div className={styles.logo}>
+            <Head>
+                <title>Next App</title>
+                <link rel="icon" href="/favicon/32t.png" type="image/png" />
+            </Head>
+
             <p onClick={() => {
                 router.push('/');
             }}>transcribe</p> 

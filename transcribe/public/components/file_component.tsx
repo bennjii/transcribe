@@ -39,7 +39,7 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
 
             if(book_parent) {
                 console.log("DOUBLY", book_parent);
-                project.active_file = book_parent;
+                project.active_file = book_parent.id;
                 editorCallback({ ...book_parent, active_sub_file: data.id });
             }else {
                 project.active_file = data.id;

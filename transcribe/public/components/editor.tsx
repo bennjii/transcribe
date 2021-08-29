@@ -9,19 +9,28 @@ import { File } from "@public/@types/project";
 import styles from '@styles/Home.module.css'
 
 const Editor: React.FC<{ value: File }> = ({ value }) => {
-    const { editor, editorCallback } = useContext(ProjectContext);
+    const { editor, project, editorCallback } = useContext(ProjectContext);
     const { book, callback } = useContext(BookContext);
 
     const input_ref = useRef(null);
     const title_ref = useRef(null);
 
+    useEffect(() => {
+        input_ref.current?.focus();
+    }, [project?.active_file])
+
     const handleChange = (raw_content) => {
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
         
         console.log(`It appears a change has occured in the editor... ${raw_content}`, input_ref?.current?.getEditor()?.editor?.delta);
-
+        
         //@ts-expect-error
         editor.data = input_ref?.current?.getEditor()?.editor?.delta;
+
+        //@ts-expect-error
+        book.data = input_ref?.current?.getEditor()?.editor?.delta;
+
+        console.log(book);
 
         callback({
             ...book
@@ -44,44 +53,31 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
         ReactQuill.Quill.register(Size, true);
     }
 
-    return process.browser ? (
-        <div className={styles.page}>
-            <input 
-                type="text"
-                ref={title_ref}
-                defaultValue={editor?.name}
-                onChange={(e) => {
-                    console.log(e);
-                    
-                    editor.name = title_ref.current?.value;
-                    console.log(title_ref.current?.value)
-                }}
-            />
-
-            <ReactQuill 
-                ref={input_ref}
-                theme={"snow"}
-                defaultValue={editor?.data} 
-                placeholder={"Start Typing Here..."}
-                onChange={handleChange}
-                modules={{
-                    // table: true, // npm i react-quill-with-table
-                    toolbar: { container: `#toolbar-single` } 
-                        // handlers: {
-                        //     customBold: function(value) {
-                        //         console.log(this.quill)
-                        //         this.quill.formatText(this.quill.selection.savedRange.index, this.quill.selection.savedRange.length, 'bold', 'bold', '');
-                        //      }
-                        // }
-                    
-                }}
-                onBlur={(...args) => {
-                    const selection = args[0];
-                }}
-                scrollingContainer={`#EditorDocument`}
-                />  
-        </div>
-        
+    //@ts-expect-error
+    return process.browser && editor?.data ? (
+        <ReactQuill 
+            ref={input_ref}
+            theme={"snow"}
+            //@ts-expect-error
+            defaultValue={editor?.data} 
+            placeholder={"Start Typing Here..."}
+            onChange={handleChange}
+            modules={{
+                // table: true, // npm i react-quill-with-table
+                toolbar: { container: `#toolbar-single` } 
+                    // handlers: {
+                    //     customBold: function(value) {
+                    //         console.log(this.quill)
+                    //         this.quill.formatText(this.quill.selection.savedRange.index, this.quill.selection.savedRange.length, 'bold', 'bold', '');
+                    //      }
+                    // }
+                
+            }}
+            onBlur={(...args) => {
+                const selection = args[0];
+            }}
+            scrollingContainer={`#EditorDocument`}
+            />  
     ) : null;
 }
 

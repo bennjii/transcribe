@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Plus, Settings } from 'react-feather'
 
 import Book from '@components/book';
 import BookChapter from '@components/book_chapter';
@@ -25,6 +25,9 @@ import Editor from '@components/editor';
 import debounce from '@public/@types/debounce';
 
 import _ from 'underscore'
+import NewFileModal from '@components/new_file_modal';
+import { useModal } from '@geist-ui/react';
+import VisionBoard from '@components/vision_board';
 
 export const getStaticPaths: GetStaticPaths = async (a) => {
     const projects = await supabase
@@ -88,7 +91,7 @@ export default function Home({ project }) {
 					if(e.data) setSynced(true);
 					else setSynced(false);
 				});
-		}, 3000)
+		}, 1500)
 		, []
 	);
 
@@ -112,11 +115,12 @@ export default function Home({ project }) {
 				});
     }, [])
 
+	const { visible, setVisible, bindings } = useModal();
+
 	return (
-		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor }}>
+		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor, synced: synced }}>
 			<div className={styles.container}>
 				<Head>
-					<title>Wintersteel</title>
 					<meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
 				</Head>
 				
@@ -135,7 +139,9 @@ export default function Home({ project }) {
 						<div className={styles.folderStructure}>
 							<div className={styles.folderTitle}>
 								<p>{projectState?.name}</p>
-								{/* <ChevronDown size={18}/> */}
+								
+								<Plus size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setVisible(true)}/>
+								<NewFileModal modal={{ visible, setVisible, bindings }} />
 							</div>
 							
 							{
@@ -183,7 +189,22 @@ export default function Home({ project }) {
 					</div>
 
 					<div>
-						<Book />
+						{
+							(() => {
+								switch(activeEditor?.type) {
+									case "document":
+										return <Book />
+									case "book":
+										return <Book />
+									case "artifact":
+										return <></>
+									case "vision_board":
+										return <VisionBoard />
+									case "folder":
+										return <></>
+								}
+							})()
+						}
 					</div>
 					
 				</div>

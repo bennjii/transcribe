@@ -65,6 +65,43 @@ IP  Add Custom Toolbar
         _A: cohesive ID and permission restrictions can be shared to others for reading and commenting.
         - Database Duplication or Replication? or Refencing?
 
+### General
+    Document Export
+        - Disable/Modular Theme Typing
+        - Support Formats
+        - Integrate Theming
+        - Document Downloading
+
+    Document Prefrences
+        - Create Modal
+        - Add Settings
+        - Sync Settings
+
+    Project Prefrences / Settings
+        - Create and Sync Information
+        - Create Modal
+        - Integate for Exporting
+        - Parameters: {  default book, author, title, attributes, book no., publisher, rename project, project title, project description, etc... + Project Pref. e.g. theme, mode, default fonts, load custom fonts, etc.  }
+
+    New Items
+        - Allow for creation of documents
+        - Choose Document Types + Document Modal
+
+    New User Functionality
+        - Tooltips
+        - Instructions
+        - Help & Guidance
+        - (Hints, e.g. Theme isnt directly applicable so dont spend hours doing that... )
+
+    Different File Types
+        _A Functionality for Vision Boards 
+        - Plain Editable Document
+        - Artifacts (Backend Smooth Integration), In Documents, able to search and pull for arficats as refrence material. These can be plain documents with linkers.
+
+    Shareability
+        - Ability to share (clone), documents to peers, who can (depending upon permissions) edit, share, comment, highlight etc.
+            These elements will not edit the main document, but shall act as proxies in which the main document can be refrenced, so the author can make changes or others, as deemed neccesary in order to ensure the consistency of the main document. Separate viewing and syncing protocols must be implemented such a viewer.
+
 [_A] Advanced Item - May take longer to implement than ususal.
 [_I] Indecisive - Unpredictable, hence may not be implementable.
 [_N] Note - A comment regarding the implementation of the specified feature.

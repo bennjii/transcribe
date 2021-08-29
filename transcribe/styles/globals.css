@@ -158,6 +158,10 @@ button {
   font-family: "Public Sans";
 }
 
+input {
+  font-family: "Public Sans" !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;

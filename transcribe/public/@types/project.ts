@@ -22,7 +22,7 @@ export type File = {
 
     title_format: any
 
-    // Is eaither a document (straight words) or a vision board (creative ideas) or an artifact which can be 
+    // Is either a document (straight words) or a vision board (creative ideas) or an artifact which can be 
     // thought of as a dictionary for ideas that is refrenceable through the documents.
     type?: "document" | "vision_board" | "artifact",
     data: any,

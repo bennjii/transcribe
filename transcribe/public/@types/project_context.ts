@@ -6,7 +6,8 @@ const ProjectContext = createContext<{
     project: Project,
     projectCallback: Function,
     editor: File | Folder,
-    editorCallback: Function
+    editorCallback: Function,
+    synced: boolean
 }>(null);
 
 export default ProjectContext

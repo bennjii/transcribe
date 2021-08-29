@@ -20,15 +20,12 @@ import jsPDF from "jspdf";
 import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import BookDocument from "./book_document";
 
-const Book: React.FC<{}> = ({ }) => {
+const VisionBoard: React.FC<{}> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     const [ bookState, setBookState ] = useState<File | Folder>(null);
     const [ editorState, setEditorState ] = useState({
-        words: 0,
-        chars: 0,
-        chapters: bookState?.type == "book" ? bookState.children.length : 0,
-        chapter: 0,
+        elements: 0,
         zoom_level: 1.5
     });
     
@@ -60,35 +57,7 @@ const Book: React.FC<{}> = ({ }) => {
             })
         }
 
-        let word_count = 0;
-        let char_count = 0;
-
-        // For Exporting, Concatonate all deltas with a splicing intermediary.
-        // https://github.com/quilljs/delta/#concat
-
-        //@ts-expect-error
-        if(editor?.children) {
-            //@ts-expect-error
-            editor.children.forEach(element => {
-                if(element.data) {
-                    const html = new QuillDeltaToHtmlConverter(element.data.ops, {}).convert();
-
-                    word_count += (html?.trim().match(/(\w+[^>\s])/g) || []).length;
-                    char_count += (html?.trim().match(/\S/g) || []).length;
-                }
-            });
-        }else {
-            //@ts-expect-error
-            if(!editor?.is_folder && editor?.data) {
-                //@ts-expect-error
-                const html = new QuillDeltaToHtmlConverter(editor.data.ops, {}).convert();
-
-                word_count += (html?.trim().match(/(\w+[^>\s])/g) || []).length;
-                char_count += (html?.trim().match(/\S/g) || []).length;
-            }
-        }
-
-        setEditorState({ ...editorState, words: word_count, chars: char_count, chapters: bookState?.type == "book" ? bookState.children.length : 0 });
+        setEditorState({ ...editorState, elements: 1 });
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [, bookState]);
@@ -231,34 +200,29 @@ const Book: React.FC<{}> = ({ }) => {
                         </div>
 
                         <div className={styles.centerActions}>
-                            {
-                                bookState?.type == "book" ? 
-                                <div className={styles.addChapter} onClick={() => {
-                                    bookState?.children.push({
-                                        name: "",
-                                        is_folder: false,
-                                        title_format: null,
-                                        data: {},
-                                        type: "document",
-                                        id: uuidv4()
-                                    })
+                            <div className={styles.addChapter} onClick={() => {
+                                //@ts-expect-error
+                                bookState?.data.elements.push({
+                                    name: "",
+                                    is_folder: false,
+                                    title_format: null,
+                                    data: {},
+                                    type: "vision_element",
+                                    id: uuidv4()
+                                })
 
-                                    projectCallback({
-                                        ...project
-                                    })
-                                }}>
-                                    <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
+                                projectCallback({
+                                    ...project
+                                })
+                            }}>
+                                <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
 
-                                    <p>Add Chapter</p>
-                                </div>
-                                :
-                                <></>
-                            }
+                                <p>Add Element</p>
+                            </div>
 
                             <div className={styles.export} onClick={async () => {
                                 setVisible(!visible)
                                 console.log(bookState);
-
                             }}>
                                 <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
 
@@ -286,23 +250,12 @@ const Book: React.FC<{}> = ({ }) => {
                         </div>
 
                         <div className={styles.fixedPageSpec} style={{ justifyContent: "flex-end" }}>
-                            { bookState?.type == "book" ? <p><b>{editorState.chapters}</b> {editorState.chapters > 1 ? "Chapters" : "Chapter"}</p> : <></> }
-                            <p><b>{editorState.words}</b> Words</p>
-                            <p><b>{editorState.chars}</b> Characters</p>
+                            <p><b>{editorState.elements}</b> {editorState.elements > 1 ? "Elements" : "Element"}</p>
                         </div>
                     </div>
                     
-                    <div className={styles.pages} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
-                        {  
-                            editor?.type == "book" && editor?.active_sub_file
-                            ?
-                            editor?.children?.map((chapter: File, index: number) => {
-                                return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
-                            })
-                            :
-                            //@ts-expect-error
-                            !editor?.is_folder ? <BookDocument content={editor} /> : <></>
-                        }
+                    <div className={styles.visionBoard}>
+
                     </div>
                 </div>
             </div>
@@ -310,4 +263,4 @@ const Book: React.FC<{}> = ({ }) => {
     )
 }
 
-export default Book;
+export default VisionBoard;

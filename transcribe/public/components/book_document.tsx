@@ -13,7 +13,7 @@ const BookDocument: React.FC<{ content: File }> = ({ content }) => {
     const input_field = useRef(null);
 
     return (
-        <div className={styles.page}> 
+        <div className={styles.page} key={editor.id}> 
             <input 
                 type="text"
                 ref={input_field}

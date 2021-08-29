@@ -1,6 +1,6 @@
 import ProjectContext from "@public/@types/project_context";
 import { useContext } from "react";
-import { Bold, Book, File as FileIcon, FileText, Italic, Underline } from "react-feather";
+import { Bold, Book, Clipboard, File as FileIcon, FileText, Italic, Underline } from "react-feather";
 
 import styles from '@styles/Home.module.css'
 
@@ -48,17 +48,36 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
             }
         }} draggable>
             {
-                parent?.type == "book" ?
-                <></>
-                :
-                <FileText 
-                    size={18} 
-                    //@ts-expect-error
-                    color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}
-                    />
+                (() => {
+                    if(parent?.type == "book") return <></>;
+
+                    switch(data.type) {
+                        case "document":
+                            return (
+                                <FileText 
+                                    size={18} 
+                                    //@ts-expect-error
+                                    color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}
+                                    />
+                            )
+                        case "vision_board":
+                            return (
+                                <Clipboard 
+                                    size={18} 
+                                    //@ts-expect-error
+                                    color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}
+                                    />
+                            )
+                        default: 
+                            return (
+                                <></>
+                            )
+                    } 
+                    
+                    
+                })()
             }
             
-
             <p>{data.name}</p>
         </div>
     )

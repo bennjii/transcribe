@@ -21,9 +21,15 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
 
     const handleChange = (raw_content) => {
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
-        
-        console.log(`It appears a change has occured in the editor... ${raw_content}`, input_ref?.current?.getEditor()?.editor?.delta);
-        
+
+        const format = input_ref?.current?.getEditor().getFormat()
+
+        if(Object.entries(format).length === 0) {
+            input_ref?.current?.getEditor()?.format('color', "#202737");
+            input_ref?.current?.getEditor()?.format('size', "11px");
+            input_ref?.current?.getEditor()?.format('font', "public-sans");
+        }
+
         //@ts-expect-error
         editor.data = input_ref?.current?.getEditor()?.editor?.delta;
 

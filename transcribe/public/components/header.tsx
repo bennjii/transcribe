@@ -8,7 +8,7 @@ const Header: React.FC<{ }> = ({ }) => {
     return (
         <div className={styles.logo}>
             <Head>
-                <title>Next App</title>
+                <title>transcribe</title>
                 <link rel="icon" href="/favicon/32t.png" type="image/png" />
             </Head>
 

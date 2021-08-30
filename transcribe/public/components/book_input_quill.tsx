@@ -8,7 +8,7 @@ import { File, Folder } from "@public/@types/project";
 
 const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, chapter }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
-    const { book, callback } = useContext(BookContext);
+    const { book, callback, viewOnly } = useContext(BookContext);
 
     if(!value) return <></>;
 
@@ -59,6 +59,7 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
 
     return process.browser ? (
         <ReactQuill 
+            readOnly={viewOnly}
             ref={input_ref}
             theme={"snow"}
             defaultValue={value?.data} 

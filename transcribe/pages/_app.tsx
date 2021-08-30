@@ -13,6 +13,7 @@ const defaultLight = Themes.createFromLight({
     selection: '#dfe5ff',
     accents_8: "#597298",
     accents_1: "#F4F2F2",
+    success: "#597298"
     // foreground: "#597298"
   },
 })

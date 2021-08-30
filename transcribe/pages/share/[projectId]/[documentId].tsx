@@ -14,7 +14,7 @@ import UserComponent from '@components/user_component';
 import { useCallback, useEffect } from 'react';
 import { supabase } from '@root/client';
 import { useState } from 'react';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { File, Folder, Project } from '@public/@types/project';
 import FileStructure from '@components/file_structure';
 import ProjectContext from '@public/@types/project_context';
@@ -29,76 +29,61 @@ import NewFileModal from '@components/new_file_modal';
 import { useModal } from '@geist-ui/react';
 import VisionBoard from '@components/vision_board';
 
-export const getStaticPaths: GetStaticPaths = async (a) => {
-    const projects = await supabase
-        .from('projects')
-        .select('*')
-        .then(e => e.data)
-
-    const paths = projects?.map((article) => ({
-        params: { name: article.id.toString() },
-    }))
-
-    return {
-        paths: paths, //indicates that no page needs be created at build time
-        fallback: 'blocking' //indicates the type of fallback
-    }
-}
-
-export const getStaticProps: GetStaticProps = async (
-    context: GetStaticPropsContext
+export const getServerSideProps: GetServerSideProps = async (
+    context: GetServerSidePropsContext
   ) => {
-    const INDEX = context.params.name;
+    const DOCUMENT = context.params.documentId;
+    const INDEX = context.params.projectId;
 
 	const project = await supabase
 		.from('projects')
 		.select()
 		.eq('id', INDEX)
 		.then(e => {
-			return e.data[0];
+            const data = e.data[0].file_structure;
+            let document;
+
+            const reccursion = (element: Folder) => {
+                return element?.children?.forEach(_element => {
+                    if(_element.id == DOCUMENT) { 
+                        document = _element;
+                        return true;
+                    }else return _element.is_folder ? reccursion( _element) : null;
+                });
+            }
+
+            reccursion(data);
+
+            if(document.settings.share == false) return "404";
+            else return document;
 		});
 
     return {
         props: {
             project: project,
-            index: INDEX
+            index: INDEX,
+            document: DOCUMENT
         }
     }
 }
 
-export default function Home({ project }) {
+export default function Share({ project }) {
+    if(project == "404") return (
+        <div className={styles.Error404}>
+            <h1>404</h1>
+            <Header />
+
+            <div>
+                <h2>This document either does not exist or has restricted access</h2>
+                <p>If someone sent you this link, ask them to check document access</p>
+            </div>
+        </div>
+    );
+
     const [ projectState, setProjectState ] = useState<Project>(project);
-	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(null);
+	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(project);
 	const [ user, setUser ] = useState(null);
 	const [ synced, setSynced ] = useState(false);
-
-	useEffect(() => {
-		// find id and set them to active editors...
-		if (!activeEditor) recursivelyIdentify(projectState, setActiveEditor);
-		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
-	}, [])
-
-	const verif = useCallback(
-		_.debounce((state) => {
-			supabase
-				.from('projects')
-				.update({
-					...state,
-					last_edited: new Date() 
-				})
-				.match({ id: state.id })
-				.then(e => {
-					if(e.data) setSynced(true);
-					else setSynced(false);
-				});
-		}, 1500)
-		, []
-	);
-
-	useEffect(() => {
-		setSynced(false);
-		verif(projectState);
-	}, [projectState.file_structure])
 
 	useEffect(() => {
 		if(supabase.auth.user()) 
@@ -134,33 +119,9 @@ export default function Home({ project }) {
 
 							<ArrowRight size={18} strokeWidth={2}/>
 						</div>
-						
-
-						<div className={styles.folderStructure}>
-							<div className={styles.folderTitle}>
-								<p>{projectState?.name}</p>
-								
-								<Plus size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setVisible(true)}/>
-								<NewFileModal modal={{ visible, setVisible, bindings }} />
-							</div>
-							
-							{
-								projectState.file_structure.children.map((data, index) => {
-									return (
-										data.is_folder ? 
-										<FileStructure current_folder={data} key={`${index} -- ${data.name}`} />
-										:
-										//@ts-expect-error
-										<FileComponent data={data} key={`FILE-${data.id}`} />
-									)
-								})
-							}
-						</div>
-						
 					</div>
 
 					<UserComponent user={user}/>
-					
 				</div>
 
 				<div className={styles.content}>
@@ -169,20 +130,9 @@ export default function Home({ project }) {
 							<CustomToolbar />
 						</div>
 						
-						<div className={styles.syncStatus}>
+						<div className={`${styles.syncStatus} ${styles.viewOnlySync}`}>
 							{
-								synced ? 
-								<>
-									Saved
-
-									<div className={styles.syncTrue}>
-
-									</div>
-								</>
-								:
-								<>
-									Unsaved
-								</>
+                                <div>View Only</div>
 							}
 							
 						</div>
@@ -193,13 +143,13 @@ export default function Home({ project }) {
 							(() => {
 								switch(activeEditor?.type) {
 									case "document":
-										return <Book viewOnly={false}/>
+										return <Book viewOnly/>
 									case "book":
-										return <Book viewOnly={false}/>
+										return <Book viewOnly/>
 									case "artifact":
 										return <></>
 									case "vision_board":
-										return <VisionBoard />
+										return <VisionBoard viewOnly/>
 									case "folder":
 										return <></>
 								}

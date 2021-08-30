@@ -1,3 +1,6 @@
+import Delta from 'quill-delta';
+import { v4 as uuidv4 } from 'uuid'
+
 export type Project = {
     id: string,
     owner: string,
@@ -16,6 +19,11 @@ export type Project = {
 
 export type EmbeddedString = string;
 
+export type Settings = {
+    share: boolean,
+    permType: "public" | "private"
+}
+
 export type File = {
     name: string,
     is_folder: false,
@@ -29,6 +37,8 @@ export type File = {
 
     id: string,
     // Type Specific Data...
+
+    settings: Settings
 }
 
 /**
@@ -43,7 +53,9 @@ export type Folder = {
     // Is a parent
     is_folder: true,
     children?: (File | Folder)[],
-    active_sub_file: string
+    active_sub_file: string,
+
+    settings: Settings
 }
 
 export const recursivelyIdentify = (state: Project, editorCallback: Function) => {
@@ -67,4 +79,52 @@ const reccursion = (element, state: Project, editorCallback: Function) => {
         if(_element.id == state.active_file) return;
         else return reccursion(_element, state, editorCallback);
     });
+}
+
+
+export const newFile = (name, docType) => {
+    return {
+        name: name,
+        id: uuidv4(),
+        type: docType,
+
+        is_folder: false,
+        data: new Delta(),
+        title_format: null,
+        settings: {
+            share: false,
+            permType: "private"
+        }
+    }
+}
+
+export const newFolder = (name) => {
+    return {
+        name: name,
+        id: uuidv4(),
+        type: "folder",
+
+        is_folder: true,
+        children: [],
+        active_sub_file: null,
+        settings: {
+            share: false,
+            permType: "private"
+        }
+    }
+}
+
+export const newChapter = () => {
+    return {
+        name: "",
+        is_folder: false,
+        title_format: null,
+        data: {},
+        type: "document",
+        id: uuidv4(),
+        settings: {
+            share: false,
+            permType: "private"
+        }
+    }
 }

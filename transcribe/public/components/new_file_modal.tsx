@@ -5,7 +5,7 @@ import { Bold, Book, Clipboard, File as FileIcon, FileText, Italic, Underline } 
 import { CssBaseline, Divider, Grid, Input, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import styles from '@styles/Home.module.css'
 
-import { File, Folder, Project } from '@public/@types/project'
+import { File, Folder, newFile, newFolder, Project } from '@public/@types/project'
 import { create } from "domain";
 import { supabase } from "@root/client";
 
@@ -37,15 +37,7 @@ const NewFileModal: React.FC<{ modal: any }> = ({ modal }) => {
                     ...project.file_structure,
                     children: [
                         ...project.file_structure.children,
-                        {
-                            name: utilName,
-                            id: uuidv4(),
-                            type: "folder",
-            
-                            is_folder: true,
-                            children: [],
-                            active_sub_file: null
-                        }
+                        newFolder(utilName)
                     ]
                 }
             });
@@ -60,15 +52,7 @@ const NewFileModal: React.FC<{ modal: any }> = ({ modal }) => {
                     ...project.file_structure,
                     children: [
                         ...project.file_structure.children,
-                        {
-                            name: utilName,
-                            id: uuidv4(),
-                            type: docType,
-            
-                            is_folder: false,
-                            data: new Delta(),
-                            title_format: null
-                        }
+                        newFile(utilName, docType)
                     ]
                 }
             });

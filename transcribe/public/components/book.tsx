@@ -22,7 +22,7 @@ import BookDocument from "./book_document";
 import ExportModal from "./export_modal";
 import PrefrenceModal from "./prefrence_modal";
 
-const Book: React.FC<{}> = ({ }) => {
+const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     const [ bookState, setBookState ] = useState<File | Folder>(null);
@@ -40,7 +40,7 @@ const Book: React.FC<{}> = ({ }) => {
 
     useEffect(() => {
         // Book has been updated! Let's propogate the changes up the tree, to the root project node.
-        if(bookState) {
+        if(bookState && !viewOnly) {
             let updated_file = JSON.parse(JSON.stringify(project.file_structure));
 
             // Loop & Replace Relevancy
@@ -149,7 +149,7 @@ const Book: React.FC<{}> = ({ }) => {
     const { visible: prefrencesVisible, setVisible: setPrefrencesVisible, bindings: prefrenceBindings } = useModal();
 
     return (
-        <BookContext.Provider value={{ book: bookState, callback: setBookState }}>
+        <BookContext.Provider value={{ book: bookState, callback: setBookState, viewOnly: viewOnly }}>
             <div className={styles.editorContent} >
                 {/* Content... */}
 
@@ -166,7 +166,7 @@ const Book: React.FC<{}> = ({ }) => {
 
                         <div className={styles.centerActions}>
                             {
-                                bookState?.type == "book" ? 
+                                bookState?.type == "book" && !viewOnly ? 
                                 <div className={styles.addChapter} onClick={() => {
                                     bookState?.children.push({
                                         name: "",
@@ -174,7 +174,11 @@ const Book: React.FC<{}> = ({ }) => {
                                         title_format: null,
                                         data: {},
                                         type: "document",
-                                        id: uuidv4()
+                                        id: uuidv4(),
+                                        settings: {
+                                            share: false,
+                                            permType: "private"
+                                        }
                                     })
 
                                     projectCallback({
@@ -199,15 +203,21 @@ const Book: React.FC<{}> = ({ }) => {
                                 <p>Export</p>
                             </div>
 
-                            <div className={styles.export} onClick={async () => {
-                                setPrefrencesVisible(!prefrencesVisible)
-                                console.log(bookState);
-
-                            }}>
-                                <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
-
-                                <p>Prefrences</p>
-                            </div>
+                            {
+                                !viewOnly ?
+                                <div className={styles.export} onClick={async () => {
+                                    setPrefrencesVisible(!prefrencesVisible)
+                                    console.log(bookState);
+    
+                                }}>
+                                    <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
+    
+                                    <p>Prefrences</p>
+                                </div>
+                                :
+                                <></>
+                            }
+                            
                         </div>
                         
 

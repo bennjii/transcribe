@@ -17,6 +17,7 @@ const BookInput: React.FC<{ value: any, chapter: number }> = ({ value, chapter }
     // }, [value])
 
     useEffect(() => {
+        //@ts-expect-error
         callback({ ...book, chapters: [...book.chapters.slice(0, chapter), savedChapterState, ...book.chapters.slice(chapter+1, book.chapters.length)]});
     }, [savedChapterState])
 
@@ -31,6 +32,7 @@ const BookInput: React.FC<{ value: any, chapter: number }> = ({ value, chapter }
         else if(method == -1)
             chapterState.content.slice(index, index+1)
         
+        //@ts-expect-error
         callback({ ...book, chapters: [ ...book.chapters.splice(0, chapter), chapterState, ...book.chapters.splice(chapter+1, book.chapters.length) ]});    
         setChapterState({ ...chapterState });
     }   

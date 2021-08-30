@@ -20,7 +20,7 @@ import jsPDF from "jspdf";
 import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import BookDocument from "./book_document";
 
-const VisionBoard: React.FC<{}> = ({ }) => {
+const VisionBoard: React.FC<{  viewOnly?: boolean }> = ({ viewOnly }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     const [ bookState, setBookState ] = useState<File | Folder>(null);
@@ -115,7 +115,7 @@ const VisionBoard: React.FC<{}> = ({ }) => {
     const { visible, setVisible, bindings } = useModal();
 
     return (
-        <BookContext.Provider value={{ book: bookState, callback: setBookState }}>
+        <BookContext.Provider value={{ book: bookState, callback: setBookState, viewOnly: viewOnly }}>
             <div className={styles.editorContent} >
                 {/* Content... */}
 

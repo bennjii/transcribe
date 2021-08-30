@@ -4,7 +4,8 @@ import { Folder, File } from "./project";
 
 const BookContext = createContext<{ 
     book: Folder | File,
-    callback: Function
+    callback: Function,
+    viewOnly: boolean
 }>(null);
 
 export default BookContext

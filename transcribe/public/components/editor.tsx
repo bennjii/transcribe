@@ -10,7 +10,7 @@ import styles from '@styles/Home.module.css'
 
 const Editor: React.FC<{ value: File }> = ({ value }) => {
     const { editor, project, editorCallback } = useContext(ProjectContext);
-    const { book, callback } = useContext(BookContext);
+    const { book, callback, viewOnly } = useContext(BookContext);
 
     const input_ref = useRef(null);
     const title_ref = useRef(null);
@@ -36,8 +36,6 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
         //@ts-expect-error
         book.data = input_ref?.current?.getEditor()?.editor?.delta;
 
-        console.log(book);
-
         callback({
             ...book
         });
@@ -62,6 +60,7 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
     //@ts-expect-error
     return process.browser && editor?.data ? (
         <ReactQuill 
+            readOnly={viewOnly}
             ref={input_ref}
             theme={"snow"}
             //@ts-expect-error

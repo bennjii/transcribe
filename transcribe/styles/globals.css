@@ -162,6 +162,15 @@ input {
   font-family: "Public Sans" !important;
 }
 
+blockquote {
+  padding: calc(0.667 * 16pt) 16pt;
+  color: #666;
+  background-color: #fafafa;
+  border-radius: 5px;
+  margin: 1.5em 0;
+  border: 1px solid #eaeaea;
+}
+
 a {
   color: inherit;
   text-decoration: none;

@@ -847,3 +847,102 @@
 
   cursor: pointer;
 } */
+
+.checkboxElement {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.snippet * {
+  text-overflow: ellipsis;
+  width: auto;
+  overflow: hidden;
+}
+
+.viewOnlySync {
+  background-color: #e6b01c4f;
+  color: #745708;
+}
+
+/* @keyframes unsavedIN {
+  from {
+    transform: translateY(50px);
+  }
+  to {
+    transform: translateY(20px);
+  }
+}
+
+.unSavedChanges {
+  animation: unsavedIN .55s ease 0s 1;
+
+  width: 90%;
+  align-self: center;
+  justify-content: center;
+  background-color: rgba(var(--acent-rgb), 0.8);
+
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  transform: translateY(20px);
+
+  padding: .2rem 1rem;
+  color: var(--white-pure);
+} */
+
+
+.Error404 {
+  background-color: rgba(var(--acent-rgb), 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  width: 100vw;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+.Error404 > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Error404 .logo {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+
+  gap: 1rem;
+}
+
+.Error404 .logo p {
+  font-family: "PT Serif";
+}
+
+.Error404 h1 {
+  opacity: 1;
+
+  color: rgba(var(--acent-rgb), 0.15);
+  user-select: none;
+
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+
+  font-size: 15rem;
+  margin: 0;
+}
+
+.Error404 h2 {
+  font-weight: normal;
+  font-size: 1.4rem;
+}

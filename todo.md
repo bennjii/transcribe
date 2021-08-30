@@ -73,9 +73,9 @@ IP  Add Custom Toolbar
         - Document Downloading
 
     Document Prefrences
-        - Create Modal
-        - Add Settings
-        - Sync Settings
+        - Create Modal ✓
+        - Add Settings ✓
+        - Sync Settings ✓
 
     Project Prefrences / Settings
         - Create and Sync Information

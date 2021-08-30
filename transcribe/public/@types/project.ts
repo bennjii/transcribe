@@ -1,6 +1,23 @@
 import Delta from 'quill-delta';
 import { v4 as uuidv4 } from 'uuid'
 
+export type EmbeddedString = string;
+
+export type Settings = {
+    share: boolean,
+    permType: "public" | "private"
+}
+
+export type ProjectSettings = {
+    author: string,
+    book_title: string,
+    book_number?: string,
+    publisher?: string,
+    description: string,
+
+    //... other stuff
+}
+
 export type Project = {
     id: string,
     owner: string,
@@ -14,14 +31,8 @@ export type Project = {
     file_structure: Folder,
 
     // Current
-    active_file: EmbeddedString
-}
-
-export type EmbeddedString = string;
-
-export type Settings = {
-    share: boolean,
-    permType: "public" | "private"
+    active_file: EmbeddedString,
+    settings: ProjectSettings
 }
 
 export type File = {

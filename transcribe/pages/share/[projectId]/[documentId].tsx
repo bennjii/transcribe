@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
             reccursion(data);
 
-            if(document.settings.share == false) return "404";
+            if(!document || document?.settings?.share == false) return "404";
             else return document;
 		});
 

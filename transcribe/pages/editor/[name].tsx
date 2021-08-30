@@ -28,6 +28,7 @@ import _ from 'underscore'
 import NewFileModal from '@components/new_file_modal';
 import { useModal } from '@geist-ui/react';
 import VisionBoard from '@components/vision_board';
+import ProjectModal from '@components/project_modal';
 
 export const getStaticPaths: GetStaticPaths = async (a) => {
     const projects = await supabase
@@ -116,6 +117,7 @@ export default function Home({ project }) {
     }, [])
 
 	const { visible, setVisible, bindings } = useModal();
+	const { visible: projectVisible, setVisible: setProjectVisible, bindings: projectBindings } = useModal();
 
 	return (
 		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor, synced: synced }}>
@@ -128,8 +130,10 @@ export default function Home({ project }) {
 					{/* Header */}
 					<Header />
 
+					<ProjectModal modal={{ projectVisible, setProjectVisible, projectBindings }}/>
+
 					<div className={styles.project}>
-						<div>
+						<div onClick={() => setProjectVisible(true)}>
 							<h2>{projectState?.name}</h2>
 
 							<ArrowRight size={18} strokeWidth={2}/>

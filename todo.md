@@ -99,6 +99,11 @@ IP  Add Custom Toolbar
         - Artifacts (Backend Smooth Integration), In Documents, able to search and pull for arficats as refrence material. These can be plain documents with linkers.
 
     Shareability
+        - Share Document (View Only - No Edit) ✓
+        - Document Permission (No Share or Share) ✓
+        - Share Clone'd Versions for Private Reviewal 
+        - Account-Based Sharing Permissions
+        - Global Based Share, No Share + 404 ✓
         - Ability to share (clone), documents to peers, who can (depending upon permissions) edit, share, comment, highlight etc.
             These elements will not edit the main document, but shall act as proxies in which the main document can be refrenced, so the author can make changes or others, as deemed neccesary in order to ensure the consistency of the main document. Separate viewing and syncing protocols must be implemented such a viewer.
 

@@ -53,28 +53,81 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                 break;
             case "html":
                 if(editor.is_folder) {
-                    const book = [];
+                    const book = editor?.children.map((e, i) => { 
+                        const theme_delta = new Delta({
+                            ops: [
+                                //@ts-expect-error
+                                ...e?.data?.ops.map(e => {
+                                    return {
+                                        ...e,
+                                        attributes: {
+                                            ...e?.attributes,
+                                            font: e?.attributes?.font ? 
+                                                e?.attributes?.font
+                                                    .replace("-", " ")
+                                                    .replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))
+                                            : "Times New Roman"
+                                        }
+                                    }
+                                })
+                            ]
+                        });
 
-                    //@ts-expect-error
-                    editor?.children.map((e, i) => { book.push(...e?.data?.ops) });
-
-                    const html = new QuillDeltaToHtmlConverter(book, {
-                        encodeHtml: false,
-                        inlineStyles: {
-                            font: {
-                                'serif': "font-family: Public Sans, PT Serif, Times New Roman",
-                                'monospace': 'font-family: Monaco, Courier New, monospace'
+                        return new Delta({ ops: [ 
+                            {
+                                insert: `${e?.name}`, 
+                                attributes: { 
+                                    color: "#202737",
+                                    font: "Public Sans",
+                                    size: "14px"
+                                }   
+                            },
+                            {
+                                insert: `\n`, 
+                                attributes: { 
+                                    color: "#202737",
+                                    font: "Public Sans",
+                                    header: 1
+                                }   
                             }
-                        }
+                        ] }).concat(theme_delta).ops;
+                    }).flat();
+
+                    const title = new Delta({ 
+                        ops: [ 
+                            {
+                                insert: `${editor?.name}`, 
+                                attributes: { 
+                                    color: "#202737",
+                                    font: "PT Serf",
+                                    size: "30px"
+                                }   
+                            },
+                            {
+                                insert: `\n`, 
+                                attributes: { 
+                                    color: "#202737",
+                                    font: "PT Serf",
+                                    header: 1
+                                }   
+                            }
+                        ]
+                    });
+
+                    const book_complete = title.concat(new Delta(book)).ops;
+                    const html = new QuillDeltaToHtmlConverter(book_complete, {
+                        encodeHtml: false,
+                        inlineStyles: true,
+                        allowBackgroundClasses: true
                     }).convert();
 
                     saveAs(new Blob([html], {type: "text/html;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.html`);
                     setCreating(false);
                 }else {
                     //@ts-expect-error
-                    const document = editor?.data.ops;
+                    const document = new Delta({ ops: [ { insert: `${editor.name}\n\n` } ] }).concat(new Delta(editor?.data.ops));
 
-                    const html = new QuillDeltaToHtmlConverter(document, {
+                    const html = new QuillDeltaToHtmlConverter(document.ops, {
                         encodeHtml: false,
                         inlineStyles: {
                             font: {
@@ -93,14 +146,15 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                 if(editor.is_folder) {
                     const txt_raw = editor?.children.map(e => {
                         //@ts-expect-error
-                        return e.data.ops.map(e => e.insert).join("");
+                        // return e.data.ops.map(e => e.insert).join("");
+                        return `\n\n${e.name}\n\n ${e.data.ops.map(e => e.insert).join("")}`
                     }).join("");
 
                     saveAs(new Blob([txt_raw], {type: "text/plain;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.txt`);
                     setCreating(false);
                 }else {
                     //@ts-expect-error
-                    const txt_raw = editor?.data?.ops?.map(e => e.insert).join("");
+                    const txt_raw = `${editor.name}\n\n ${editor?.data?.ops?.map(e => e.insert).join("")}`;
 
                     saveAs(new Blob([txt_raw], {type: "text/plain;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.txt`);
                     setCreating(false);
@@ -155,25 +209,6 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
             <Text p style={{ marginTop: 0 }}>Choose how to generate and export your book.</Text>
 
             <Modal.Content className={styles.exportModalContent}>
-                <Divider align="start">theme</Divider>
-                <Radio.Group value="theme-1" useRow>
-                    <Grid.Container gap={2} justify="center">
-                        <Grid xs={12}>
-                            <Radio value="theme-1" style={{ color: '#597298 !important' }}>
-                                Book 1
-                                <Radio.Desc>Old Theme</Radio.Desc>
-                            </Radio>
-                        </Grid>
-                        
-                        <Grid xs={12}>
-                            <Radio value="theme-2">
-                                Book 2
-                                <Radio.Desc>Modern Theme</Radio.Desc>
-                            </Radio>
-                        </Grid>
-                    </Grid.Container>
-                </Radio.Group>
-
                 <Divider align="start">format</Divider>
                 <Radio.Group value="pdf" useRow onChange={(e) => { 
                     //@ts-expect-error
@@ -209,6 +244,28 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                         </Grid>
                     </Grid.Container>
                 </Radio.Group>
+
+                <>     
+                    <Divider align="start">theme</Divider>
+                    <Radio.Group value="theme-1" useRow>
+                        <Grid.Container gap={2} justify="center">
+                            <Grid xs={12}>
+                                <Radio value="theme-1" style={{ color: '#597298 !important' }}>
+                                    Book 1
+                                    <Radio.Desc>Old Theme</Radio.Desc>
+                                </Radio>
+                            </Grid>
+                            
+                            <Grid xs={12}>
+                                <Radio value="theme-2">
+                                    Book 2
+                                    <Radio.Desc>Modern Theme</Radio.Desc>
+                                </Radio>
+                            </Grid>
+                        </Grid.Container>
+                    </Radio.Group>
+                </>
+
             </Modal.Content>
             <Modal.Action passive onClick={() => setVisible(false)}>
                 Cancel

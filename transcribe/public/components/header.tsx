@@ -9,7 +9,7 @@ const Header: React.FC<{ }> = ({ }) => {
         <div className={styles.logo}>
             <Head>
                 <title>transcribe</title>
-                <link rel="icon" href="/favicon/32t.png" type="image/png" />
+                <link rel="icon" href="/favicon/32-bold.png" type="image/png" />
             </Head>
 
             <p onClick={() => {

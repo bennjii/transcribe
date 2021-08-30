@@ -75,7 +75,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
 
                         return new Delta({ ops: [ 
                             {
-                                insert: `${e?.name}`, 
+                                insert: `\n\n${e?.name}`, 
                                 attributes: { 
                                     color: "#202737",
                                     font: "Public Sans",
@@ -96,7 +96,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                     const title = new Delta({ 
                         ops: [ 
                             {
-                                insert: `${editor?.name}`, 
+                                insert: `${editor?.name}\n\n`, 
                                 attributes: { 
                                     color: "#202737",
                                     font: "PT Serf",

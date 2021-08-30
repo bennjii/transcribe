@@ -10,7 +10,10 @@ import FolderComponent from './folder_component';
 
 const FileStructure: React.FC<{ current_folder: Folder }> = ({ current_folder }) => {
     return (
-        <div className={styles.folder}>
+        <div 
+            className={styles.folder}
+            key={`FILESTRUCTURE-${current_folder.id}`}
+        >
             {
                 current_folder.is_folder 
                 && <FolderComponent data={current_folder}/>

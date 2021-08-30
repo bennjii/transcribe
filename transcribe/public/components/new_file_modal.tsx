@@ -12,7 +12,7 @@ import { supabase } from "@root/client";
 import { v4 as uuidv4 } from 'uuid'
 import Delta from "quill-delta";
 
-const NewFileModal: React.FC<{ modal: any }> = ({ modal }) => {
+const NewFileModal: React.FC<{ modal: any, location: Folder, isProjectRoot?: boolean }> = ({ modal, location, isProjectRoot }) => {
     const { visible, setVisible, bindings } = modal;
     const { project, projectCallback, editor, editorCallback, synced } = useContext(ProjectContext);
 
@@ -27,35 +27,49 @@ const NewFileModal: React.FC<{ modal: any }> = ({ modal }) => {
     }, [synced])
 
     const create = () => {
+        console.log(location);
+
         if(type == "folder") {
             setCreating(true);
             console.log(`Creating new ${type} with name ${utilName}`);
 
-            projectCallback({
-                ...project,
-                file_structure: {
-                    ...project.file_structure,
-                    children: [
-                        ...project.file_structure.children,
-                        newFolder(utilName)
-                    ]
-                }
-            });
+            if(isProjectRoot) {
+                projectCallback({
+                    ...project,
+                    file_structure: {
+                        ...project.file_structure,
+                        children: [
+                            ...project.file_structure.children,
+                            newFolder(utilName)
+                        ]
+                    }
+                });
+            }else {
+                //@ts-expect-error
+                location.children.push(newFolder(utilName));
+                projectCallback(JSON.parse(JSON.stringify(project)));
+            }
 
         }else if(type == "file") {
             setCreating(true);
             console.log(`Creating new ${type} (${docType}) with name ${utilName}`);
 
-            projectCallback({
-                ...project,
-                file_structure: {
-                    ...project.file_structure,
-                    children: [
-                        ...project.file_structure.children,
-                        newFile(utilName, docType)
-                    ]
-                }
-            });
+            if(isProjectRoot) {
+                projectCallback({
+                    ...project,
+                    file_structure: {
+                        ...project.file_structure,
+                        children: [
+                            ...project.file_structure.children,
+                            newFile(utilName, docType)
+                        ]
+                    }
+                });
+            }else {
+                //@ts-expect-error
+                location.children.push(newFile(utilName, docType));
+                projectCallback(JSON.parse(JSON.stringify(project)));
+            }
         }else {
             console.error(`An error occured creating ${type} with name ${utilName}`);
         }
@@ -130,7 +144,7 @@ const NewFileModal: React.FC<{ modal: any }> = ({ modal }) => {
             <Modal.Action passive onClick={() => setVisible(false)}>
                 Cancel
             </Modal.Action>
-            <Modal.Action loading={creating} onClick={() => {
+            <Modal.Action loading={creating} disabled={!utilName} onClick={() => {
                 create()
             }}>
                 Create

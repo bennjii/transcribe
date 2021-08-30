@@ -93,7 +93,7 @@ const reccursion = (element, state: Project, editorCallback: Function) => {
 }
 
 
-export const newFile = (name, docType) => {
+export const newFile = (name: string, docType: "document" | "vision_board" | "artifact") => {
     return {
         name: name,
         id: uuidv4(),

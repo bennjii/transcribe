@@ -99,6 +99,8 @@ export default function Home({ project }) {
 	useEffect(() => {
 		setSynced(false);
 		verif(projectState);
+
+		console.log(projectState.file_structure);
 	}, [projectState.file_structure])
 
 	useEffect(() => {
@@ -138,16 +140,16 @@ export default function Home({ project }) {
 
 							<ArrowRight size={18} strokeWidth={2}/>
 						</div>
-						
 
-						<div className={styles.folderStructure}>
+						<div className={styles.folderStructure} key={`FOLDERCOMPONENT-${projectState.id}`}>
 							<div className={styles.folderTitle}>
 								<p>{projectState?.name}</p>
 								
 								<Plus size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setVisible(true)}/>
-								<NewFileModal modal={{ visible, setVisible, bindings }} />
+								<NewFileModal modal={{ visible, setVisible, bindings }} location={project.file_structure} isProjectRoot/>
 							</div>
 							
+							{/* <FileStructure current_folder={projectState.file_structure} key={`FILESTRUCT-${projectState.id}`}/> */}
 							{
 								projectState.file_structure.children.map((data, index) => {
 									return (

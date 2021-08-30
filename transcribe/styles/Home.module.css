@@ -257,7 +257,7 @@
   margin-left: 1rem;
 }
 
-.folderHeader, .openFolderHeader, .subFile, .file, .openFile {
+.folderHeader > div:first-of-type, .openFolderHeader > div:first-of-type, .subFile, .file, .openFile {
   display: flex;
   flex-direction: row;
 
@@ -945,4 +945,30 @@
 .Error404 h2 {
   font-weight: normal;
   font-size: 1.4rem;
+}
+
+.folderDefault {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.folderDefault > div:first-of-type {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  gap: .5rem;
+}
+
+.folderNewItem {
+  opacity: 0.4;
+  transition: .2s ease all;
+}
+
+.folderNewItem:hover {
+  cursor: pointer;
+  opacity: 1;
 }

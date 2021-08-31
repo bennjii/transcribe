@@ -71,6 +71,19 @@ export type Folder = {
     settings: Settings
 }
 
+export type CanvasItem = {
+    name: string,
+    is_folder: false,
+    title_format: null,
+    data: Delta | string,
+    type: "text" | "image",
+    id: string,
+    settings: {
+        share: boolean,
+        permType: "private" | "public"
+    }
+}
+
 export const recursivelyIdentify = (state: Project, editorCallback: Function) => {
     if(state.file_structure.id == state.active_file) return state.file_structure;
     else return reccursion(state.file_structure, state, editorCallback)
@@ -102,7 +115,7 @@ export const newFile = (name: string, docType: "document" | "vision_board" | "ar
         type: docType,
 
         is_folder: false,
-        data: new Delta({ ops: [ { insert: "Start Typing Here..." } ] }),
+        data: docType !== "vision_board" ? new Delta({ ops: [ { insert: "Start Typing Here..." } ] }) : [ newCanvasItem("...", "text") ],
         title_format: null,
         settings: {
             share: false,
@@ -142,6 +155,31 @@ export const newChapter = () => {
     }
 }
 
-export const newCanvasItem = () => {
-    
+export const newCanvasItem = (content: string, type?: "image" | "text") => {
+    let data;
+
+    switch(type) {
+        case "image":
+            data = content;
+            break;
+        case "text":
+            data = new Delta({ ops: [ { insert: content } ] })
+            break;
+        default: 
+            data = content;
+            break;
+    }
+
+    return {
+        name: "",
+        is_folder: false,
+        title_format: null,
+        data: data,
+        type: type,
+        id: uuidv4(),
+        settings: {
+            share: false,
+            permType: "private"
+        }
+    }
 }

@@ -5,18 +5,25 @@ import { useContext, useState } from 'react';
 import FileComponent from './file_component';
 import FolderComponent from './folder_component';
 import ProjectContext from '@public/@types/project_context';
+import VisionElement from './vision_element';
 
 const VisionCanvas: React.FC<{ }> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
-    const [ visionElement, setVisionElements ] = useState(false);
 
     return (
-        <div 
+        <canvas 
             className={styles.visionBoard}
             key={`VISIONBOARD-${editor.id}`}
         >
-            
-        </div>
+            {
+                // @ts-expect-error
+                editor?.data?.map(element => {
+                    return (
+                        <VisionElement data={element} key={`VISIONELEMENT-${element.id}`}/>
+                    )
+                })
+            }
+        </canvas>
     )
 }
 

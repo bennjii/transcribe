@@ -11,7 +11,7 @@ import BookChapter from "./book_chapter";
 import { useContext } from "react";
 import ProjectContext from "@public/@types/project_context";
 import Editor from "./editor";
-import { File, Folder, Project } from "@public/@types/project";
+import { File, Folder, newCanvasItem, Project } from "@public/@types/project";
 import ReactQuill, { Quill } from "react-quill";
 
 import Delta from 'quill-delta'
@@ -119,18 +119,8 @@ const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                             {
                                 !viewOnly ? 
                                 <div className={styles.addChapter} onClick={() => {
-                                    // bookState?.children.push({
-                                    //     name: "",
-                                    //     is_folder: false,
-                                    //     title_format: null,
-                                    //     data: {},
-                                    //     type: "document",
-                                    //     id: uuidv4(),
-                                    //     settings: {
-                                    //         share: false,
-                                    //         permType: "private"
-                                    //     }
-                                    // })
+                                    //@ts-expect-error
+                                    bookState?.children.push(newCanvasItem("...", "text"))
 
                                     projectCallback({
                                         ...project

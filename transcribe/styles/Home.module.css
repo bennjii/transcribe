@@ -982,3 +982,8 @@
   cursor: pointer;
   opacity: 1;
 }
+
+.visionBoard {
+  padding: 1rem;
+  border: 1px sold var(--border-color);
+}

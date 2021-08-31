@@ -23,7 +23,7 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
             const reccursion = (element, state: Project, editorCallback: Function) => {
                 return element?.children?.forEach(_element => {
                     if(_element.id == data.id) { 
-                        if(element.type == 'book') {
+                        if(element.type == 'book' && !element?.settings?.performance) {
                             book_parent = element;
 
                             editorCallback({ ...book_parent, active_sub_file: data.id });
@@ -38,7 +38,7 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
 
             reccursion(project.file_structure, project, editorCallback);
 
-            if(book_parent) {
+            if(book_parent && !book_parent?.settings?.performance) {
                 project.active_file = book_parent.id;
                 editorCallback({ ...book_parent, active_sub_file: data.id });
             }else {
@@ -48,7 +48,8 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
         }} draggable>
             {
                 (() => {
-                    if(parent?.type == "book") return <></>;
+                    if(parent?.type == "book" && !parent?.settings?.performance) return <></>;
+                    // else if(parent?.settings?.performance) return 
 
                     switch(data.type) {
                         case "document":

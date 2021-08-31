@@ -111,7 +111,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                 <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Delete the document or book to remove it from the file view, once removed cannot be restored.</Text>
                 <Note label={false} type="error" style={{ opacity: 0.7 }} filled>Once deleted, a document cannot be restored.</Note>
 
-                <Input type="default" clearable placeholder={`Enter ${editor.type} name`} width="100%" onChange={(e) => {
+                <Input type="default" clearable placeholder={`Enter ${editor.type.replace("_", " ").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))} Name`} width="100%" onChange={(e) => {
                     if(e.target.value == editor.name) setUnableToDelete(false);
                     else setUnableToDelete(true);
                 }} />

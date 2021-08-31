@@ -141,3 +141,7 @@ export const newChapter = () => {
         }
     }
 }
+
+export const newCanvasItem = () => {
+    
+}

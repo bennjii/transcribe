@@ -19,13 +19,19 @@ import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import jsPDF from "jspdf";
 import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import BookDocument from "./book_document";
+import ExportModal from "./export_modal";
+import PrefrenceModal from "./prefrence_modal";
+import VisionCanvas from "./vision_canvas";
 
-const VisionBoard: React.FC<{  viewOnly?: boolean }> = ({ viewOnly }) => {
+const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     const [ bookState, setBookState ] = useState<File | Folder>(null);
     const [ editorState, setEditorState ] = useState({
-        elements: 0,
+        words: 0,
+        chars: 0,
+        chapters: bookState?.type == "book" ? bookState.children.length : 0,
+        chapter: 0,
         zoom_level: 1.5
     });
     
@@ -35,7 +41,7 @@ const VisionBoard: React.FC<{  viewOnly?: boolean }> = ({ viewOnly }) => {
 
     useEffect(() => {
         // Book has been updated! Let's propogate the changes up the tree, to the root project node.
-        if(bookState) {
+        if(bookState && !viewOnly) {
             let updated_file = JSON.parse(JSON.stringify(project.file_structure));
 
             // Loop & Replace Relevancy
@@ -57,139 +63,49 @@ const VisionBoard: React.FC<{  viewOnly?: boolean }> = ({ viewOnly }) => {
             })
         }
 
-        setEditorState({ ...editorState, elements: 1 });
+        let word_count = 0;
+        let char_count = 0;
+
+        // For Exporting, Concatonate all deltas with a splicing intermediary.
+        // https://github.com/quilljs/delta/#concat
+
+        //@ts-expect-error
+        if(editor?.children) {
+            //@ts-expect-error
+            editor.children.forEach(element => {
+                if(element.data) {
+                    const html = new QuillDeltaToHtmlConverter(element.data.ops, {}).convert();
+
+                    word_count += (html?.trim().match(/(\w+[^>\s])/g) || []).length;
+                    char_count += (html?.trim().match(/\S/g) || []).length;
+                }
+            });
+        }else {
+            //@ts-expect-error
+            if(!editor?.is_folder && editor?.data) {
+                //@ts-expect-error
+                const html = new QuillDeltaToHtmlConverter(editor.data.ops, {}).convert();
+
+                word_count += (html?.trim().match(/(\w+[^>\s])/g) || []).length;
+                char_count += (html?.trim().match(/\S/g) || []).length;
+            }
+        }
+
+        setEditorState({ ...editorState, words: word_count, chars: char_count, chapters: bookState?.type == "book" ? bookState.children.length : 0 });
 
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [, bookState]);
 
-    const exportBook = () => {
-        // @ts-expect-error                                
-        if(bookState?.children) {
-            const pdfExporter = require('quill-to-pdf').pdfExporter;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-            });
-
-            const book = [];
-
-            //@ts-expect-error
-            bookState?.children.map((e, i) => {
-                book.push(...e.data.ops)
-            });
-
-            console.log(book);
-            
-            const html = new QuillDeltaToHtmlConverter(book, {}).convert();
-            // const pdf = await pdfExporter.generatePdf(new Delta({ ops: book }));
-            // saveAs(pdf, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
-
-            const book_elem = document.createElement("div")
-                book_elem.innerHTML = html;
-
-            console.log(book_elem);
-
-            doc.html(book_elem, {
-                callback: function (doc) {
-                    doc.save(`${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
-                },
-                margin: [1,1,1,1],
-                // fontFaces: [{
-                //     family: "Public Sans",
-                //     style: 'normal',
-                //     src: [{
-                //         url: "./public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf",
-                //         format: "truetype"
-                //     }]
-                // }],
-                filename: `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`,
-                x: 10,
-                y: 10
-            })
-
-            // doc.addFileToVFS("MyFont.ttf", );
-            // doc.addFont("public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf", "Public Sans", "normal");
-            console.log(html);
-        }
-    }
-
-    const { visible, setVisible, bindings } = useModal();
+    const { visible: exportVisible, setVisible: setExportVisible, bindings: exportBindings } = useModal();
+    const { visible: prefrencesVisible, setVisible: setPrefrencesVisible, bindings: prefrenceBindings } = useModal();
 
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState, viewOnly: viewOnly }}>
             <div className={styles.editorContent} >
                 {/* Content... */}
 
-                <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}>
-                    <div className={styles.printModal} id="print">
-                        <div>
-                            {/* Layout Types */}
-                            
-                        </div>
-                    </div>
-
-                    <Modal.Title>Export  '{bookState?.name}'</Modal.Title>
-                    <Text p style={{ marginTop: 0 }}>Choose how to generate and export your book.</Text>
-
-                    <Modal.Content className={styles.exportModalContent}>
-                        <Divider align="start">theme</Divider>
-                        <Radio.Group value="theme-1" useRow>
-                            <Grid.Container gap={2} justify="center">
-                                <Grid xs={12}>
-                                    <Radio value="theme-1" style={{ color: '#597298 !important' }}>
-                                        Book 1
-                                        <Radio.Desc>Old Theme</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                                
-                                <Grid xs={12}>
-                                    <Radio value="theme-2">
-                                        Book 2
-                                        <Radio.Desc>Modern Theme</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                            </Grid.Container>
-                        </Radio.Group>
-
-                        <Divider align="start">format</Divider>
-                        <Radio.Group value="pdf" useRow>
-                            <Grid.Container gap={2} justify="center">
-                                <Grid xs={12}>
-                                    <Radio value="pdf" defaultChecked>
-                                        PDF
-                                        <Radio.Desc>General Export</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                                
-                                <Grid xs={12}>
-                                    <Radio value="html">
-                                        HTML
-                                        <Radio.Desc>Website Export</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-
-                                <Grid xs={12}>
-                                    <Radio value="txt">
-                                        TXT
-                                        <Radio.Desc>Raw Text</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-
-                                <Grid xs={12}>
-                                    <Radio value="ebook">
-                                        EBook
-                                        <Radio.Desc>Ebook Format</Radio.Desc>
-                                    </Radio>
-                                </Grid>
-                            </Grid.Container>
-                        </Radio.Group>
-                    </Modal.Content>
-                    <Modal.Action passive onClick={() => setVisible(false)}>
-                        Cancel
-                    </Modal.Action>
-                    <Modal.Action loading={false} onClick={() => exportBook()}>
-                        Export
-                    </Modal.Action>
-                </Modal>
+                <ExportModal modal={{ exportVisible, setExportVisible, exportBindings }}/>
+                <PrefrenceModal modal={{ prefrencesVisible, setPrefrencesVisible, prefrenceBindings }}/>
 
                 <div className={styles.book}>			
                     <div className={styles.bookCaptionBar}>
@@ -200,44 +116,57 @@ const VisionBoard: React.FC<{  viewOnly?: boolean }> = ({ viewOnly }) => {
                         </div>
 
                         <div className={styles.centerActions}>
-                            <div className={styles.addChapter} onClick={() => {
-                                //@ts-expect-error
-                                bookState?.data.elements.push({
-                                    name: "",
-                                    is_folder: false,
-                                    title_format: null,
-                                    data: {},
-                                    type: "vision_element",
-                                    id: uuidv4()
-                                })
+                            {
+                                !viewOnly ? 
+                                <div className={styles.addChapter} onClick={() => {
+                                    // bookState?.children.push({
+                                    //     name: "",
+                                    //     is_folder: false,
+                                    //     title_format: null,
+                                    //     data: {},
+                                    //     type: "document",
+                                    //     id: uuidv4(),
+                                    //     settings: {
+                                    //         share: false,
+                                    //         permType: "private"
+                                    //     }
+                                    // })
 
-                                projectCallback({
-                                    ...project
-                                })
-                            }}>
-                                <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
+                                    projectCallback({
+                                        ...project
+                                    })
+                                }}>
+                                    <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
 
-                                <p>Add Element</p>
-                            </div>
+                                    <p>Add Item</p>
+                                </div>
+                                :
+                                <></>
+                            }
 
                             <div className={styles.export} onClick={async () => {
-                                setVisible(!visible)
+                                setExportVisible(!exportVisible)
                                 console.log(bookState);
+
                             }}>
                                 <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
 
                                 <p>Export</p>
                             </div>
 
-                            <div className={styles.export} onClick={async () => {
-                                setVisible(!visible)
-                                console.log(bookState);
-
-                            }}>
-                                <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
-
-                                <p>Prefrences</p>
-                            </div>
+                            {
+                                !viewOnly ?
+                                <div className={styles.export} onClick={async () => {
+                                    setPrefrencesVisible(true)
+                                }}>
+                                    <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
+    
+                                    <p>Prefrences</p>
+                                </div>
+                                :
+                                <></>
+                            }
+                            
                         </div>
                         
 
@@ -250,12 +179,14 @@ const VisionBoard: React.FC<{  viewOnly?: boolean }> = ({ viewOnly }) => {
                         </div>
 
                         <div className={styles.fixedPageSpec} style={{ justifyContent: "flex-end" }}>
-                            <p><b>{editorState.elements}</b> {editorState.elements > 1 ? "Elements" : "Element"}</p>
+                            { bookState?.type == "book" ? <p><b>{editorState.chapters}</b> {editorState.chapters > 1 ? "Chapters" : "Chapter"}</p> : <></> }
+                            <p><b>{editorState.words}</b> Words</p>
+                            <p><b>{editorState.chars}</b> Characters</p>
                         </div>
                     </div>
                     
-                    <div className={styles.visionBoard}>
-
+                    <div className={styles.pages} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
+                        <VisionCanvas />
                     </div>
                 </div>
             </div>

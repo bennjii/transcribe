@@ -961,6 +961,8 @@
 
   align-items: center;
   gap: .5rem;
+
+  flex: 1;
 }
 
 .folderNewItem {

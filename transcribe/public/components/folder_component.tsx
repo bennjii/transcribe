@@ -1,6 +1,6 @@
 import ProjectContext from "@public/@types/project_context";
 import { useContext } from "react";
-import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon, BookOpen, Plus, MoreHorizontal } from "react-feather";
+import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon, BookOpen, Plus, MoreHorizontal, ChevronRight, ChevronDown } from "react-feather";
 
 import styles from '@styles/Home.module.css'
 
@@ -10,7 +10,7 @@ import NewFileModal from "./new_file_modal";
 import PrefrenceModal from "./prefrence_modal";
 import FolderPrefrenceModal from "./folder_prefrences";
 
-const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
+const FolderComponent: React.FC<{ data: Folder, callback: Function, value: boolean }> = ({ data, callback, value }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     const { visible, setVisible, bindings } = useModal();
@@ -20,20 +20,26 @@ const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
         <div 
         key={`FOLDERCOMPONENT-${data.id}-`}
         className={`${editor?.id == data.id ? styles.openFolderHeader : styles.folderHeader} ${(data.type == "folder") ? styles.folderDefault : ""}`} 
-        onClick={() => {
+        onClick={(e) => {
             if(data.type == 'book') { 
                 console.log("Heres the book, we are setting to relative to the project", project);
                 projectCallback({ ...project, active_file: data.id });
                 editorCallback({ ...data, active_sub_file: data.children[0].id });
             }
+
             // editorCallback(data);
         }} draggable>
-            <div>
+            <div onClick={() => {
+                callback(!value);
+            }}>
                 {
                     data.type == 'book' ?
                     editor?.id == data.id ? <BookOpen size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} /> : <BookIcon size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} />
                     :
-                    <FolderIcon size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
+                    !value ? 
+                        <ChevronRight id="folderIcon" size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
+                        :
+                        <ChevronDown id="folderIcon" size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
                 }
                 
                 <p>{data.name}</p>

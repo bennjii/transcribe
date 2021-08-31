@@ -20,6 +20,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
     const [ utilName, setUtilName ] = useState(editor?.name);
 
     const [ creating, setCreating ] = useState(false);
+    const [ unableToDelete, setUnableToDelete ] = useState(true);
 
     useEffect(() => {
         if(creating && synced) { setVisible(false); setCreating(false); }
@@ -43,7 +44,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
     }
 
     return (
-        <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}>
+        <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }} onClose={() => { setUnableToDelete(true); setVisible(false) }}>
             <Modal.Title>'{editor?.name}' Prefrences</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Apply settings & prefrences</Text>
 
@@ -52,6 +53,16 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                 <Input label="Name" placeholder="New Item" initialValue={utilName} width={"100%"} onChange={(e) => {
                     setUtilName(e.target.value);
                 }}/>
+
+                {
+                    editor.type == "book" ? 
+                    <div className={styles.checkboxElement} >
+                        <Checkbox initialChecked={settings?.performance} onChange={(e) => setSettings({...settings, performance: e.target.checked}) }>Performance Mode</Checkbox> 
+                        <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Enable performance mode if you are experiencing performance issues with editing</Text>
+                    </div>
+                    :
+                    <></>
+                }
 
                 <Divider align="start">share</Divider>
 
@@ -98,8 +109,13 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                 <Divider align="start">delete</Divider>
 
                 <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Delete the document or book to remove it from the file view, once removed cannot be restored.</Text>
-                <Note label={false} type="error" filled>Once deleted, a document cannot be restored.</Note>
-                <Button ghost type="error" iconRight={<ArrowRight />} onClick={() => {
+                <Note label={false} type="error" style={{ opacity: 0.7 }} filled>Once deleted, a document cannot be restored.</Note>
+
+                <Input type="default" clearable placeholder={`Enter ${editor.type} name`} width="100%" onChange={(e) => {
+                    if(e.target.value == editor.name) setUnableToDelete(false);
+                    else setUnableToDelete(true);
+                }} />
+                <Button ghost disabled={unableToDelete} type="error" iconRight={<ArrowRight />} onClick={() => {
                     setCreating(true);
 
                     console.log(`Deleting ${editor.id} from ${project.name}`);

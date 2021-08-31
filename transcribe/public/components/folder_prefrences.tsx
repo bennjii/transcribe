@@ -20,6 +20,7 @@ const FolderPrefrenceModal: React.FC<{ modal: any, data: any }> = ({ modal, data
     const [ utilName, setUtilName ] = useState(data?.name);
 
     const [ creating, setCreating ] = useState(false);
+    const [ unableToDelete, setUnableToDelete ] = useState(true);
 
     useEffect(() => {
         if(creating && synced) { setVisible(false); setCreating(false); }
@@ -43,7 +44,7 @@ const FolderPrefrenceModal: React.FC<{ modal: any, data: any }> = ({ modal, data
     }
 
     return (
-        <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}>
+        <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}  onClose={() => { setUnableToDelete(true); setVisible(false) }}>
             <Modal.Title>'{data?.name}' Prefrences</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Apply settings & prefrences</Text>
 
@@ -98,7 +99,12 @@ const FolderPrefrenceModal: React.FC<{ modal: any, data: any }> = ({ modal, data
 
                 <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Delete the document or book to remove it from the file view, once removed cannot be restored.</Text>
                 <Note label={false} type="error" filled>Once deleted, a document cannot be restored.</Note>
-                <Button ghost type="error" iconRight={<ArrowRight />} onClick={() => {
+
+                <Input type="default" clearable placeholder={`Enter ${data.type} name`} width="100%" onChange={(e) => {
+                    if(e.target.value == data.name) setUnableToDelete(false);
+                    else setUnableToDelete(true);
+                }} />
+                <Button ghost disabled={unableToDelete} type="error" iconRight={<ArrowRight />} onClick={() => {
                     setCreating(true);
 
                     console.log(`Deleting ${data.id} from ${project.name}`);

@@ -206,9 +206,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                             {
                                 !viewOnly ?
                                 <div className={styles.export} onClick={async () => {
-                                    setPrefrencesVisible(!prefrencesVisible)
-                                    console.log(bookState);
-    
+                                    setPrefrencesVisible(true)
                                 }}>
                                     <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
     

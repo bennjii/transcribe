@@ -6,7 +6,8 @@ export type EmbeddedString = string;
 
 export type Settings = {
     share: boolean,
-    permType: "public" | "private"
+    permType: "public" | "private",
+    performance?: boolean
 }
 
 export type ProjectSettings = {

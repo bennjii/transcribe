@@ -1,4 +1,5 @@
 import Delta from 'quill-delta';
+import { Quill } from 'react-quill';
 import { v4 as uuidv4 } from 'uuid'
 
 export type EmbeddedString = string;
@@ -100,7 +101,7 @@ export const newFile = (name: string, docType: "document" | "vision_board" | "ar
         type: docType,
 
         is_folder: false,
-        data: new Delta(),
+        data: new Delta({ ops: [ { insert: "Start Typing Here..." } ] }),
         title_format: null,
         settings: {
             share: false,
@@ -130,7 +131,7 @@ export const newChapter = () => {
         name: "",
         is_folder: false,
         title_format: null,
-        data: {},
+        data: new Delta({ ops: [ { insert: "Start Typing Here..." } ] }),
         type: "document",
         id: uuidv4(),
         settings: {

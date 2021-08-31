@@ -23,7 +23,7 @@ const NewFileModal: React.FC<{ modal: any, location: Folder, isProjectRoot?: boo
     const [ creating, setCreating ] = useState(false);
 
     useEffect(() => {
-        if(creating && synced) setVisible(false); 
+        if(creating && synced) { setVisible(false); setCreating(false); }
     }, [synced])
 
     const create = () => {

@@ -52,10 +52,10 @@ IP  Add Custom Toolbar
         - Modular Viewport for Multiple Document Components
 
     Export Formats & Exporting
-        _A: Render document with CSS as a DOM in another (or combined) window
-        - Use new DOM to be exportable as print object (CTRL + P)
-        - Allow exporting to PDF.
-        _I: Find API or NPM Package to export to XML Word, or likewise.
+        _A: Render document with CSS as a DOM in another (or combined) window ✓
+        - Use new DOM to be exportable as print object (CTRL + P) ✓
+        - Allow exporting to PDF. ✓
+        _I: Find API or NPM Package to export to XML Word, or likewise. ✓
 
     Allow file-based importing
         _I: Allow importing existing projects from .txt, and others...
@@ -67,21 +67,22 @@ IP  Add Custom Toolbar
 
 ### General
     Document Export
-        - Disable/Modular Theme Typing
-        - Support Formats
-        - Integrate Theming
-        - Document Downloading
+        - Disable/Modular Theme Typing ✓
+        - Support Formats ✓
+        - Integrate Theming ☐
+        - Document Downloading ✓
 
-    Document Prefrences
+    Document Prefrences ✓
         - Create Modal ✓
         - Add Settings ✓
         - Sync Settings ✓
+        - Delete Document & ReRoute Current Document Appropriately ✓
 
     Project Prefrences / Settings
-        - Create and Sync Information
-        - Create Modal
-        - Integate for Exporting
-        - Parameters: {  default book, author, title, attributes, book no., publisher, rename project, project title, project description, etc... + Project Pref. e.g. theme, mode, default fonts, load custom fonts, etc.  }
+        - Create and Sync Information ✓
+        - Create Modal ✓
+        - Integate for Exporting ✓
+        - Parameters: {  default book, author, title, attributes, book no., publisher, rename project, project title, project description, etc... + Project Pref. e.g. theme, mode, default fonts, load custom fonts, etc.  } ✓
 
     New Items
         - Allow for creation of documents ✓
@@ -103,6 +104,7 @@ IP  Add Custom Toolbar
         - Document Permission (No Share or Share) ✓
         - Share Clone'd Versions for Private Reviewal 
         - Account-Based Sharing Permissions
+        - Share all different types, documents, folders, books, etc... ✓
         - Global Based Share, No Share + 404 ✓
         - Ability to share (clone), documents to peers, who can (depending upon permissions) edit, share, comment, highlight etc.
             These elements will not edit the main document, but shall act as proxies in which the main document can be refrenced, so the author can make changes or others, as deemed neccesary in order to ensure the consistency of the main document. Separate viewing and syncing protocols must be implemented such a viewer.

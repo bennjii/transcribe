@@ -23,6 +23,8 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     }, [editor?.active_sub_file])
 
     const handleChange = (raw_content) => {
+        console.log(input_ref?.current);
+        
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
         
         const format = input_ref?.current?.getEditor().getFormat()

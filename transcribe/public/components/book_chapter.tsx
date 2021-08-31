@@ -14,17 +14,13 @@ const BookChapter: React.FC<{ chapter: number, content: File }> = ({ chapter, co
     return (
         <div className={styles.page}>
             {
-                // editingTitle ? 
                 <input 
                     type="text"
                     ref={input_field}
                     autoFocus
                     defaultValue={content?.name}
                     onChange={(e) => {
-                        console.log(e);
-
                         content.name = input_field.current?.value;
-                        console.log(input_field.current?.value)
                     }}
                     onKeyPress={(e) => {
                         if(e.key == "Enter") {
@@ -32,18 +28,8 @@ const BookChapter: React.FC<{ chapter: number, content: File }> = ({ chapter, co
                         }
                     }}
                 />
-                // :
-                // <h2 
-                //     className="pageHeaderTitle"
-                //     onClick={() => { 
-                //         setEditingTitle(!editingTitle)
-                //     }}
-                // >
-                //     {content?.name}
-                // </h2>
             }
             
-
             {/* <BookInputQuill value={chapterValue} chapter={chapter} /> Alternate Title Implentation? */} 
 
             <BookInputQuill value={content} chapter={chapter} />

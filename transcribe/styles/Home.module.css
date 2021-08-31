@@ -964,11 +964,19 @@
 }
 
 .folderNewItem {
-  opacity: 0.4;
-  transition: .2s ease all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  transition: .4s ease all;
+  gap: .5rem;
 }
 
-.folderNewItem:hover {
+.folderNewItem > svg {
+  opacity: 0.2;
+}
+
+.folderNewItem > svg:hover {
   cursor: pointer;
   opacity: 1;
 }

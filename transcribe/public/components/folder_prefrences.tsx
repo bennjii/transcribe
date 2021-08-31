@@ -12,12 +12,12 @@ import { supabase } from "@root/client";
 import { v4 as uuidv4 } from 'uuid'
 import Delta from "quill-delta";
 
-const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
+const FolderPrefrenceModal: React.FC<{ modal: any, data: any }> = ({ modal, data }) => {
     const { prefrencesVisible: visible, setPrefrencesVisible: setVisible, prefrenceBindings: bindings } = modal;
     const { project, projectCallback, editor, editorCallback, synced } = useContext(ProjectContext);
 
-    const [ settings, setSettings ] = useState(editor?.settings);
-    const [ utilName, setUtilName ] = useState(editor?.name);
+    const [ settings, setSettings ] = useState(data?.settings);
+    const [ utilName, setUtilName ] = useState(data?.name);
 
     const [ creating, setCreating ] = useState(false);
 
@@ -26,15 +26,15 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
     }, [synced])
 
     useEffect(() => {
-        setSettings(editor?.settings);
-        setUtilName(editor?.name);
+        setSettings(data?.settings);
+        setUtilName(data?.name);
         setCreating(false);
-    }, [editor])
+    }, [data])
 
     const saveSettings = () => {
         setCreating(true);
-        if(utilName && utilName !== editor.name) editor.name = utilName;
-        if(settings && JSON.stringify(settings) !== JSON.stringify(editor.settings)) editor.settings = settings;
+        if(utilName && utilName !== data.name) data.name = utilName;
+        if(settings && JSON.stringify(settings) !== JSON.stringify(data.settings)) data.settings = settings;
 
         projectCallback({
             ...project,
@@ -44,7 +44,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
 
     return (
         <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}>
-            <Modal.Title>'{editor?.name}' Prefrences</Modal.Title>
+            <Modal.Title>'{data?.name}' Prefrences</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Apply settings & prefrences</Text>
 
             <Modal.Content className={styles.exportModalContent}>
@@ -65,7 +65,6 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                     <>
                         <Radio.Group                         
                             value={settings?.permType ? settings?.permType : "private"}
-                            //@ts-expect-error 
                             onChange={(e) => setSettings({...settings, permType: e.toString()})} 
                             useRow
                         >
@@ -88,7 +87,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
 
                         <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Share URL, send this to your editors</Text>
                         <Snippet width="100%" className={styles.snippet} style={{ fontSize: '.8rem' }} symbol="">
-                            {`${process.browser ? window?.location?.host : ""}/share/${project.id}/${editor.id}`}
+                            {`${process.browser ? window?.location?.host : ""}/share/${project.id}/${data.id}`}
                         </Snippet>
                     </>
                     :
@@ -102,13 +101,13 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                 <Button ghost type="error" iconRight={<ArrowRight />} onClick={() => {
                     setCreating(true);
 
-                    console.log(`Deleting ${editor.id} from ${project.name}`);
+                    console.log(`Deleting ${data.id} from ${project.name}`);
                     let parent;
 
                     // Reccursive Find.
                     const reccursion = (element: Folder) => {
                         return element?.children?.forEach(_element => {
-                            if(_element.id == editor.id) { 
+                            if(_element.id == data.id) { 
                                 parent = element;
                                 return true;
                             }else return _element.is_folder ? reccursion( _element) : null;
@@ -117,7 +116,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
 
                     reccursion(project.file_structure);
                     
-                    parent.children = parent.children.filter(e => e.id !== editor.id);
+                    parent.children = parent.children.filter(e => e.id !== data.id);
                     console.log(project);
 
                     if(parent.children.filter(e => e.type !== "folder").length > 0) { 
@@ -137,11 +136,11 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
             <Modal.Action passive onClick={() => setVisible(false)}>
                 Cancel
             </Modal.Action>
-            <Modal.Action disabled={!((JSON.stringify(editor?.settings) !== JSON.stringify(settings)) || editor.name !== utilName)} loading={creating} onClick={() => saveSettings()}>
+            <Modal.Action loading={creating} onClick={() => saveSettings()}>
                 Save
             </Modal.Action>
         </Modal>
     )
 }
 
-export default PrefrenceModal;
+export default FolderPrefrenceModal;

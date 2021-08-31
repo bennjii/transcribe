@@ -1,17 +1,21 @@
 import ProjectContext from "@public/@types/project_context";
 import { useContext } from "react";
-import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon, BookOpen, Plus } from "react-feather";
+import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon, BookOpen, Plus, MoreHorizontal } from "react-feather";
 
 import styles from '@styles/Home.module.css'
 
 import { File, Folder } from '@public/@types/project'
 import { useModal } from "@geist-ui/react";
 import NewFileModal from "./new_file_modal";
+import PrefrenceModal from "./prefrence_modal";
+import FolderPrefrenceModal from "./folder_prefrences";
 
 const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
-    const { visible, setVisible, bindings } = useModal();
 
+    const { visible, setVisible, bindings } = useModal();
+    const { visible: prefrencesVisible, setVisible: setPrefrencesVisible, bindings: prefrenceBindings } = useModal();
+    
     return (
         <div 
         key={`FOLDERCOMPONENT-${data.id}-`}
@@ -38,8 +42,11 @@ const FolderComponent: React.FC<{ data: Folder }> = ({ data }) => {
             {
                 data.type == "folder" ? 
                 <div className={styles.folderNewItem}>
+                    <MoreHorizontal size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setPrefrencesVisible(true)}/>
                     <Plus size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setVisible(true)}/>
+
                     <NewFileModal modal={{ visible, setVisible, bindings }} location={data}/>
+                    <FolderPrefrenceModal modal={{ prefrencesVisible, setPrefrencesVisible, prefrenceBindings }} data={data}/>
                 </div>
                 :
                 <></>

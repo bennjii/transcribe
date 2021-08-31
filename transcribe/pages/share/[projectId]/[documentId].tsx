@@ -80,8 +80,8 @@ export default function Share({ project }) {
         </div>
     );
 
-    const [ projectState, setProjectState ] = useState<Project>(project);
-	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(project);
+    const [ projectState, setProjectState ] = useState<Folder>(project);
+	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(project.is_folder ? project.children[0] : project);
 	const [ user, setUser ] = useState(null);
 	const [ synced, setSynced ] = useState(false);
 
@@ -103,6 +103,7 @@ export default function Share({ project }) {
 	const { visible, setVisible, bindings } = useModal();
 
 	return (
+		//@ts-expect-error
 		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor, synced: synced }}>
 			<div className={styles.container}>
 				<Head>
@@ -119,6 +120,30 @@ export default function Share({ project }) {
 
 							<ArrowRight size={18} strokeWidth={2}/>
 						</div>
+
+						{
+							projectState.is_folder ? 
+							<div className={styles.folderStructure} key={`FOLDERCOMPONENT-${projectState.id}`}>
+								<div className={styles.folderTitle}>
+									<p>{projectState?.name}</p>
+								</div>
+								
+								{/* <FileStructure current_folder={projectState.file_structure} key={`FILESTRUCT-${projectState.id}`}/> */}
+								{
+									projectState?.children?.map((data, index) => {
+										return (
+											data.is_folder ? 
+											<FileStructure current_folder={data} key={`${index} -- ${data.name}`} />
+											:
+											//@ts-expect-error
+											<FileComponent data={data} key={`FILE-${data.id}`} />
+										)
+									})
+								}
+							</div>
+							:
+							<></>
+						}
 					</div>
 
 					<UserComponent user={user}/>

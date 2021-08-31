@@ -22,7 +22,7 @@ const ProjectModal: React.FC<{ modal: any }> = ({ modal }) => {
     const [ creating, setCreating ] = useState(false);
 
     useEffect(() => {
-        if(creating && synced) setVisible(false); 
+        if(creating && synced) { setVisible(false); setCreating(false); }
     }, [synced])
 
     const saveSettings = () => {

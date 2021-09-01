@@ -11,8 +11,8 @@ const VisionCanvas: React.FC<{ }> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
 
     return (
-        <canvas 
-            className={styles.visionBoard}
+        <div 
+            className={styles.visionBoardCanvas}
             key={`VISIONBOARD-${editor.id}`}
         >
             {
@@ -23,7 +23,7 @@ const VisionCanvas: React.FC<{ }> = ({ }) => {
                     )
                 })
             }
-        </canvas>
+        </div>
     )
 }
 

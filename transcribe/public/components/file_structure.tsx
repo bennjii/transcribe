@@ -4,12 +4,25 @@ import { supabase } from '@root/client';
 import { Book as BookIcon, ChevronDown, Folder as FolderIcon, LogOut, Settings } from 'react-feather';
 import { Folder } from '@public/@types/project';
 import ProjectContext from '@public/@types/project_context';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import FileComponent from './file_component';
 import FolderComponent from './folder_component';
 
 const FileStructure: React.FC<{ current_folder: Folder }> = ({ current_folder }) => {
-    const [ expanded, setExpanded ] = useState(false);
+    const { projectCallback, project } = useContext(ProjectContext);
+    const [ expanded, setExpanded ] = useState(current_folder.open);
+    
+    useEffect(() => {
+        current_folder.open = expanded;
+
+        projectCallback({
+            ...project,
+            file_structure: {
+                ...project.file_structure
+            }
+        });
+
+    }, [expanded])
 
     return (
         <div 

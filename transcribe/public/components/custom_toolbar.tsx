@@ -14,6 +14,13 @@ const CustomToolbar: React.FC<{  }> = ({ }) => {
             <></>
         )
 
+    if(editor.type == "vision_board") 
+        return (
+            <div className={styles.visionMock}>
+                VisionBoard
+            </div>
+        )
+
     if(!editor.is_folder)
         return (
             <div key={`TOOLBAR-${editor?.id}`}>

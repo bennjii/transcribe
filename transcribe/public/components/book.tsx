@@ -1,5 +1,5 @@
 import { memo, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
-import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3 } from "react-feather";
+import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3, File as FileIcon } from "react-feather";
 
 import styles from '../../styles/Home.module.css'
 import { Book as BookType } from "../@types/book";
@@ -159,7 +159,12 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                 <div className={styles.book}>			
                     <div className={styles.bookCaptionBar}>
                         <div>
-                            <BookIcon size={18} color={"var(--acent-text-color)"} />
+                            {
+                                editor?.type == "book" ? 
+                                <BookIcon size={18} color={"var(--acent-text-color)"} />
+                                :
+                                <FileIcon size={18} color={"var(--acent-text-color)"} />
+                            }
 
                             <p>{editor?.name}</p>
                         </div>

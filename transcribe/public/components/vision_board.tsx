@@ -1,5 +1,5 @@
 import { memo, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
-import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3 } from "react-feather";
+import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3, Clipboard } from "react-feather";
 
 import styles from '../../styles/Home.module.css'
 import { Book as BookType } from "../@types/book";
@@ -110,7 +110,7 @@ const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                 <div className={styles.book}>			
                     <div className={styles.bookCaptionBar}>
                         <div>
-                            <BookIcon size={18} color={"var(--acent-text-color)"} />
+                            <Clipboard size={18} color={"var(--acent-text-color)"} />
 
                             <p>{editor?.name}</p>
                         </div>
@@ -120,10 +120,13 @@ const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                                 !viewOnly ? 
                                 <div className={styles.addChapter} onClick={() => {
                                     //@ts-expect-error
-                                    bookState?.children.push(newCanvasItem("...", "text"))
+                                    bookState?.data.push(newCanvasItem("...", "text"))
 
                                     projectCallback({
-                                        ...project
+                                        ...project,
+                                        file_structure: {
+                                            ...project.file_structure
+                                        }
                                     })
                                 }}>
                                     <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />

@@ -109,6 +109,11 @@ IP  Add Custom Toolbar
         - Ability to share (clone), documents to peers, who can (depending upon permissions) edit, share, comment, highlight etc.
             These elements will not edit the main document, but shall act as proxies in which the main document can be refrenced, so the author can make changes or others, as deemed neccesary in order to ensure the consistency of the main document. Separate viewing and syncing protocols must be implemented such a viewer.
 
+    Small List
+        - Share Account Based
+        - Complete Vision Boarding
+        - Ebook API Exporting
+
 [_A] Advanced Item - May take longer to implement than ususal.
 [_I] Indecisive - Unpredictable, hence may not be implementable.
 [_N] Note - A comment regarding the implementation of the specified feature.

@@ -6,7 +6,6 @@ import { saveAs } from 'file-saver';
 import { CssBaseline, Divider, Grid, Input, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import styles from '@styles/Home.module.css'
 
-import Epub from 'epub-gen'
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import Delta from "quill-delta";
 
@@ -24,7 +23,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
         if(creating == false) setVisible(false);
     }, [creating])
 
-    const exportBook = () => {
+    const exportBook = async () => {
         setCreating(true);
 
         switch(exportFormat) {
@@ -162,7 +161,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
 
                 break;
             case "ebook":
-                if(editor.is_folder) {
+                if(editor.type == "book") {
                     const option = {
                         title: project.settings?.book_title ?? "Book", 
                         author: project.settings?.author ?? "Author",
@@ -182,12 +181,19 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                         })
                     };
 
-                    console.log(option);
+                    const data = await fetch(`../api/ebook`, {
+                        method: "POST",
+                        mode: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(option)
+                    }).then(res => {
+                        return res.json();
+                    })
+
+                    console.log(data, option);
                     setCreating(false);
-                    // new Epub(option, "").promise.then(
-                    //     () => console.log("Ebook Generated Successfully!"),
-                    //     err => console.error("Failed to generate Ebook because of ", err)
-                    // );
                 }
                 break;
             default:

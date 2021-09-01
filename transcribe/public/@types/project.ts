@@ -68,7 +68,8 @@ export type Folder = {
     children?: (File | Folder)[],
     active_sub_file: string,
 
-    settings: Settings
+    settings: Settings,
+    open: boolean
 }
 
 export type CanvasItem = {

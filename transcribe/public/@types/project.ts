@@ -77,7 +77,10 @@ export type CanvasItem = {
     is_folder: false,
     title_format: null,
     data: Delta | string,
-    type: "text" | "image",
+    position: {
+        x, y: number
+    }
+    type: "text" | "image" | "link" | "todo",
     id: string,
     settings: {
         share: boolean,
@@ -172,9 +175,13 @@ export const newCanvasItem = (content: string, type?: "image" | "text") => {
     }
 
     return {
-        name: "",
+        name: "New Item",
         is_folder: false,
         title_format: null,
+        position: {
+            x: Math.random() * 100,
+            y: Math.random() * 100
+        },
         data: data,
         type: type,
         id: uuidv4(),

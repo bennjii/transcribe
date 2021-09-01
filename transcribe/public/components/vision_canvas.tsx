@@ -6,6 +6,7 @@ import FileComponent from './file_component';
 import FolderComponent from './folder_component';
 import ProjectContext from '@public/@types/project_context';
 import VisionElement from './vision_element';
+import Draggable from 'react-draggable';
 
 const VisionCanvas: React.FC<{ }> = ({ }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);

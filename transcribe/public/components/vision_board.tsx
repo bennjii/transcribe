@@ -32,7 +32,7 @@ const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
         chars: 0,
         chapters: bookState?.type == "book" ? bookState.children.length : 0,
         chapter: 0,
-        zoom_level: 1.5
+        zoom_level: 1
     });
     
     useEffect(() => {
@@ -178,7 +178,7 @@ const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                         </div>
                     </div>
                     
-                    <div className={styles.pages} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
+                    <div className={styles.visionPage} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
                         <VisionCanvas />
                     </div>
                 </div>

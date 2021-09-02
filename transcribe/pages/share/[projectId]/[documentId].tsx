@@ -26,7 +26,7 @@ import debounce from '@public/@types/debounce';
 
 import _ from 'underscore'
 import NewFileModal from '@components/new_file_modal';
-import { useModal } from '@geist-ui/react';
+import { Dot, useModal } from '@geist-ui/react';
 import VisionBoard from '@components/vision_board';
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (
                 });
             }
 
-            reccursion(data);
+			reccursion(data);
 
             if(!document || document?.settings?.share == false) return "404";
             else return document;
@@ -157,9 +157,8 @@ export default function Share({ project }) {
 						
 						<div className={`${styles.syncStatus} ${styles.viewOnlySync}`}>
 							{
-                                <div>View Only</div>
+  							<Dot style={{ marginRight: '20px' }} type="warning">View Only</Dot>
 							}
-							
 						</div>
 					</div>
 

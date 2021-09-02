@@ -1311,6 +1311,11 @@
   dependencies:
     "delayed-stream" "~1.0.0"
 
+"commander@^6.0.0":
+  "integrity" "sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA=="
+  "resolved" "https://registry.npmjs.org/commander/-/commander-6.2.1.tgz"
+  "version" "6.2.1"
+
 "commondir@^1.0.1":
   "integrity" "sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs="
   "resolved" "https://registry.npmjs.org/commondir/-/commondir-1.0.1.tgz"
@@ -2527,6 +2532,13 @@
     "pako" "~1.0.2"
     "readable-stream" "~2.3.6"
     "set-immediate-shim" "~1.0.1"
+
+"katex@^0.13.17":
+  "integrity" "sha512-Mkxj7uXs9xBRBIWGhcvf0K2c1DAbPqETjEebjur04fqJ4UXfj1ky9vrgkNJIwJJ4J4owS69vAqgBkKyr4Lh0eQ=="
+  "resolved" "https://registry.npmjs.org/katex/-/katex-0.13.17.tgz"
+  "version" "0.13.17"
+  dependencies:
+    "commander" "^6.0.0"
 
 "kew@^0.7.0":
   "integrity" "sha1-edk9LTM2PW/dKXCzNdkUGtWR15s="

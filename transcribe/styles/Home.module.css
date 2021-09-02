@@ -478,7 +478,7 @@
   gap: .8rem;
 }
 
-.syncStatus {
+/* .syncStatus {
   background-color: var(--acent-bg-color);
   padding: .2rem 1rem;
   border-radius: 55px;
@@ -489,8 +489,8 @@
 
   color: var(--acent-text-color);
 
-  font-family: "PT Serif";
-}
+  font-family: "PT Serif"; 
+}*/
 
 .syncTrue {
   height: 6px;
@@ -866,10 +866,11 @@
   overflow: hidden;
 }
 
+/* 
 .viewOnlySync {
   background-color: #e6b01c4f;
   color: #745708;
-}
+} */
 
 /* @keyframes unsavedIN {
   from {

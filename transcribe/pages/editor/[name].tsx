@@ -26,7 +26,7 @@ import debounce from '@public/@types/debounce';
 
 import _ from 'underscore'
 import NewFileModal from '@components/new_file_modal';
-import { useModal } from '@geist-ui/react';
+import { Dot, useModal } from '@geist-ui/react';
 import VisionBoard from '@components/vision_board';
 import ProjectModal from '@components/project_modal';
 
@@ -99,8 +99,6 @@ export default function Home({ project }) {
 	useEffect(() => {
 		setSynced(false);
 		verif(projectState);
-
-		console.log(projectState.file_structure);
 	}, [projectState.file_structure])
 
 	useEffect(() => {
@@ -178,17 +176,9 @@ export default function Home({ project }) {
 						<div className={styles.syncStatus}>
 							{
 								synced ? 
-								<>
-									Saved
-
-									<div className={styles.syncTrue}>
-
-									</div>
-								</>
+								<Dot style={{ marginRight: '20px' }} type="success">Synced</Dot>
 								:
-								<>
-									Unsaved
-								</>
+								<Dot style={{ marginRight: '20px' }}>Syncing</Dot>
 							}
 							
 						</div>

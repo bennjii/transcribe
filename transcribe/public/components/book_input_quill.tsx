@@ -23,16 +23,21 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     }, [editor?.active_sub_file])
 
     const handleChange = (raw_content) => {
-        console.log(input_ref?.current);
-        
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
         
-        const format = input_ref?.current?.getEditor().getFormat()
+        const editor = input_ref?.current?.getEditor();
 
-        if(Object.entries(format).length === 0) {
-            input_ref?.current?.getEditor()?.format('color', "#202737");
-            input_ref?.current?.getEditor()?.format('size', "11px");
-            input_ref?.current?.getEditor()?.format('font', "public-sans");
+        if(editor) {
+            console.log(editor)
+
+            editor.update();
+            const format = editor.getFormat();
+
+            if(Object.entries(format).length === 0) {
+                editor.format('color', "#202737");
+                editor.format('size', "11px");
+                editor.format('font', "public-sans");
+            }
         }
         
         // Set Data.

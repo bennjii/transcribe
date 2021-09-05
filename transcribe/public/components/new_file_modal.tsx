@@ -77,13 +77,6 @@ const NewFileModal: React.FC<{ modal: any, location: Folder, isProjectRoot?: boo
 
     return (
         <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }}>
-            <div className={styles.printModal} id="print">
-                <div>
-                    {/* Layout Types */}
-                    
-                </div>
-            </div>
-
             <Modal.Title>Create</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Create a new file, folder or book.</Text>
 

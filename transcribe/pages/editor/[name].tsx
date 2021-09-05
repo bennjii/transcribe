@@ -89,6 +89,8 @@ export default function Home({ project }) {
 				})
 				.match({ id: state.id })
 				.then(e => {
+					console.log(e);
+					
 					if(e.data) setSynced(true);
 					else setSynced(false);
 				});

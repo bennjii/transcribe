@@ -144,9 +144,26 @@ export const newFolder = (name) => {
     }
 }
 
-export const newChapter = () => {
+export const newBook = (name) => {
+    const chapter = newChapter("Chapter 1");
+    
     return {
-        name: "",
+        name: name,
+        id: uuidv4(),
+        type: "book",
+        is_folder: true,
+        children: [chapter],
+        active_sub_file: chapter.id,
+        settings: {
+            share: false,
+            permType: "private"
+        }
+    }
+}
+
+export const newChapter = (name?) => {
+    return {
+        name: name ? name : "",
         is_folder: false,
         title_format: null,
         data: new Delta({ ops: [ { insert: "Start Typing Here..." } ] }),

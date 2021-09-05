@@ -77,7 +77,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
         )
     else 
         return (
-            <div>
+            <div className={styles.centerLoader}>
                 <p><i>transcribe</i></p>
             </div>
         )

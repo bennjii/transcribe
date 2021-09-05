@@ -113,6 +113,7 @@ IP  Add Custom Toolbar
         - Share Account Based
         - Complete Vision Boarding
         - Ebook API Exporting
+        - RBS
 
 [_A] Advanced Item - May take longer to implement than ususal.
 [_I] Indecisive - Unpredictable, hence may not be implementable.

@@ -1,6 +1,7 @@
 import styles from '@styles/Home.module.css'
 import Head from 'next/head';
 import { Router, useRouter } from 'next/router';
+import Link from 'next/link'
 
 const Header: React.FC<{ }> = ({ }) => {
     const router = useRouter();
@@ -12,9 +13,7 @@ const Header: React.FC<{ }> = ({ }) => {
                 <link rel="icon" href="/favicon/32-bold.png" type="image/png" />
             </Head>
 
-            <p onClick={() => {
-                router.push('/');
-            }}>transcribe</p> 
+            <a href="/">transcribe</a> 
             <h4>beta</h4>
         </div>
     )

@@ -1,7 +1,7 @@
 
 import '../styles/globals.css'
 import type { AppProps /*, AppContext */ } from 'next/app'
-import { CssBaseline, GeistProvider, Themes } from '@geist-ui/react'
+import { CssBaseline, GeistProvider, Themes } from '@geist-ui/react';
 
 const defaultLight = Themes.createFromLight({
   type: 'defaultLight',
@@ -26,7 +26,6 @@ function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
     </GeistProvider>
   )
-  
 }
 
 export default App

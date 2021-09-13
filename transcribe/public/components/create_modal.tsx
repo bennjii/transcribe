@@ -26,7 +26,7 @@ const CreateModal: React.FC<{ modal: any }> = ({ modal }) => {
     const [ creating, setCreating ] = useState(false);
 
     return (
-        <Modal className={styles.createProjectPage} visible={visible} {...bindings} style={{ borderRadius: 0 }}>
+        <Modal className={styles.createProjectPage} visible={visible} {...bindings} style={{ borderRadius: 0 }} disableBackdropClick={creating}>
             <Modal.Title>Create</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Create a new book, project, idea</Text>
 
@@ -38,7 +38,7 @@ const CreateModal: React.FC<{ modal: any }> = ({ modal }) => {
             <Modal.Action passive onClick={() => setVisible(false)}>
                 Cancel
             </Modal.Action>
-            <Modal.Action loading={creating} disabled={setting.name == ""} onClick={() => {
+            <Modal.Action loading={creating} disabled={setting.name == "" || creating} onClick={() => {
                 const book = newBook(setting.name);
                 setCreating(true);
 
@@ -67,8 +67,8 @@ const CreateModal: React.FC<{ modal: any }> = ({ modal }) => {
                         console.log(e);
 
                         if(e.data) {
-                            setCreating(false);
                             router.push(`/editor/${e.data[0].id}`)
+                            // setCreating(false);
                         }
                     })
             }}>

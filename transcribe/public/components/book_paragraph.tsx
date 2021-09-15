@@ -13,12 +13,9 @@ const BookParagraph: React.FC<{ paragraph: number, content: any, callback: Funct
         <div 
             ref={input_field}
             onInput={(e) => {
-                console.log(e)
                 setHeight(input_field.current.scrollHeight)
             }}
             onKeyDown={(e) => {
-                console.log(e);
-
                 if(e.code == "Backspace" && paragraphState.text == '') {
                     callback(paragraph, content.format, -1)
                 }

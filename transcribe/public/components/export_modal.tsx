@@ -191,8 +191,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                     }).then(res => {
                         return res.json();
                     })
-
-                    console.log(data, option);
+                    
                     setCreating(false);
                 }
                 break;

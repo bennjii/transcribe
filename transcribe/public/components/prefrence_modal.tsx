@@ -12,9 +12,11 @@ import { supabase } from "@root/client";
 import { v4 as uuidv4 } from 'uuid'
 import Delta from "quill-delta";
 
-const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
+const PrefrenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) => {
     const { prefrencesVisible: visible, setPrefrencesVisible: setVisible, prefrenceBindings: bindings } = modal;
-    const { project, projectCallback, editor, editorCallback, synced } = useContext(ProjectContext);
+    const { project, projectCallback, editor: editor__, editorCallback, synced } = useContext(ProjectContext);
+
+    const editor = data ? data : editor__;
 
     const [ settings, setSettings ] = useState(editor?.settings);
     const [ utilName, setUtilName ] = useState(editor?.name);
@@ -55,7 +57,7 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                 }}/>
 
                 {
-                    editor.type == "book" ? 
+                    editor?.type == "book" ? 
                     <div className={styles.checkboxElement} >
                         <Checkbox initialChecked={settings?.performance} onChange={(e) => setSettings({...settings, performance: e.target.checked}) }>Performance Mode</Checkbox> 
                         <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Enable performance mode if you are experiencing performance issues with editing</Text>
@@ -76,7 +78,6 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                     <>
                         <Radio.Group                         
                             value={settings?.permType ? settings?.permType : "private"}
-                            //@ts-expect-error 
                             onChange={(e) => setSettings({...settings, permType: e.toString()})} 
                             useRow
                         >
@@ -134,7 +135,6 @@ const PrefrenceModal: React.FC<{ modal: any }> = ({ modal }) => {
                     reccursion(project.file_structure);
                     
                     parent.children = parent.children.filter(e => e.id !== editor.id);
-                    console.log(project);
 
                     if(parent.children.filter(e => e.type !== "folder").length > 0) { 
                         editorCallback(parent.children[0]); 

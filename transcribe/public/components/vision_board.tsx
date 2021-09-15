@@ -138,8 +138,7 @@ const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                             }
 
                             <div className={styles.export} onClick={async () => {
-                                setExportVisible(!exportVisible)
-                                console.log(bookState);
+                                setExportVisible(!exportVisible);
 
                             }}>
                                 <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />

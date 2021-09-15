@@ -41,7 +41,6 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
             `)
             .eq('id', client.auth.user().id)
             .then(e => {
-                console.log(e);
                 if(!e.error) setData(e.data[0]);
             });
     }, [])

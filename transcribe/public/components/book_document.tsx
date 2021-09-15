@@ -27,10 +27,7 @@ const BookDocument: React.FC<{ content: File }> = ({ content }) => {
                 ref={input_field}
                 defaultValue={bookTitle}
                 onChange={(e) => {
-                    console.log(e);
-
                     content.name = input_field.current?.value;
-                    console.log(input_field.current?.value)
                 }}
                 onKeyPress={(e) => {
                     if(e.key == "Enter") {

@@ -64,8 +64,6 @@ const CreateModal: React.FC<{ modal: any }> = ({ modal }) => {
                             description: setting.description
                         }
                     }).then(e => {
-                        console.log(e);
-
                         if(e.data) {
                             router.push(`/editor/${e.data[0].id}`)
                             // setCreating(false);

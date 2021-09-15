@@ -269,9 +269,31 @@
   margin-left: 1rem;
 }
 
-.subFile {
+.subFile, .openFile {
   cursor: pointer;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
 }
+
+.subFile div, .openFile div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* .subFile > svg:last-of-type, .openFile div > svg:last-of-type {
+  opacity: 0.2;
+}
+
+.subFile > svg:last-of-type:hover, .openFile svg:last-of-type:hover {
+  opacity: 1;
+  cursor: pointer;
+} */
 
 .openFile {
   border-radius: 5px;
@@ -697,6 +719,8 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  overflow: auto;
 }
 
 .projectView h1 {
@@ -1115,4 +1139,3 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
-

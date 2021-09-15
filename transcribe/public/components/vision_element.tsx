@@ -40,8 +40,6 @@ const VisionElement: React.FC<{ data: CanvasItem }> = ({ data }) => {
         const editor = input_ref?.current?.getEditor();
 
         if(editor) {
-            console.log(editor)
-
             editor.update();
             const format = editor.getFormat();
 

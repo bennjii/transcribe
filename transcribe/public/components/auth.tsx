@@ -105,8 +105,6 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                                                     username: authInputState.username
                                                 }
                                             ]).then(e => {
-                                                console.log(e);
-
                                                 callback();
                                                 setAuthState('auth-email')
                                             });

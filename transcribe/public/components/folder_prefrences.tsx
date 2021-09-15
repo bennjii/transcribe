@@ -123,7 +123,6 @@ const FolderPrefrenceModal: React.FC<{ modal: any, data: any }> = ({ modal, data
                     reccursion(project.file_structure);
                     
                     parent.children = parent.children.filter(e => e.id !== data.id);
-                    console.log(project);
 
                     if(parent.children.filter(e => e.type !== "folder").length > 0) { 
                         editorCallback(parent.children[0]); 

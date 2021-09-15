@@ -109,8 +109,6 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
             bookState?.children.map((e, i) => {
                 book.push(...e.data.ops)
             });
-
-            console.log(book);
             
             const html = new QuillDeltaToHtmlConverter(book, {}).convert();
             // const pdf = await pdfExporter.generatePdf(new Delta({ ops: book }));
@@ -118,8 +116,6 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
             const book_elem = document.createElement("div")
                 book_elem.innerHTML = html;
-
-            console.log(book_elem);
 
             doc.html(book_elem, {
                 callback: function (doc) {
@@ -141,7 +137,6 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
             // doc.addFileToVFS("MyFont.ttf", );
             // doc.addFont("public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf", "Public Sans", "normal");
-            console.log(html);
         }
     }
 
@@ -190,8 +185,6 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
                             <div className={styles.export} onClick={async () => {
                                 setExportVisible(!exportVisible)
-                                console.log(bookState);
-
                             }}>
                                 <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
 

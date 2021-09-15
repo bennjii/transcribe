@@ -27,8 +27,6 @@ const NewFileModal: React.FC<{ modal: any, location: Folder, isProjectRoot?: boo
     }, [synced])
 
     const create = () => {
-        console.log(location);
-
         if(type == "folder") {
             setCreating(true);
             console.log(`Creating new ${type} with name ${utilName}`);

@@ -14,7 +14,7 @@ import UserComponent from '@components/user_component';
 import { useCallback, useEffect } from 'react';
 import { supabase } from '@root/client';
 import { useState } from 'react';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext, GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { File, Folder, Project } from '@public/@types/project';
 import FileStructure from '@components/file_structure';
 import ProjectContext from '@public/@types/project_context';
@@ -30,39 +30,35 @@ import { Dot, useModal } from '@geist-ui/react';
 import VisionBoard from '@components/vision_board';
 import ProjectModal from '@components/project_modal';
 
-export const getStaticPaths: GetStaticPaths = async (a) => {
-    const projects = await supabase
-        .from('projects')
-        .select('*')
-        .then(e => e.data)
-
-    const paths = projects?.map((article) => ({
-        params: { name: article.id.toString() },
-    }))
-
-    return {
-        paths: paths, //indicates that no page needs be created at build time
-        fallback: 'blocking' //indicates the type of fallback
-    }
-}
-
-export const getStaticProps: GetStaticProps = async (
-    context: GetStaticPropsContext
+export const getServerSideProps: GetServerSideProps = async (
+    context: GetServerSidePropsContext
   ) => {
     const INDEX = context.params.name;
+
+	console.log(context.req.cookies);
+
+	const { user } = await supabase.auth.api.getUserByCookie(context.req);
+
+	if (!user) {
+		// If no user, redirect to index.
+		return { props: {}, redirect: { destination: '/', permanent: false } }
+	}
 
 	const project = await supabase
 		.from('projects')
 		.select()
 		.eq('id', INDEX)
 		.then(e => {
-			return e.data[0];
+            const owner = e.data[0].owner;
+
+            if(owner !== user.id) return "404";
+            else return e.data[0];
 		});
 
     return {
         props: {
             project: project,
-            index: INDEX
+            index: INDEX,
         }
     }
 }

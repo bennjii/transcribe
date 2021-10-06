@@ -37,7 +37,18 @@ const Index = () => {
             //@ts-expect-error
 			if(router.query.redir && supabase.auth.user()) router.replace(router.query.redir)
 			setUser(supabase.auth.user());
+
+			fetch('/api/auth', {
+				method: 'POST',
+				headers: new Headers({ 'Content-Type': 'application/json' }),
+				credentials: 'same-origin',
+				body: JSON.stringify({ event, session }),
+			});
 		})
+
+		return () => {
+			authListener.unsubscribe()
+		}
 	}, []);
 
 	if(!user) 

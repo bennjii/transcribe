@@ -227,11 +227,11 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                             editor?.type == "book" && editor?.active_sub_file
                             ?
                             editor?.children?.map((chapter: File, index: number) => {
-                                return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} />
+                                return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '650px' : bookState?.settings?.view_mode == 'full' ? '850px' : '480px'}`} />
                             })
                             :
                             //@ts-expect-error
-                            !editor?.is_folder ? <BookDocument content={editor} /> : <></>
+                            !editor?.is_folder ? <BookDocument content={editor} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '650px' : bookState?.settings?.view_mode == 'full' ? '850px' : '480px'}`} /> : <></>
                         }
                     </div>
                 </div>

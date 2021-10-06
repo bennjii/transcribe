@@ -23,6 +23,7 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
 
         const format = input_ref?.current?.getEditor().getFormat()
+        console.log(format);
 
         if(Object.entries(format).length === 0) {
             input_ref?.current?.getEditor()?.format('color', "#202737");

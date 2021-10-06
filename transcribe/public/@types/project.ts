@@ -7,7 +7,8 @@ export type EmbeddedString = string;
 export type Settings = {
     share: boolean,
     permType: "public" | "private",
-    performance?: boolean
+    performance?: boolean,
+    view_mode: "normal" | "wide" | "full"
 }
 
 export type ProjectSettings = {
@@ -119,11 +120,12 @@ export const newFile = (name: string, docType: "document" | "vision_board" | "ar
         type: docType,
 
         is_folder: false,
-        data: docType !== "vision_board" ? new Delta({ ops: [ { insert: "Start Typing Here..." } ] }) : [ newCanvasItem("...", "text") ],
+        data: docType !== "vision_board" ? new Delta() : [ newCanvasItem("...", "text") ],
         title_format: null,
         settings: {
             share: false,
-            permType: "private"
+            permType: "private",
+            view_mode: "normal"
         }
     }
 }
@@ -139,7 +141,8 @@ export const newFolder = (name) => {
         active_sub_file: null,
         settings: {
             share: false,
-            permType: "private"
+            permType: "private",
+            view_mode: "normal"
         }
     }
 }
@@ -156,7 +159,8 @@ export const newBook = (name) => {
         active_sub_file: chapter.id,
         settings: {
             share: false,
-            permType: "private"
+            permType: "private",
+            view_mode: "normal"
         }
     }
 }
@@ -166,12 +170,13 @@ export const newChapter = (name?) => {
         name: name ? name : "",
         is_folder: false,
         title_format: null,
-        data: new Delta({ ops: [ { insert: "Start Typing Here..." } ] }),
+        data: new Delta(),
         type: "document",
         id: uuidv4(),
         settings: {
             share: false,
-            permType: "private"
+            permType: "private",
+            view_mode: "normal"
         }
     }
 }

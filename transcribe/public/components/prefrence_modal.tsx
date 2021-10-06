@@ -2,7 +2,7 @@ import ProjectContext from "@public/@types/project_context";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ArrowRight, Bold, Book, Clipboard, File as FileIcon, FileText, Italic, Underline } from "react-feather";
 
-import { CssBaseline, Divider, Grid, Input, Modal, Radio, Text, useModal, Checkbox, Note, Snippet, Button } from "@geist-ui/react";
+import { CssBaseline, Divider, Grid, Input, Modal, Radio, Text, useModal, Checkbox, Note, Snippet, Button, Collapse } from "@geist-ui/react";
 import styles from '@styles/Home.module.css'
 
 import { File, Folder, Project } from '@public/@types/project'
@@ -65,6 +65,14 @@ const PrefrenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) =
                     :
                     <></>
                 }
+               
+                <div className={styles.checkboxElement} >
+                    <Radio.Group useRow onChange={(e) => setSettings({...settings, view_mode: e})} value={settings?.view_mode}>
+                        <Radio value="normal">Normal<Radio.Desc>Default Size</Radio.Desc></Radio>
+                        <Radio value="wide">Wide<Radio.Desc>More Horisonal Editing</Radio.Desc></Radio>
+                        <Radio value="full">Full<Radio.Desc>Maximum Horisontal Editing</Radio.Desc></Radio>
+                    </Radio.Group>
+                </div>
 
                 <Divider align="start">share</Divider>
 
@@ -106,12 +114,18 @@ const PrefrenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) =
                     :
                     <></>
                 }
+{/* 
+                <Collapse title={null} subtitle={<Divider align="start">delete</Divider>}>
+                    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
+                </Collapse> */}
 
                 <Divider align="start">delete</Divider>
 
                 <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Delete the document or book to remove it from the file view, once removed cannot be restored.</Text>
                 <Note label={false} type="error" style={{ opacity: 0.7 }} filled>Once deleted, a document cannot be restored.</Note>
-
+                
                 <Input type="default" clearable placeholder={`Enter ${editor.type.replace("_", " ").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))} Name`} width="100%" onChange={(e) => {
                     if(e.target.value == editor.name) setUnableToDelete(false);
                     else setUnableToDelete(true);

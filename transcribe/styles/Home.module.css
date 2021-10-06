@@ -857,9 +857,10 @@
   gap: 1.2rem;
 }
 
-.exportModalContent > div {
+/* .exportModalContent > div {
   height: auto !important;
-}
+} */
+
 /* .addChapter {
   position: fixed;
 

@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import styles from '../../styles/Home.module.css'
 import Editor from "./editor";
 
-const BookDocument: React.FC<{ content: File }> = ({ content }) => {
+const BookDocument: React.FC<{ content: File, domWidth: string }> = ({ content, domWidth }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
     const [ editingTitle, setEditingTitle ] = useState(false);
     const [ bookTitle, setBookTitle ] = useState(content?.name);
@@ -21,7 +21,7 @@ const BookDocument: React.FC<{ content: File }> = ({ content }) => {
     }, [content?.name])
 
     return (
-        <div className={styles.page} key={editor.id}> 
+        <div className={styles.page} key={editor.id} style={{ minWidth: domWidth }}> 
             <input 
                 type="text"
                 ref={input_field}

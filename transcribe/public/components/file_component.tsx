@@ -1,11 +1,11 @@
 import ProjectContext from "@public/@types/project_context";
 import { useContext } from "react";
-import { Bold, Book, Clipboard, File as FileIcon, FileText, Italic, MoreHorizontal, MoreVertical, Underline } from "react-feather";
+import { Bold, Book, Clipboard, Delete, File as FileIcon, FileText, Italic, MoreHorizontal, MoreVertical, Underline, X } from "react-feather";
 
 import styles from '@styles/Home.module.css'
 
 import { File, Folder, Project } from '@public/@types/project'
-import { useModal } from "@geist-ui/react";
+import { Button, Popover, useModal } from "@geist-ui/react";
 import PrefrenceModal from "./prefrence_modal";
 
 const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent }) => {
@@ -82,20 +82,31 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
                     })()
                 }
                 
-                <p>{data.name}</p>
+                <p>{data.name == "" ? "Unnamed Chapter" : data.name}</p>
             </div>
             
-            {/* {
+            {
                 //@ts-expect-error
-                (editor?.id == data.id || editor?.active_sub_file == data.id) ?
-                <MoreHorizontal color={"var(--text-muted)"} size={16} onClick={() => {
-                    setVisible(true);
-                }}/>
+                (parent?.type == "book" && editor?.id == data.id || editor?.active_sub_file == data.id) ?
+                <Popover style={{ backgroundColor: "transparent" }} placement={"right"} content={<div><Button type={"error"}  onClick={() => {
+                    //@ts-expect-error
+                    const new_children = editor?.children.filter(e => {
+                        return e.id !== data.id
+                    });
+
+                    editorCallback({
+                        ...editor,
+                        children: new_children
+                    });
+                }}>Confirm Remove</Button></div>}>
+                    <X color={"var(--acent-text-color)"} size={16} />
+                </Popover>
+                
                 :
                 <></>
             }
             
-            <PrefrenceModal modal={{ visible, setVisible, bindings }} data={data}/> */}
+            <PrefrenceModal modal={{ visible, setVisible, bindings }} data={data}/>
         </div>
     )
 }

@@ -138,7 +138,7 @@ export default function Home({ project }) {
 						<div onClick={() => setProjectVisible(true)}>
 							<h2>{projectState?.name}</h2>
 
-							<ArrowRight size={18} strokeWidth={2}/>
+							<ArrowRight size={19} strokeWidth={2}/>
 						</div>
 
 						<div className={styles.folderStructure} key={`FOLDERCOMPONENT-${projectState.id}`}>

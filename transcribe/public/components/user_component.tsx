@@ -14,7 +14,7 @@ const UserComponent: React.FC<{ user: any }> = ({ user }) => {
             <div onClick={() => {
                 supabase.auth.signOut();
             }}>
-                <Settings size={18} color={"var(--text-muted)"}/>
+                <LogOut size={18} color={"var(--text-muted)"}/>
             </div>
         </div>
     )

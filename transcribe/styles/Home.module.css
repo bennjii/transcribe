@@ -857,6 +857,12 @@
   gap: 1.2rem;
 }
 
+.openFile div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* .exportModalContent > div {
   height: auto !important;
 } */

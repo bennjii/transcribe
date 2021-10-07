@@ -34,9 +34,6 @@ export const getServerSideProps: GetServerSideProps = async (
     context: GetServerSidePropsContext
   ) => {
     const INDEX = context.params.name;
-
-	console.log(context.req.cookies);
-
 	const { user } = await supabase.auth.api.getUserByCookie(context.req);
 
 	if (!user) {
@@ -49,10 +46,13 @@ export const getServerSideProps: GetServerSideProps = async (
 		.select()
 		.eq('id', INDEX)
 		.then(e => {
-            const owner = e.data[0].owner;
+            const owner = e?.data?.[0]?.owner;
 
-            if(owner !== user.id) return "404";
-            else return e.data[0];
+            if(owner == user.id) return e.data[0]
+
+			// Add to the editors in prefrences so that it can be used here!
+			else if(e?.data?.[0]?.settings?.editors?.includes(user?.id)) return e.data[0];
+			else return "404";
 		});
 
     return {
@@ -64,6 +64,18 @@ export const getServerSideProps: GetServerSideProps = async (
 }
 
 export default function Home({ project }) {
+	if(project == "404") return (
+        <div className={styles.Error404}>
+            <h1>404</h1>
+            <Header />
+
+            <div>
+                <h2>This document either does not exist or has restricted access</h2>
+                <p>If someone sent you this link, ask them to check document access</p>
+            </div>
+        </div>
+    );
+
     const [ projectState, setProjectState ] = useState<Project>(project);
 	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(null);
 	const [ user, setUser ] = useState(null);

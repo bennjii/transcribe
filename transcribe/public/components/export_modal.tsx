@@ -120,7 +120,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                         allowBackgroundClasses: true
                     }).convert();
 
-                    saveAs(new Blob([html], {type: "text/html;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.html`);
+                    saveAs(new Blob([`<body>${html}</body>`], {type: "text/html;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.html`);
                     setCreating(false);
                 }else {
                     //@ts-expect-error

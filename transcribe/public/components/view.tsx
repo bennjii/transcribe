@@ -5,7 +5,6 @@ import Button from '@components/button'
 
 import Head from 'next/head'
 import { Bookmark, Home, List, LogOut, Rss } from 'react-feather'
-import { skipPartiallyEmittedExpressions } from 'typescript'
 import Header from './header'
 import ProjectCard from './project_card'
 import UserComponent from './user_component'

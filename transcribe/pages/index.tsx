@@ -22,7 +22,7 @@ const Index = () => {
 	const [ cssProperties, setCssProperties ] = useState({
 		"--color-primary": "var(--acent-bg-color)",
 		"--color-primary-rgb": "89, 114, 152"
-	}) // Fetch User prefernces
+	}) // Fetch User preferences
 
 	const [ user, setUser ] = useState(supabase.auth.user());
 	const [ authView, setAuthView ] = useState('sign_in')

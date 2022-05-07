@@ -88,7 +88,7 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
             {
                 //@ts-expect-error
                 (parent?.type == "book" && editor?.id == data.id || editor?.active_sub_file == data.id) ?
-                <Popover style={{ backgroundColor: "transparent" }} placement={"right"} content={<div><Button type={"error"}  onClick={() => {
+                <Popover style={{ backgroundColor: "transparent", display: "flex" }} placement={"right"} content={<div><Button type={"error"}  onClick={() => {
                     //@ts-expect-error
                     const new_children = editor?.children.filter(e => {
                         return e.id !== data.id

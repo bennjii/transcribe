@@ -55,7 +55,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
             rec(updated_file, project);
     
-            // Propogate Changes!
+            // Propagate Changes!
             projectCallback({
                 ...project,
                 file_structure: updated_file

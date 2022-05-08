@@ -23,16 +23,6 @@ const Viewer: React.FC<{ }> = ({ }) => {
             {
                 (() => {
                     switch(active) {
-                        case "home-page":
-                            return (
-                                <>
-                                    <h1>Hello, {info.username}</h1>
-
-                                    <div>
-                                        
-                                    </div>
-                                </>   
-                            )
                         case "projects-page":
                             return (
                                 <>

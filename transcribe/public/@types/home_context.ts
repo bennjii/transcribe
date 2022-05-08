@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { Folder, File, Project } from "./project";
 
 const HomeContext = createContext<{ 
-    page: any | 'home-page' | 'project-page' | 'resources-page' | 'release-page',
+    page: any | 'project-page' | 'resources-page' | 'release-page',
     pageCallback: Function,
     info: {
         username: string,

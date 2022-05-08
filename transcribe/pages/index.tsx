@@ -7,8 +7,6 @@ import { Auth } from '@components/auth'
 import { View } from '@components/view'
 import router from 'next/router'
 
-import NoSSR from '@mpth/react-no-ssr'
-
 const fetcher = (url, token) =>
   fetch(url, {
     method: 'GET',

@@ -1,5 +1,6 @@
 
-import '../styles/globals.css'
+import '@styles/globals.css'
+
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { CssBaseline, GeistProvider, Themes } from '@geist-ui/react';
 

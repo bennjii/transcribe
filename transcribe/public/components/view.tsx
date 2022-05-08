@@ -14,7 +14,7 @@ import Viewer from './view_viewer'
 
 const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     const [ data, setData ] = useState(null);
-    const [ activePage, setActivePage ] = useState('home-page');
+    const [ activePage, setActivePage ] = useState('projects-page');
 
     useEffect(() => {
         const userListener = client
@@ -47,18 +47,16 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     if(data)
         return (
             <HomeContext.Provider value={{ page: activePage, pageCallback: setActivePage, info: data, __infoCallback: setData }}>
-                <div className={styles.container}>
+                <div className="grid h-screen overflow-hidden" style={{ gridTemplateColumns: 'clamp(200px, 16%, 400px) auto' }}>
                     <Head>
                         <title>transcribe</title>
                         <meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
                     </Head>
                     
-                    <div className={styles.header}>
+                    <div className="font-normal text-lg flex flex-col h-full border-r-borderDefault border-r-[1px]" style={{ fontFamily: "PT Serif" }}>
                         <Header />
 
-                        <div className={styles.headerIntermediary}>
-                            <NavItem name={"Home"} link={"home-page"} icon={<Home size={18} />}/>
-
+                        <div className="flex flex-col justify-start p-4 gap-2 flex-1 bg-[rgba(156, 143, 188, 0.055)] font-psans">
                             <NavItem name={"Projects"} link={"projects-page"} icon={<List size={18} />}/>
 
                             <NavItem name={"Resources"} link={"resources-page"} icon={<Bookmark size={18} />}/>

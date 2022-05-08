@@ -30,7 +30,7 @@ const CreateModal: React.FC<{ modal: any }> = ({ modal }) => {
             <Modal.Title>Create</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Create a new book, project, idea</Text>
 
-            <Modal.Content className={styles.exportModalContent}>
+            <Modal.Content className="flex flex-col gap-10">
                 <Input placeholder="Project name" width="100%" onChange={(e) => setSetting({ ...setting, name: e.target.value })} style={{ height: '100px' }}>Project Name</Input>
                 <Input placeholder="Description" width="100%" onChange={(e) => setSetting({ ...setting, description: e.target.value })} style={{ height: '100px' }}>Description</Input>
             </Modal.Content>

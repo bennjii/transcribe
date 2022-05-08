@@ -136,7 +136,7 @@ export default function Home({ project }) {
 					<meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
 				</Head>
 				
-				<div className={styles.header}>
+				<div className="font-normal text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid gridTemplateRows-[62px 1fr 55px]" style={{ fontFamily: "PT Serif" }}>
 					{/* Header */}
 					<Header />
 

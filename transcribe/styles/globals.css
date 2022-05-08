@@ -70,16 +70,16 @@
 }
 
 :root {
-  --border-color: rgba(31, 29, 36, 0.089); 
+  --border-color: #1f1d2417; 
   --acent-text-color: #597298;
   --acent-bg-color: #c5d3ea83; 
   --acent-rgb: 89, 114, 152;
 
   --acent-shadow-color: #b6c0d01f;
-  --acent-page-bg: rgb(231 235 255 / 65%);
+  --acent-page-bg: #e7ebffa6;
 
   --white-pure: #fff;
-  --highlight-color: wheat;
+  --highlight-color: #f5deb3;
 
   --text-color: #131214;
   --text-muted: #535557;
@@ -93,7 +93,7 @@
   --text-muted: #535557;
   --text-link: #00b0f4;
   --text-positive: #4fdc7b;
-  --text-negative: rgb(255, 120, 120);
+  --text-negative: #ff7878;
 
   --bg-positive: #64c281;
   --interactive-normal: #b9bbbe;

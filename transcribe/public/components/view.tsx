@@ -53,10 +53,10 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                         <meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
                     </Head>
                     
-                    <div className="font-normal text-lg flex flex-col h-full border-r-borderDefault border-r-[1px] dark:bg-bgDarkDark" style={{ fontFamily: "PT Serif" }}>
+                    <div className="font-normal text-lg flex flex-col h-full border-r-borderDefault dark:border-r-borderDefaultDark border-r-[1px] dark:bg-bgDarkDark" style={{ fontFamily: "PT Serif" }}>
                         <Header />
 
-                        <div className="flex flex-col justify-start p-4 gap-2 flex-1 bg-[rgba(156, 143, 188, 0.055)] font-psans ">
+                        <div className="flex flex-col justify-start p-4 gap-2 flex-1 bg-[rgba(156, 143, 188, 0.055)] font-psans dark:bg-bgDark w-full m-0">
                             <NavItem name={"Projects"} link={"projects-page"} icon={<List size={18} />}/>
 
                             <NavItem name={"Resources"} link={"resources-page"} icon={<Bookmark size={18} />}/>

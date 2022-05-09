@@ -30,7 +30,7 @@ const Viewer: React.FC<{ }> = ({ }) => {
                                         <CreateModal modal={{ visible, setVisible, bindings }} />
                                         <h1 className="font-base text-xl text-textColor dark:text-textColorDark">Your Projects</h1>
 
-                                        <div className={styles.createProject} onClick={() => {
+                                        <div className="text-textColor dark:text-textColorDark flex flex-row items-center gap-4" onClick={() => {
                                             setVisible(!visible);
                                         }}>
                                             Create Project

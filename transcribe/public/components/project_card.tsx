@@ -34,12 +34,12 @@ const ProjectCard: React.FC<{ content: any }> = ({ content }) => {
         // </Link>
 
         <Link href={`/editor/${content.id}`}>
-            <div className=" bg-[#fff] dark:bg-backgroundDark border-[1.5px] border-borderDefault dark:border-borderDefaultDark min-w-[350px] w-[25%] rounded-md overflow-hidden hover:cursor-pointer hover:border-borderHover hover:bg-backgroundHover">
-                <div className="text-textDefault dark:text-textColorDark px-4 py-[10px] text-lg border-b-[1px] border-borderDefault dark:border-borderDefaultDark">
+            <div className="group  bg-[#fff] dark:bg-backgroundDark border-[1.5px] border-borderDefault dark:border-borderDefaultDark min-w-[350px] w-[25%] rounded-md overflow-hidden hover:cursor-pointer hover:border-borderHoverLight dark:hover:border-borderHover dark:hover:bg-backgroundHover">
+                <div className="text-textDefault dark:text-textColorDark px-4 py-[10px] text-lg border-b-[1px] border-borderDefault dark:border-borderDefaultDark group-hover:dark:border-borderHover group-hover:border-borderHoverLight">
                     <h1>{ content.name }</h1> 
                 </div>
 
-                <div className="flex flex-row items-center gap-[2.2rem] p-4 text-textColor dark:text-textColorDarkMuted">
+                <div className="flex flex-row items-center gap-[2.2rem] p-4 text-textColor dark:text-textColorDarkMuted dark:group-hover:text-textColorDark">
                     <div className="flex flex-row items-center gap-2">
                         <File size={13}/>
                         <p className="m-0">
@@ -55,7 +55,7 @@ const ProjectCard: React.FC<{ content: any }> = ({ content }) => {
                     </div>
                 </div>
 
-                <div className="border-b-0 flex flex-row items-center gap-[.6rem] py-3 px-4">
+                <div className="border-b-0 flex flex-row items-center gap-[.6rem] py-3 px-4 text-textColor dark:text-textColorDarkMuted dark:group-hover:text-textColorDark">
                     Last Edited: { new RelativeTime().from(new Date(content.last_edited)) }
                 </div>
             </div>

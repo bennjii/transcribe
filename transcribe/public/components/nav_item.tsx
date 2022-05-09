@@ -15,7 +15,7 @@ const NavItem: React.FC<{ name: string, link: string, icon: any }> = ({ name, li
 
     return (
         <div 
-            className={`flex flex-row items-center text-[.95rem] gap-4 px-4 py-[0.6rem] rounded-md bg-opacity-0 cursor-pointer ${active && styles.navActive}`}
+            className={`flex flex-row items-center font-medium text-[.95rem] gap-4 px-4 py-[0.6rem] rounded-md cursor-pointer dark:text-textColorDarkMuted  ${active && 'bg-accentBgColor dark:bg-accentTextColorDark dark:text-bgLight'}`}
             onClick={() => pageCallback(link)}
         >
             { icon }

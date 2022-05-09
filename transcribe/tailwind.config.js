@@ -16,16 +16,18 @@ module.exports = {
     },
     colors: {
       borderDefault: "#1f1d2417",
-      borderHover: "#bab8c2",
+      borderHover: "#717173",
+      borderHoverLight: "#BAB8C2",
       borderDefaultDark: "#363636",
 
       accentTextColor: "#597298",
+      accentTextColorDark: "#578cf5",
       accentBgColor: "#c5d3ea83",
       accentRGB: "89, 114, 152",
       accentShadowColor: "#b6c0d01f",
       accentPageBg: "#e7ebffa6",
 
-      backgroundHover: "#fafbfb",
+      backgroundHover: "#393939",
       backgroundDark: "#2d2d2d",
 
       bgDark: "#242424",

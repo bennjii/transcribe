@@ -19,7 +19,7 @@ const Viewer: React.FC<{ }> = ({ }) => {
     }, [page]);
 
     return (
-        <div className={styles.projectView}>
+        <div className="bg-bgLight dark:bg-bgDark p-16 font-psans flex flex-col gap-8 overflow-auto">
             {
                 (() => {
                     switch(active) {
@@ -28,7 +28,7 @@ const Viewer: React.FC<{ }> = ({ }) => {
                                 <>
                                     <div className={styles.projectPageHeader}>
                                         <CreateModal modal={{ visible, setVisible, bindings }} />
-                                        <h1>Your Projects</h1>
+                                        <h1 className="font-base text-xl text-textColor dark:text-textColorDark">Your Projects</h1>
 
                                         <div className={styles.createProject} onClick={() => {
                                             setVisible(!visible);

@@ -16,13 +16,27 @@ module.exports = {
     },
     colors: {
       borderDefault: "#1f1d2417",
+      borderHover: "#bab8c2",
+      borderDefaultDark: "#363636",
+
       accentTextColor: "#597298",
       accentBgColor: "#c5d3ea83",
       accentRGB: "89, 114, 152",
       accentShadowColor: "#b6c0d01f",
       accentPageBg: "#e7ebffa6",
+
+      backgroundHover: "#fafbfb",
+      backgroundDark: "#2d2d2d",
+
+      bgDark: "#242424",
+      bgLight: "#F5F7F9",
+      bgDarkDark: "#121212",
+
       highlightColor: "#f5deb3",
-      textColor: "#131214",
+
+      textColor: "#101011",
+      textColorDark: "#fff",
+      textColorDarkMuted: "#7e7e7f",
       textMuted: "#535557",
       textInactive: "#929296",
       highlightColor2: "#dfe5ff",

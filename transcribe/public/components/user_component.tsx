@@ -5,8 +5,8 @@ import { LogOut, Settings } from 'react-feather';
 
 const UserComponent: React.FC<{ user: any }> = ({ user }) => {
     return (
-        <div className={styles.userComponent}>
-            <p>
+        <div className="flex flex-row justify-between items-center p-[1.4rem] border-t-[1px] border-t-borderDefault">
+            <p className="text-textColor dark:text-textColorDarkMuted">
                 {
                     user?.username
                 }

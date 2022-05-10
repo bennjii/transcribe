@@ -5,6 +5,7 @@ module.exports = {
     "./public/components/**/**/*.{js,ts,jsx,tsx}",
     "./public/components/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       lineHeight: {

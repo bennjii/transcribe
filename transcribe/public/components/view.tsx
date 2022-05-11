@@ -47,16 +47,16 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     if(data)
         return (
             <HomeContext.Provider value={{ page: activePage, pageCallback: setActivePage, info: data, __infoCallback: setData }}>
-                <div className="grid h-screen overflow-hidden" style={{ gridTemplateColumns: 'clamp(200px, 16%, 400px) auto' }}>
+                <div className="flex h-screen overflow-hidden sm:flex-row flex-col">
                     <Head>
                         <title>transcribe</title>
                         <meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
                     </Head>
                     
-                    <div className="font-normal text-lg flex flex-col h-full border-r-borderDefault dark:border-r-borderDefaultDark border-r-[1px] dark:bg-bgDarkDark" style={{ fontFamily: "PT Serif" }}>
+                    <div className="justify-between sm:justify-start sm:w-20 md:w-64 lg:w-80 font-normal text-lg flex flex-row sm:flex-col w-full sm:h-full border-r-borderDefault dark:border-r-borderDefaultDark border-r-[1px] dark:bg-bgDarkDark" style={{ fontFamily: "PT Serif" }}>
                         <Header />
 
-                        <div className="flex flex-col justify-start p-4 gap-2 flex-1 bg-[rgba(156, 143, 188, 0.055)] font-psans dark:bg-bgDark w-full m-0">
+                        <div className="flex flex-row-reverse sm:flex-col justify-start sm:p-4 p-2 gap-2 flex-1 bg-[rgba(156, 143, 188, 0.055)] font-psans dark:bg-bgDark w-full m-0">
                             <NavItem name={"Projects"} link={"projects-page"} icon={<List size={18} />}/>
 
                             <NavItem name={"Resources"} link={"resources-page"} icon={<Bookmark size={18} />}/>

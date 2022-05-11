@@ -19,7 +19,7 @@ const Viewer: React.FC<{ }> = ({ }) => {
     }, [page]);
 
     return (
-        <div className="bg-bgLight dark:bg-bgDark p-16 font-psans flex flex-col gap-8 overflow-auto">
+        <div className="bg-bgLight dark:bg-bgDark p-16 font-psans flex flex-col gap-8 overflow-auto flex-1">
             {
                 (() => {
                     switch(active) {

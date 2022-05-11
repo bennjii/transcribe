@@ -35,6 +35,8 @@ module.exports = {
       bgLight: "#F5F7F9",
       bgDarkDark: "#121212",
 
+      channelsDefault: "#8e9297",
+
       highlightColor: "#f5deb3",
 
       textColor: "#101011",

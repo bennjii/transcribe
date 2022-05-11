@@ -14,11 +14,11 @@ const Header: React.FC<{ }> = ({ }) => {
                 <link rel="icon" href="/favicon/32-bold.png" type="image/png" />
             </Head>
 
-            <a href="/" className="md:hidden px-2 h-7 items-center justify-center flex text-accentTextColor dark:text-textColorDark italic text-xl pr-3 pb-1 rounded-[12px]">
+            <a href="/" className="md:hidden sm:flex hidden px-2 h-7 items-center justify-center text-accentTextColor dark:text-textColorDark italic text-xl pr-3 pb-1 rounded-[12px]">
                 t
             </a>
-            <a href="/" className="m-0 hidden md:flex cursor-pointer text-[1.1rem] text-textColor dark:text-textColorDark">transcribe</a> 
-            <h4 className="text-accentTextColor hidden md:flex dark:text-accentTextColor font-psans m-0 font-normal text-base">beta</h4>
+            <a href="/" className="m-0 md:flex sm:hidden flex cursor-pointer text-[1.1rem] text-textColor dark:text-textColorDark">transcribe</a> 
+            <h4 className="text-accentTextColor rounded-lg px-2 hidden md:flex dark:text-accentTextColor font-psans m-0 font-normal text-base">beta</h4>
         </div>
     )
 }

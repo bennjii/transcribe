@@ -34,7 +34,7 @@ const ProjectCard: React.FC<{ content: any }> = ({ content }) => {
         // </Link>
 
         <Link href={`/editor/${content.id}`}>
-            <div className="group  bg-[#fff] dark:bg-backgroundDark border-[1.5px] border-borderDefault dark:border-borderDefaultDark min-w-[350px] w-[25%] rounded-md overflow-hidden hover:cursor-pointer hover:border-borderHoverLight dark:hover:border-borderHover dark:hover:bg-backgroundHover">
+            <div className="group  bg-[#fff] dark:bg-backgroundDark border-[1.5px] border-borderDefault dark:border-borderDefaultDark min-w-[100%] sm:min-w-[350px] w-[25%] rounded-md overflow-hidden hover:cursor-pointer hover:border-borderHoverLight dark:hover:border-borderHover dark:hover:bg-backgroundHover">
                 <div className="text-textDefault dark:text-textColorDark px-4 py-[10px] text-lg border-b-[1px] border-borderDefault dark:border-borderDefaultDark group-hover:dark:border-borderHover group-hover:border-borderHoverLight">
                     <h1>{ content.name }</h1> 
                 </div>

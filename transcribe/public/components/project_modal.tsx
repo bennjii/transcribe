@@ -68,7 +68,7 @@ const ProjectModal: React.FC<{ modal: any }> = ({ modal }) => {
 
                 <Divider align="start">delete</Divider>
 
-                <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>By performing this action, you will be purging transcribe of <Text i>{project.name}</Text>. This action is <Text b>irreversable</Text>. Please make sure you truely wish to delete this project</Text>
+                <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>By performing this action, you will be purging transcribe of <Text i>{project.name}</Text>. This action is <Text b>irreversible</Text>. Please make sure you truly wish to delete this project</Text>
                 <Note label={false} type="error" style={{ opacity: 0.7 }} filled>Once deleted, a project cannot be restored.</Note>
 
                 <Input type="default" clearable placeholder={`Enter Project Name`} width="100%" onChange={(e) => {

@@ -24,11 +24,11 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     }, [authState])
 
 	return (
-		<div className={styles.auth + " " + styles.container}>
-            <h1>transcribe</h1>
+		<div className="bg-bgLight sm:bg-accentPageBg text-textColor h-full w-full min-w-[100vw] min-h-[100vh] flex flex-row justify-around items-center font-psans ">
+            <h1 className="absolute top-0 left-0 py-8 px-12 m-0 font-light text-lg text-textColor" style={{ fontFamily: "PT Serif" }}>transcribe</h1>
             
-            <div className="w-auto bg-bgLight p-8 rounded-md border-[1px] border-borderDefault">
-                <div className="min-w-[400px]">
+            <div className="w-full sm:w-max bg-bgLight p-8 sm:rounded-md sm:border-[1px] sm:border-borderDefault flex flex-row justify-between items-center">
+                <div className="sm:min-w-[400px] w-full">
                     {
                         (authState == 'auth-login') ?
                         <div className="flex flex-col gap-6">
@@ -139,12 +139,6 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                                 <p className="text-[.8rem] text-channelsDefault mb-0">Haven{'\''}t received an email? <a className="text-[.8rem] font-normal text-textLink m-0 mt-2" href="#" onClick={() => setAuthState('auth-login')}>Re-send</a></p> 
                             </div>
                         </div>
-                    }
-                </div>
-                
-                <div className={styles.authRight}>
-                    {
-                        //fetch(` https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${client.auth.session().provider_token}`)
                     }
                 </div>
             </div> 

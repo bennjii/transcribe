@@ -136,20 +136,20 @@ export default function Home({ project }) {
 					<meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
 				</Head>
 				
-				<div className="font-normal text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid" style={{ fontFamily: "PT Serif", gridTemplateRows: "62px 1fr 65px" }}>
+				<div className="font-normal max-h-screen text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid" style={{ fontFamily: "PT Serif", gridTemplateRows: "62px 1fr 65px" }}>
 					{/* Header */}
 					<Header />
 
 					<ProjectModal modal={{ projectVisible, setProjectVisible, projectBindings }}/>
 
-					<div className={styles.project}>
+					<div className={styles.project} style={{ height: "100%", overflow: "hidden" }}>
 						<div onClick={() => setProjectVisible(true)}>
 							<h2>{projectState?.name}</h2>
 
 							<ArrowRight size={19} strokeWidth={2}/>
 						</div>
 
-						<div className={styles.folderStructure} key={`FOLDERCOMPONENT-${projectState.id}`}>
+						<div className={styles.folderStructure} style={{ overflowY: "scroll" }} key={`FOLDERCOMPONENT-${projectState.id}`}>
 							<div className={styles.folderTitle}>
 								<p>{projectState?.name}</p>
 								

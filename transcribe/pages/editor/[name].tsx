@@ -3,9 +3,6 @@ import Head from 'next/head'
 import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Plus, Settings } from 'react-feather'
 
 import Book from '@components/book';
-import BookChapter from '@components/book_chapter';
-import BookInput from '@components/book_input';
-import { stringToJSON } from '@components/convert';
 import CustomToolbar from '@components/custom_toolbar';
 import styles from '@styles/Home.module.css'
 
@@ -35,6 +32,8 @@ export const getServerSideProps: GetServerSideProps = async (
   ) => {
     const INDEX = context.params.name;
 	const { user } = await supabase.auth.api.getUserByCookie(context.req);
+
+	console.log((new Date().getTime() - new Date(user.updated_at).getTime()) / 1000 / 60)
 
 	if (!user) {
 		// If no user, redirect to index.
@@ -136,7 +135,7 @@ export default function Home({ project }) {
 					<meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
 				</Head>
 				
-				<div className="font-normal max-h-screen text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid" style={{ fontFamily: "PT Serif", gridTemplateRows: "62px 1fr 65px" }}>
+				<div className="bg-[#fff] font-normal max-h-screen text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid" style={{ fontFamily: "PT Serif", gridTemplateRows: "62px 1fr 65px" }}>
 					{/* Header */}
 					<Header />
 
@@ -177,7 +176,7 @@ export default function Home({ project }) {
 					
 				</div>
 
-				<div className={styles.content}>
+				<div className="grid bg-[#fff]" style={{ gridTemplateRows: "62px auto" }}>
 					<div className={styles.bookOverTools}>
 						<div className={styles.bookToolTable}> 
 							<CustomToolbar />

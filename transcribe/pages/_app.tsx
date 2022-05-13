@@ -24,6 +24,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <GeistProvider themes={[defaultLight]} themeType="defaultLight">
       {/* <CssBaseline />  */}
+      <meta name="theme-color" content="#FFF" />
       <Component {...pageProps} />
     </GeistProvider>
   )

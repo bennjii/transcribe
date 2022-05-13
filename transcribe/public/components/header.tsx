@@ -8,7 +8,7 @@ const Header: React.FC<{ }> = ({ }) => {
 
     return (
         // className="border-b-[var(--border-color)] border-[1px]
-        <div className="py-4 px-8 flex flex-col sm:flex-row items-center justify-center md:justify-between sm:border-b-borderDefault sm:dark:border-b-borderDefaultDark sm:border-b-[1px]">
+        <div className="bg-[#fff] py-4 px-8 flex flex-col sm:flex-row items-center justify-center md:justify-between sm:border-b-borderDefault sm:dark:border-b-borderDefaultDark sm:border-b-[1px]">
             <Head>
                 <title>transcribe</title>
                 <link rel="icon" href="/favicon/32-bold.png" type="image/png" />

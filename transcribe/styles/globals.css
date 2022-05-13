@@ -157,6 +157,17 @@ body {
   margin: 0;
   font-family: "Public Sans", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  background-color: var(--acent-bg-color);
+}
+
+html:before {
+  content: '';
+  position: fixed;
+  width: 100%;
+  height: 1000px;
+  top: -1000px;
+  background-color: tomato;
 }
 
 button {

@@ -1,11 +1,11 @@
 
 import styles from '@styles/Home.module.css'
 import { supabase } from '../client'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 import { Auth } from '@components/auth'
 import { View } from '@components/view'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 
 const fetcher = (url, token) =>
   fetch(url, {
@@ -22,8 +22,8 @@ const Index = () => {
 		"--color-primary-rgb": "89, 114, 152"
 	}) // Fetch User preferences
 
+	const router = useRouter();
 	const [ user, setUser ] = useState(supabase.auth.user());
-	const [ authView, setAuthView ] = useState('sign_in')
 
 	useEffect(() => {
 		if(session)
@@ -48,6 +48,16 @@ const Index = () => {
 			authListener.unsubscribe()
 		}
 	}, []);
+
+	useLayoutEffect(() => {
+		if(window && user && window?.location.href.includes("/?u=")) {
+			supabase.auth.signOut();
+			setUser(null);
+		}else if(user && window?.location.href.includes("/?u=")) {
+			const id = window?.location.href.split("/?u=");
+			window.location.href = "./editor/" + id[1];
+		}
+	}, [router.query])
 
 	if(!user) 
 		return (

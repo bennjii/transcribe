@@ -33,12 +33,14 @@ export const getServerSideProps: GetServerSideProps = async (
     const INDEX = context.params.name;
 	const { user } = await supabase.auth.api.getUserByCookie(context.req);
 
-	console.log((new Date().getTime() - new Date(user.updated_at).getTime()) / 1000 / 60)
-
 	if (!user) {
 		// If no user, redirect to index.
-		return { props: {}, redirect: { destination: '/', permanent: false } }
+		await supabase.auth.refreshSession();
+		return { props: {}, redirect: { destination: `/?u=${INDEX}`, permanent: true } }
 	}
+
+	console.log((new Date().getTime() - new Date(user.updated_at).getTime()) / 1000 / 60)
+
 
 	const project = await supabase
 		.from('projects')

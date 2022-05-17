@@ -8,6 +8,7 @@ import Input from '@components/input'
 import { callbackify } from 'util'
 import { AlertCircle, Check } from 'react-feather';
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     const [ authState, setAuthState ] = useState('auth-login');
@@ -18,6 +19,7 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
     });
 
     const [ authError, setAuthError ] = useState("");
+    const router = useRouter();
 
     useEffect(() => {
         setAuthError(null);
@@ -55,7 +57,11 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                                         password: authInputState.password,
                                     }).then(e => {
                                         if(e.error) setAuthError(e.error.message)
-                                        else setAuthError(null)
+                                        else {
+                                            setAuthError(null);
+                                            console.log(`/editor/${router?.query?.u}`);
+                                            router.push(`/editor/${router?.query?.u}`);
+                                        }
 
                                         callback()
                                     })

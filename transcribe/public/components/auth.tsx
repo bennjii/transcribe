@@ -59,8 +59,11 @@ const Auth: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                                         if(e.error) setAuthError(e.error.message)
                                         else {
                                             setAuthError(null);
-                                            console.log(`/editor/${router?.query?.u}`);
-                                            router.push(`/editor/${router?.query?.u}`);
+
+                                            if(router?.query?.u) {
+                                                console.log(`/editor/${router?.query?.u}`);
+                                                router.push(`/editor/${router?.query?.u}`);
+                                            }
                                         }
 
                                         callback()

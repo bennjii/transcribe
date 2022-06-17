@@ -98,12 +98,14 @@ export default function Home({ project }) {
 				font-family: "Caecilia" !important;
 				color: #c1c1c1 !important;
 				line-height: 1.5rem !important;
+				font-size: 11px;
 			  }`;
 		}else {
 			dStyle.innerHTML = `.ql-snow * {
 				font-family: "Caecilia" !important;
 				color: #131214 !important;
 				line-height: 1.5rem !important;
+				font-size: 11px;
 			  }`;
 		}
 

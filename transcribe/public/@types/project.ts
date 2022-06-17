@@ -161,7 +161,8 @@ export const newBook = (name) => {
         settings: {
             share: false,
             permType: "private",
-            view_mode: "normal"
+            view_mode: "normal",
+            theme: "light"
         }
     }
 }

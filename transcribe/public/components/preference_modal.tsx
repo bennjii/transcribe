@@ -12,8 +12,8 @@ import { supabase } from "@root/client";
 import { v4 as uuidv4 } from 'uuid'
 import Delta from "quill-delta";
 
-const PrefrenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) => {
-    const { prefrencesVisible: visible, setPrefrencesVisible: setVisible, prefrenceBindings: bindings } = modal;
+const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) => {
+    const { preferencesVisible: visible, setPreferencesVisible: setVisible, preferenceBindings: bindings } = modal;
     const { project, projectCallback, editor: editor__, editorCallback, synced } = useContext(ProjectContext);
 
     const editor = data ? data : editor__;
@@ -66,14 +66,6 @@ const PrefrenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) =
                     <></>
                 }
                
-                <div className={styles.checkboxElement} >
-                    <Radio.Group useRow onChange={(e) => setSettings({...settings, view_mode: e})} value={settings?.view_mode}>
-                        <Radio value="normal">Normal<Radio.Desc>Default Size</Radio.Desc></Radio>
-                        <Radio value="wide">Wide<Radio.Desc>More Horisonal Editing</Radio.Desc></Radio>
-                        <Radio value="full">Full<Radio.Desc>Maximum Horisontal Editing</Radio.Desc></Radio>
-                    </Radio.Group>
-                </div>
-
                 <Divider align="start">share</Divider>
 
                 <div className={styles.checkboxElement} >
@@ -174,4 +166,4 @@ const PrefrenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) =
     )
 }
 
-export default PrefrenceModal;
+export default PreferenceModal;

@@ -18,7 +18,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
 
     useEffect(() => {
         const userListener = client
-            .from(`users:id=eq.${client.auth.user().id}`) // :id=eq.${client.auth.user().id}
+            .from(`users:id=eq.${client?.auth?.user()?.id}`) // :id=eq.${client.auth.user().id}
             .on('*', (payload) => {
                 setData({ ...payload.new }) 
             })

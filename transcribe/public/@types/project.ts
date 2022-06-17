@@ -8,7 +8,8 @@ export type Settings = {
     share: boolean,
     permType: "public" | "private",
     performance?: boolean,
-    view_mode: "normal" | "wide" | "full"
+    view_mode: "normal" | "wide" | "full",
+    theme: "light" | "dark"
 }
 
 export type ProjectSettings = {

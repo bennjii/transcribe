@@ -20,7 +20,7 @@ import jsPDF from "jspdf";
 import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import BookDocument from "./book_document";
 import ExportModal from "./export_modal";
-import PrefrenceModal from "./prefrence_modal";
+import PrefrenceModal from "./preference_modal";
 import VisionCanvas from "./vision_canvas";
 
 const VisionBoard: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {

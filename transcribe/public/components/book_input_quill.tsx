@@ -72,7 +72,7 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
             onChange={handleChange}
             modules={{
                 // table: true, // npm i react-quill-with-table
-                toolbar: { container: `#toolbar-${value.id}` } 
+                toolbar: false,
                     // handlers: {
                     //     customBold: function(value) {
                     //         console.log(this.quill)
@@ -81,22 +81,7 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
                     // }
                 
             }}
-            onBlur={(...args) => {
-                const selection = args[0];
-                
-                // if(input_ref.current) {
-                //     // This cant happen all the time, only when the focus is removed by elements in the toolbar.
-
-                //     console.log(input_ref.current);
-                //     // input_ref.current.editor.selection.focus(); // Sets focus after blur
-                    
-                //     //@ts-ignore
-                //     console.log(input_ref.current.editor.selection)
-                // }
-            }}
             onFocus={() => {
-                
-
                 //@ts-expect-error
                 if(editor.active_sub_file != value.id) {
                     editorCallback({ ...editor, active_sub_file: value.id });

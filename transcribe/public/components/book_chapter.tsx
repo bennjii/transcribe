@@ -19,6 +19,7 @@ const BookChapter: React.FC<{ chapter: number, content: File, domWidth: string }
         <div className={styles.page} style={{ minWidth: domWidth }} >
             {
                 <input 
+                    className={`${editor?.settings?.theme == "light" ? "" : "text-textColorDark"}`}
                     type="text"
                     ref={input_field}
                     autoFocus

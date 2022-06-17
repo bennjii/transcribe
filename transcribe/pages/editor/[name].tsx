@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Plus, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Maximize, Plus, Settings } from 'react-feather'
 
 import Book from '@components/book';
 import CustomToolbar from '@components/custom_toolbar';
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
             if(owner == user.id) return e.data[0]
 
-			// Add to the editors in prefrences so that it can be used here!
+			// Add to the editors in preferences so that it can be used here!
 			else if(e?.data?.[0]?.settings?.editors?.includes(user?.id)) return e.data[0];
 			else return "404";
 		});
@@ -82,11 +82,80 @@ export default function Home({ project }) {
 	const [ user, setUser ] = useState(null);
 	const [ synced, setSynced ] = useState(false);
 
+	const [ fullView, setFullView ] = useState(false);
+
 	useEffect(() => {
 		// find id and set them to active editors...
 		if (!activeEditor) recursivelyIdentify(projectState, setActiveEditor);
 		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
 	}, [])
+
+
+	useEffect(() => {
+		const dStyle = document.getElementById('embeddedStyles');
+		if(activeEditor?.settings?.theme == "dark") {
+			dStyle.innerHTML = `.ql-snow * {
+				font-family: "Caecilia" !important;
+				color: #c1c1c1 !important;
+				line-height: 1.5rem !important;
+			  }`;
+		}else {
+			dStyle.innerHTML = `.ql-snow * {
+				font-family: "Caecilia" !important;
+				color: #131214 !important;
+				line-height: 1.5rem !important;
+			  }`;
+		}
+
+		const aStyle = document.getElementById("appliedStyles");
+		if(activeEditor?.settings?.theme == "dark") {
+			aStyle.innerHTML = `
+				::-webkit-scrollbar {
+					width: 4px;
+				}
+
+				/* Track */
+				::-webkit-scrollbar-track {
+					border-radius: 5px;
+				}
+				
+				/* Handle */
+				::-webkit-scrollbar-thumb {
+					background: #414141;
+					border-radius: 5px;
+				}
+
+				/* Handle on hover */
+				::-webkit-scrollbar-thumb:hover {
+					background: #c1c1c1; 
+				}
+			`
+		}else {
+			aStyle.innerHTML = `
+				::-webkit-scrollbar {
+					width: 4px;
+				}
+
+				/* Track */
+				::-webkit-scrollbar-track {
+					border-radius: 5px;
+				}
+				
+				/* Handle */
+				::-webkit-scrollbar-thumb {
+					background: #c1c1c1; 
+					border-radius: 5px;
+				}
+
+				/* Handle on hover */
+				::-webkit-scrollbar-thumb:hover {
+					background: #414141; 
+				}
+			`
+		}
+		
+		
+	}, [projectState])
 
 	const verif = useCallback(
 		_.debounce((state) => {
@@ -132,88 +201,87 @@ export default function Home({ project }) {
 
 	return (
 		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor, synced: synced }}>
-			<div className={styles.container}>
+			<style id="embeddedStyles"></style>
+			<style id="appliedStyles"></style>
+
+			<div className="flex flex-row h-screen overflow-hidden">
 				<Head>
 					<meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
 				</Head>
-				
-				<div className="bg-[#fff] font-normal max-h-screen text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid" style={{ fontFamily: "PT Serif", gridTemplateRows: "62px 1fr 65px" }}>
-					{/* Header */}
-					<Header />
 
-					<ProjectModal modal={{ projectVisible, setProjectVisible, projectBindings }}/>
+				{
+					fullView ?
+					<div></div>
+					:
+					<div className="bg-[#fff] w-72 font-normal max-h-screen text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid" style={{ fontFamily: "PT Serif", gridTemplateRows: "62px 1fr 65px" }}>
+						{/* Header */}
+						<Header />
 
-					<div className={styles.project} style={{ height: "100%", overflow: "hidden" }}>
-						<div onClick={() => setProjectVisible(true)}>
-							<h2>{projectState?.name}</h2>
+						<ProjectModal modal={{ projectVisible, setProjectVisible, projectBindings }}/>
 
-							<ArrowRight size={19} strokeWidth={2}/>
-						</div>
+						<div className={styles.project} style={{ height: "100%", overflow: "hidden" }}>
+							<div onClick={() => setProjectVisible(true)}>
+								<h2>{projectState?.name}</h2>
 
-						<div className={styles.folderStructure} style={{ overflowY: "scroll" }} key={`FOLDERCOMPONENT-${projectState.id}`}>
-							<div className={styles.folderTitle}>
-								<p>{projectState?.name}</p>
+								<ArrowRight size={19} strokeWidth={2}/>
+							</div>
+
+							<div className={styles.folderStructure} style={{ overflowY: "auto" }} key={`FOLDERCOMPONENT-${projectState.id}`}>
+								<div className={styles.folderTitle}>
+									<p>{projectState?.name}</p>
+									
+									<Plus size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setVisible(true)}/>
+									<NewFileModal modal={{ visible, setVisible, bindings }} location={project.file_structure} isProjectRoot/>
+								</div>
 								
-								<Plus size={16} strokeWidth={2} color={"var(--text-muted)"} onClick={() => setVisible(true)}/>
-								<NewFileModal modal={{ visible, setVisible, bindings }} location={project.file_structure} isProjectRoot/>
+								{/* <FileStructure current_folder={projectState.file_structure} key={`FILESTRUCT-${projectState.id}`}/> */}
+								{
+									projectState.file_structure.children.map((data, index) => {
+										return (
+											data.is_folder ? 
+											<FileStructure current_folder={data} key={`${index} -- ${data.name}`} />
+											:
+											//@ts-expect-error
+											<FileComponent data={data} key={`FILE-${data.id}`} />
+										)
+									})
+								}
 							</div>
 							
-							{/* <FileStructure current_folder={projectState.file_structure} key={`FILESTRUCT-${projectState.id}`}/> */}
-							{
-								projectState.file_structure.children.map((data, index) => {
-									return (
-										data.is_folder ? 
-										<FileStructure current_folder={data} key={`${index} -- ${data.name}`} />
-										:
-										//@ts-expect-error
-										<FileComponent data={data} key={`FILE-${data.id}`} />
-									)
-								})
-							}
 						</div>
+
+						<UserComponent user={user} buttonCallback={setFullView}/>
 						
 					</div>
+				}
 
-					<UserComponent user={user}/>
-					
-				</div>
-
-				<div className="grid bg-[#fff]" style={{ gridTemplateRows: "62px auto" }}>
-					<div className={styles.bookOverTools}>
-						<div className={styles.bookToolTable}> 
-							<CustomToolbar />
-						</div>
-						
-						<div className={styles.syncStatus}>
-							{
-								synced ? 
-								<Dot style={{ marginRight: '20px' }} type="success">Synced</Dot>
-								:
-								<Dot style={{ marginRight: '20px' }}>Syncing</Dot>
+				<div className="flex flex-row flex-1 bg-[#fff]">
+					{
+						(() => {
+							switch(activeEditor?.type) {
+								case "document":
+									return <Book viewOnly={false}/>
+								case "book":
+									return <Book viewOnly={false}/>
+								case "artifact":
+									return <></>
+								case "vision_board":
+									return <VisionBoard />
+								case "folder":
+									return <></>
 							}
-							
-						</div>
-					</div>
+						})()
+					}
 
-					<div>
-						{
-							(() => {
-								switch(activeEditor?.type) {
-									case "document":
-										return <Book viewOnly={false}/>
-									case "book":
-										return <Book viewOnly={false}/>
-									case "artifact":
-										return <></>
-									case "vision_board":
-										return <VisionBoard />
-									case "folder":
-										return <></>
-								}
-							})()
-						}
-					</div>
-					
+					{
+						fullView ? (
+							<div className="absolute left-0 bottom-0 p-5">
+								<Maximize color={activeEditor?.settings?.theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+									setFullView(false)
+								}}></Maximize>
+							</div>
+						) : <></>
+					}
 				</div>
 				
 			</div>

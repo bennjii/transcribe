@@ -69,6 +69,24 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: "Sans";
+  src: url('../public/fonts/Sans/Regular.woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Sans";
+  src: url('../public/fonts/Sans/Bold.woff2');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Caecilia";
+  src: url('../public/fonts/Caecilia/CaeciliaLTPro55Roman.TTF');
+  font-weight: 400;
+}
+
 :root {
   --border-color: #1f1d2417; 
   --acent-text-color: #597298;
@@ -292,6 +310,8 @@ a {
   border: none;
 
   padding: 0 !important;
+
+  
 }
 
 .ql-active {
@@ -385,6 +405,10 @@ span[data-label="arial"]::before {
 
 .ql-picker-item:not(.ql-icon-picker)::before {
   font-family: "Public Sans";
+}
+
+.ql-snow strong {
+  font-weight: 800 !important;
 }
 /* Set content font-families */
 

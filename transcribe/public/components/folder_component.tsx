@@ -7,7 +7,7 @@ import styles from '@styles/Home.module.css'
 import { File, Folder } from '@public/@types/project'
 import { useModal } from "@geist-ui/react";
 import NewFileModal from "./new_file_modal";
-import PrefrenceModal from "./prefrence_modal";
+import PrefrenceModal from "./preference_modal";
 import FolderPrefrenceModal from "./folder_prefrences";
 
 const FolderComponent: React.FC<{ data: Folder, callback: Function, value: boolean }> = ({ data, callback, value }) => {

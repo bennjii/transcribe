@@ -1,26 +1,19 @@
 import { memo, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
-import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3, File as FileIcon } from "react-feather";
+import { Bold, ChevronDown, Italic, Minus, Plus, Underline, Book as BookIcon, Share, Download, Menu, BookOpen, Settings, Edit3, File as FileIcon, Sun, Sunrise, Edit, Eye } from "react-feather";
 
 import styles from '../../styles/Home.module.css'
-import { Book as BookType } from "../@types/book";
-import { saveAs } from 'file-saver';
-import { v4 as uuidv4 } from 'uuid';
-
 import BookContext from "../@types/book_context";
 import BookChapter from "./book_chapter";
 import { useContext } from "react";
 import ProjectContext from "@public/@types/project_context";
-import Editor from "./editor";
 import { File, Folder, newChapter, Project } from "@public/@types/project";
-import ReactQuill, { Quill } from "react-quill";
 
-import Delta from 'quill-delta'
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
-import jsPDF from "jspdf";
-import { CssBaseline, Divider, Grid, Modal, Radio, Text, useModal } from "@geist-ui/react";
 import BookDocument from "./book_document";
 import ExportModal from "./export_modal";
-import PrefrenceModal from "./prefrence_modal";
+import PreferenceModal from "./preference_modal";
+import { useModal } from "@geist-ui/react";
+import VisualPreferenceModal from "./visual_preference_modal";
 
 const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
@@ -33,7 +26,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
         chapter: 0,
         zoom_level: 1.5
     });
-    
+
     useEffect(() => {
         setBookState(editor);
     }, [editor]);
@@ -95,73 +88,30 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
         localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
     }, [, bookState]);
 
-    const exportBook = () => {
-        // @ts-expect-error                                
-        if(bookState?.children) {
-            const pdfExporter = require('quill-to-pdf').pdfExporter;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-            });
-
-            const book = [];
-
-            //@ts-expect-error
-            bookState?.children.map((e, i) => {
-                book.push(...e.data.ops)
-            });
-            
-            const html = new QuillDeltaToHtmlConverter(book, {}).convert();
-            // const pdf = await pdfExporter.generatePdf(new Delta({ ops: book }));
-            // saveAs(pdf, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
-
-            const book_elem = document.createElement("div")
-                book_elem.innerHTML = html;
-
-            doc.html(book_elem, {
-                callback: function (doc) {
-                    doc.save(`${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
-                },
-                margin: [1,1,1,1],
-                // fontFaces: [{
-                //     family: "Public Sans",
-                //     style: 'normal',
-                //     src: [{
-                //         url: "./public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf",
-                //         format: "truetype"
-                //     }]
-                // }],
-                filename: `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`,
-                x: 10,
-                y: 10
-            })
-
-            // doc.addFileToVFS("MyFont.ttf", );
-            // doc.addFont("public/fonts/Public_Sans/PublicSans-VariableFont_wght.ttf", "Public Sans", "normal");
-        }
-    }
-
     const { visible: exportVisible, setVisible: setExportVisible, bindings: exportBindings } = useModal();
-    const { visible: prefrencesVisible, setVisible: setPrefrencesVisible, bindings: prefrenceBindings } = useModal();
+    const { visible: preferencesVisible, setVisible: setPreferencesVisible, bindings: preferenceBindings } = useModal();
+    const { visible: vpVisible, setVisible: setVPVisible, bindings: vpBindings } = useModal();
 
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState, viewOnly: viewOnly }}>
-            <div className={styles.editorContent} >
+            <div className={`h-full flex flex-row flex-1 overflow-hidden ${editor?.settings?.theme == "light" ? "" : "bg-bgDarkDark"}`}>
                 {/* Content... */}
 
                 <ExportModal modal={{ exportVisible, setExportVisible, exportBindings }}/>
-                <PrefrenceModal modal={{ prefrencesVisible, setPrefrencesVisible, prefrenceBindings }}/>
+                <PreferenceModal modal={{ preferencesVisible, setPreferencesVisible, preferenceBindings }}/>
+                <VisualPreferenceModal modal={{ vpVisible, setVPVisible, vpBindings }}/>
 
-                <div className={styles.book}>			
-                    <div className={styles.bookCaptionBar}>
-                        <div>
+                <div className="flex flex-col h-screen w-full relative">			
+                    <div className="h-10 flex flex-row items-center justify-between gap-2 px-4">
+                        <div className="select-none w-72 flex flex-row items-center gap-2">
                             {
                                 editor?.type == "book" ? 
-                                <BookIcon size={18} color={"var(--acent-text-color)"} />
+                                <BookIcon size={18} color={editor?.settings?.theme == "light" ? "var(--acent-text-color)" : "var(--text-muted)"} />
                                 :
-                                <FileIcon size={18} color={"var(--acent-text-color)"} />
+                                <FileIcon size={18} color={editor?.settings?.theme == "light" ? "var(--acent-text-color)" : "var(--text-muted)"} />
                             }
 
-                            <p>{editor?.name}</p>
+                            <p className="font-normal text-textMuted text-sm">{editor?.name}</p>
                         </div>
 
                         <div className={styles.centerActions}>
@@ -177,52 +127,68 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                                 }}>
                                     <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
 
-                                    <p>Add Chapter</p>
-                                </div>
-                                :
-                                <></>
-                            }
-
-                            <div className={styles.export} onClick={async () => {
-                                setExportVisible(!exportVisible)
-                            }}>
-                                <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
-
-                                <p>Export</p>
-                            </div>
-
-                            {
-                                !viewOnly ?
-                                <div className={styles.export} onClick={async () => {
-                                    setPrefrencesVisible(true)
-                                }}>
-                                    <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
-    
-                                    <p>Prefrences</p>
+                                    <p className="font-normal text-textMuted select-none text-xs">Add Chapter</p>
                                 </div>
                                 :
                                 <></>
                             }
                             
-                        </div>
-                        
+                            {
+                                !viewOnly ?
+                                <div className={styles.export} onClick={async () => {
+                                    setExportVisible(!exportVisible)
+                                }}>
+                                    <Download size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
+    
+                                    <p className="font-normal text-textMuted select-none text-xs">Export</p>
+                                </div>
+                                :
+                                <></>
+                            }
 
-                        <div className={styles.fixedPageSpec}>
+                            {
+                                !viewOnly ?
+                                <div className={styles.export} onClick={async () => {
+                                    setPreferencesVisible(true)
+                                }}>
+                                    <Edit3 size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
+    
+                                    <p className="font-normal text-textMuted select-none text-xs">Options</p>
+                                </div>
+                                :
+                                <></>
+                            }
+
+                            {
+                                !viewOnly ?
+                                <div className={styles.export} onClick={async () => {
+                                    setVPVisible(!vpVisible)
+                                }}>
+                                    <Eye size={18} color={"var(--text-muted)"} strokeWidth={1.5} />
+
+                                    <p className="font-normal text-textMuted select-none text-xs">Preferences</p>
+                                </div>
+                                :
+                                <></>
+                            }
+                        </div>
+
+                        <div className="flex flex-row items-center gap-2 select-none">
                             <Plus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level < 2.5 ? editorState.zoom_level + 0.1 : 2.5 })}/>
 
-                            <p><b>{Math.round(editorState.zoom_level * 100)}%</b></p>
+                            <p className="font-normal text-textMuted text-xs">{Math.round(editorState.zoom_level * 100)}%</p>
 
                             <Minus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level > 0.5 ? editorState.zoom_level - 0.1 : 0.5 })} />
                         </div>
 
-                        <div className={styles.fixedPageSpec} style={{ justifyContent: "flex-end" }}>
-                            { bookState?.type == "book" ? <p><b>{editorState.chapters}</b> {editorState.chapters > 1 ? "Chapters" : "Chapter"}</p> : <></> }
-                            <p><b>{editorState.words}</b> Words</p>
-                            <p><b>{editorState.chars}</b> Characters</p>
+                        <div className="w-96 justify-center flex flex-row items-center gap-2 select-none" style={{ justifyContent: "flex-end" }}>
+                            { bookState?.type == "book" ? <p className="font-normal text-textMuted text-xs"><b className="font-bold">{editorState.chapters}</b> {editorState.chapters > 1 ? "Chapters" : "Chapter"}</p> : <></> }
+                            <p className="font-normal text-textMuted text-xs"><b className="font-bold">{editorState.words}</b> Words</p>
+                            <p className="font-normal text-textMuted text-xs"><b className="font-bold">{editorState.chars}</b> Characters</p>
                         </div>
                     </div>
                     
-                    <div className={styles.pages} id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
+                    <div className="h-full w-full overflow-auto p-8 flex items-center flex-col gap-4 relative select-none" id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
                         {  
                             editor?.type == "book" && editor?.active_sub_file
                             ?

@@ -6,7 +6,7 @@ import styles from '@styles/Home.module.css'
 
 import { File, Folder, Project } from '@public/@types/project'
 import { Button, Popover, useModal } from "@geist-ui/react";
-import PrefrenceModal from "./prefrence_modal";
+import PrefrenceModal from "./preference_modal";
 
 const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent }) => {
     const { project, editor, editorCallback } = useContext(ProjectContext);

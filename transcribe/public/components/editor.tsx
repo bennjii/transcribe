@@ -70,7 +70,7 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
             onChange={handleChange}
             modules={{
                 // table: true, // npm i react-quill-with-table
-                toolbar: { container: `#toolbar-single` } 
+                toolbar: false
                     // handlers: {
                     //     customBold: function(value) {
                     //         console.log(this.quill)
@@ -78,9 +78,6 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
                     //      }
                     // }
                 
-            }}
-            onBlur={(...args) => {
-                const selection = args[0];
             }}
             scrollingContainer={`#EditorDocument`}
             />  

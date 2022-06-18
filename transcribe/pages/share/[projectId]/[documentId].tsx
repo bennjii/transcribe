@@ -81,9 +81,11 @@ export default function Share({ project }) {
     );
 
     const [ projectState, setProjectState ] = useState<Folder>(project);
-	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(project.is_folder ? project.children[0] : project);
+	const [ activeEditors, setActiveEditors ] = useState<File[] | Folder[]>(project.is_folder ? project.children[0] : project);
 	const [ user, setUser ] = useState(null);
 	const [ synced, setSynced ] = useState(false);
+	const [ theme, setTheme ] = useState<"light" | "dark">("light");
+
 
 	useEffect(() => {
 		if(supabase.auth.user()) 
@@ -102,7 +104,7 @@ export default function Share({ project }) {
 
 	useEffect(() => {
 		const dStyle = document.getElementById('embeddedStyles');
-		if(activeEditor?.settings?.theme == "dark") {
+		if(theme == "dark") {
 			dStyle.innerHTML = `.ql-snow * {
 				font-family: "Caecilia" !important;
 				color: #c1c1c1 !important;
@@ -119,7 +121,7 @@ export default function Share({ project }) {
 		}
 
 		const aStyle = document.getElementById("appliedStyles");
-		if(activeEditor?.settings?.theme == "dark") {
+		if(theme == "dark") {
 			aStyle.innerHTML = `
 				::-webkit-scrollbar {
 					width: 4px;
@@ -210,32 +212,34 @@ export default function Share({ project }) {
 
 				<div className="flex flex-row flex-1 bg-[#fff]">
 					{
-						(() => {
-							switch(activeEditor?.type) {
-								case "document":
-									return <Book viewOnly/>
-								case "book":
-									return <Book viewOnly/>
-								case "artifact":
-									return <></>
-								case "vision_board":
-									return <VisionBoard viewOnly/>
-								case "folder":
-									return <></>
-							}
-						})()
+						activeEditors.map(e => {
+							return (() => {
+								switch(e?.type) {
+									case "document":
+										return <Book viewOnly={false} theme={theme} id={e.id} />
+									case "book":
+										return <Book viewOnly={false} theme={theme} id={e.id} />
+									case "artifact":
+										return <></>
+									case "vision_board":
+										return <VisionBoard />
+									case "folder":
+										return <></>
+								}
+							})()
+						})
 					}
 				</div>
 				
 				{
 					fullView ? (
 						<div className="absolute left-0 bottom-0 p-5">
-							<Minimize color={activeEditor?.settings?.theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+							<Minimize color={theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
 								setFullView(false)
 							}}></Minimize>
 						</div>
 					) : <div className="absolute left-0 bottom-0 p-5">
-						<Maximize color={activeEditor?.settings?.theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+						<Maximize color={theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
 							setFullView(true)
 						}}></Maximize>
 					</div>

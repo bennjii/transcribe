@@ -1,5 +1,5 @@
 import ProjectContext from "@public/@types/project_context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Bold, Book as BookIcon, Italic, Underline, Folder as FolderIcon, BookOpen, Plus, MoreHorizontal, ChevronRight, ChevronDown } from "react-feather";
 
 import styles from '@styles/Home.module.css'
@@ -11,19 +11,33 @@ import PrefrenceModal from "./preference_modal";
 import FolderPrefrenceModal from "./folder_prefrences";
 
 const FolderComponent: React.FC<{ data: Folder, callback: Function, value: boolean }> = ({ data, callback, value }) => {
-    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+    const { project, projectCallback, editors, editorsCallback } = useContext(ProjectContext);
 
     const { visible, setVisible, bindings } = useModal();
     const { visible: prefrencesVisible, setVisible: setPrefrencesVisible, bindings: prefrenceBindings } = useModal();
-    
+
+    const [ bookState, setBookState ] = useState<Folder>(null);
+
+    useEffect(() => {
+        const ed = editors.findIndex(e => e?.id == data.id);
+        setBookState(editors[ed] as Folder);
+    }, [editors]);
+
     return (
         <div 
         key={`FOLDERCOMPONENT-${data.id}-`}
-        className={`${editor?.id == data.id ? styles.openFolderHeader : styles.folderHeader} ${(data.type == "folder") ? styles.folderDefault : ""}`} 
+        className={`${bookState ? styles.openFolderHeader : styles.folderHeader} ${(data.type == "folder") ? styles.folderDefault : ""}`} 
         onClick={(e) => {
             if(data.type == 'book') { 
                 projectCallback({ ...project, active_file: data.id });
-                editorCallback({ ...data, active_sub_file: data.children[0].id });
+
+                let new_editors = editors.map((e: File | Folder) => {
+                    if(e.id == data.id) {
+                        e = { ...data, active_sub_file: data.children[0].id };
+                    }
+                });
+
+                editorsCallback(new_editors);
             }
 
             // editorCallback(data);
@@ -33,12 +47,12 @@ const FolderComponent: React.FC<{ data: Folder, callback: Function, value: boole
             }}>
                 {
                     data.type == 'book' ?
-                    editor?.id == data.id ? <BookOpen size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} /> : <BookIcon size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"} />
+                    bookState ? <BookOpen size={18} color={bookState ? "var(--acent-text-color)" : "var(--text-inactive)"} /> : <BookIcon size={18} color={bookState ? "var(--acent-text-color)" : "var(--text-inactive)"} />
                     :
                     !value ? 
-                        <ChevronRight id="folderIcon" size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
+                        <ChevronRight id="folderIcon" size={18} color={bookState ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
                         :
-                        <ChevronDown id="folderIcon" size={18} color={editor?.id == data.id ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
+                        <ChevronDown id="folderIcon" size={18} color={bookState ? "var(--acent-text-color)" : "var(--text-inactive)"}/>
                 }
                 
                 <p>{data.name}</p>

@@ -9,9 +9,11 @@ import { Folder } from '@public/@types/project'
 
 const VisualPreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) => {
     const { vpVisible: visible, setVPVisible: setVisible, vpBindings: bindings } = modal;
-    const { project, projectCallback, editor: editor__, editorCallback, synced } = useContext(ProjectContext);
+    const { project, projectCallback, editors, editorsCallback, synced } = useContext(ProjectContext);
 
-    const editor = data ? data : editor__;
+    const ed = editors.findIndex(e => e.id == data?.id);
+    const editor = editors[ed];
+
     const [ settings, setSettings ] = useState(editor?.settings);
     const [ utilName, setUtilName ] = useState(editor?.name);
     const [ creating, setCreating ] = useState(false);
@@ -28,8 +30,8 @@ const VisualPreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, da
 
     const saveSettings = () => {
         setCreating(true);
-        if(utilName && utilName !== editor.name) editor.name = utilName;
-        if(settings && JSON.stringify(settings) !== JSON.stringify(editor.settings)) editor.settings = settings;
+        if(utilName && utilName !== editor?.name) editor.name = utilName;
+        if(settings && JSON.stringify(settings) !== JSON.stringify(editor?.settings)) editor.settings = settings;
 
         projectCallback({
             ...project,
@@ -46,7 +48,7 @@ const VisualPreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, da
                 <Divider align="start">theme</Divider>
 
                 <div className={styles.checkboxElement}>
-                    <Radio.Group onChange={(e) => setSettings({...settings, theme: e})} value={settings?.theme}>
+                    <Radio.Group onChange={(e) => setSettings({...settings, theme: e as "light" | "dark"})} value={settings?.theme}>
                         <Radio value="light">
                             Light
                             <Radio.Desc>White background with black text.</Radio.Desc>    
@@ -60,7 +62,7 @@ const VisualPreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, da
 
                 <Divider align="start">view width</Divider>
                 <div className={styles.checkboxElement} >
-                    <Radio.Group onChange={(e) => setSettings({...settings, view_mode: e})} value={settings?.view_mode}>
+                    <Radio.Group onChange={(e) => setSettings({...settings, view_mode: e as "normal" | "wide" | "full"})} value={settings?.view_mode}>
                         <Radio value="normal">Normal<Radio.Desc>Default Size</Radio.Desc></Radio>
                         <Radio value="wide">Wide<Radio.Desc>More Horisonal Editing</Radio.Desc></Radio>
                         <Radio value="full">Full<Radio.Desc>Maximum Horisontal Editing</Radio.Desc></Radio>
@@ -71,7 +73,7 @@ const VisualPreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, da
             <Modal.Action passive onClick={() => setVisible(false)}>
                 Cancel
             </Modal.Action>
-            <Modal.Action disabled={!((JSON.stringify(editor?.settings) !== JSON.stringify(settings)) || editor.name !== utilName)} loading={creating} onClick={() => saveSettings()}>
+            <Modal.Action disabled={!((JSON.stringify(editor?.settings) !== JSON.stringify(settings)) || editor?.name !== utilName)} loading={creating} onClick={() => saveSettings()}>
                 Save
             </Modal.Action>
         </Modal>

@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Maximize, Plus, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Maximize, Plus, Settings, ToggleLeft } from 'react-feather'
 
 import Book from '@components/book';
 import CustomToolbar from '@components/custom_toolbar';
@@ -41,7 +41,6 @@ export const getServerSideProps: GetServerSideProps = async (
 
 	console.log((new Date().getTime() - new Date(user.updated_at).getTime()) / 1000 / 60)
 
-
 	const project = await supabase
 		.from('projects')
 		.select()
@@ -77,22 +76,27 @@ export default function Home({ project }) {
         </div>
     );
 
+	const [ theme, setTheme ] = useState<"light" | "dark">("light");
     const [ projectState, setProjectState ] = useState<Project>(project);
-	const [ activeEditor, setActiveEditor ] = useState<File | Folder>(null);
+	const [ activeEditors, setActiveEditors ] = useState<File[] | Folder[]>([]);
 	const [ user, setUser ] = useState(null);
 	const [ synced, setSynced ] = useState(false);
 
 	const [ fullView, setFullView ] = useState(false);
 
+	const addActiveEditor = (editor) => {
+		setActiveEditors([...activeEditors, editor]);
+	}
+
 	useEffect(() => {
 		// find id and set them to active editors...
-		if (!activeEditor) recursivelyIdentify(projectState, setActiveEditor);
-		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
+		if (activeEditors.length == 0) recursivelyIdentify(projectState, addActiveEditor);
+		// else if(activeEditor.id !== projectState.active_file && activeEditors.length != 0) recursivelyIdentify(projectState, addActiveEditor);
 	}, [])
 
 	useEffect(() => {
 		const dStyle = document.getElementById('embeddedStyles');
-		if(activeEditor?.settings?.theme == "dark") {
+		if(theme == "dark") {
 			dStyle.innerHTML = `.ql-snow * {
 				font-family: "Caecilia" !important;
 				color: #c1c1c1 !important;
@@ -109,7 +113,7 @@ export default function Home({ project }) {
 		}
 
 		const aStyle = document.getElementById("appliedStyles");
-		if(activeEditor?.settings?.theme == "dark") {
+		if(theme == "dark") {
 			aStyle.innerHTML = `
 				::-webkit-scrollbar {
 					width: 4px;
@@ -199,7 +203,7 @@ export default function Home({ project }) {
 	const { visible: projectVisible, setVisible: setProjectVisible, bindings: projectBindings } = useModal();
 
 	return (
-		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor, synced: synced }}>
+		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editors: activeEditors, editorsCallback: setActiveEditors, synced: synced }}>
 			<style id="embeddedStyles"></style>
 			<style id="appliedStyles"></style>
 
@@ -256,30 +260,40 @@ export default function Home({ project }) {
 
 				<div className="flex flex-row flex-1 bg-[#fff]">
 					{
-						(() => {
-							switch(activeEditor?.type) {
-								case "document":
-									return <Book viewOnly={false}/>
-								case "book":
-									return <Book viewOnly={false}/>
-								case "artifact":
-									return <></>
-								case "vision_board":
-									return <VisionBoard />
-								case "folder":
-									return <></>
-							}
-						})()
+						activeEditors?.map(e => {
+							return (() => {
+								switch(e?.type) {
+									case "document":
+										return <Book viewOnly={false} theme={theme} id={e.id} />
+									case "book":
+										return <Book viewOnly={false} theme={theme} id={e.id} />
+									case "artifact":
+										return <></>
+									case "vision_board":
+										return <VisionBoard />
+									case "folder":
+										return <></>
+								}
+							})()
+						})
 					}
 
 					{
 						fullView ? (
 							<div className="absolute left-0 bottom-0 p-5">
-								<Maximize color={activeEditor?.settings?.theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+								<Maximize color={theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
 									setFullView(false)
 								}}></Maximize>
 							</div>
 						) : <></>
+					}
+
+					{
+						<div className="absolute right-0 bottom-0 p-5">
+							<ToggleLeft color={theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+								setTheme(theme == "light" ? "dark" : "light")
+							}}></ToggleLeft>
+						</div>
 					}
 				</div>
 			</div>

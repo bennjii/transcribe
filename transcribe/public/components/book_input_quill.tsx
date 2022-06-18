@@ -7,8 +7,20 @@ import ProjectContext from "@public/@types/project_context";
 import { File, Folder } from "@public/@types/project";
 
 const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, chapter }) => {
-    const { editor, editorCallback } = useContext(ProjectContext);
+    const { editors, editorsCallback } = useContext(ProjectContext);
     const { book, callback, viewOnly } = useContext(BookContext);
+
+    const [ bookState, setBookState ] = useState<File | Folder>(null);
+
+    useEffect(() => {
+        const ed = editors.findIndex((e: File | Folder) => e.id == value.id);
+        if(!ed) {
+            const ed2 = editors.findIndex((e) => (e as unknown as Folder)?.active_sub_file == value.id);
+            setBookState(editors[ed2]);
+        }else {
+            setBookState(editors[ed]);
+        }
+    }, [editors]);
 
     if(!value) return <></>;
 
@@ -16,11 +28,10 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
 
     useEffect(() => {
         //@ts-expect-error
-        if(editor?.active_sub_file == value.id) {
+        if(bookState?.active_sub_file == value.id) {
             input_ref.current?.focus();
         }
-        //@ts-expect-error
-    }, [editor?.active_sub_file])
+    }, [bookState])
 
     const handleChange = (raw_content) => {
         if(input_ref?.current?.getEditor()?.editor?.delta == null || input_ref?.current?.getEditor()?.editor?.delta == undefined) return;
@@ -49,18 +60,6 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
     if(!process.browser) return null;
 
     const ReactQuill = require('react-quill');
-    const { Quill } = require('react-quill');
-    
-    if(process.browser) {
-        const Font = ReactQuill.Quill.import('formats/font');
-        Font.whitelist = ['pt-serif', 'public-sans', 'arial', 'times-new-roman']
-
-        ReactQuill.Quill.register(Font, true);
-
-        const Size = ReactQuill.Quill.import('attributors/style/size');
-        Size.whitelist = ['11px', '12px', '13px', '14px', '16px', '18px'];
-        ReactQuill.Quill.register(Size, true);
-    }
 
     return process.browser ? (
         <ReactQuill 
@@ -83,8 +82,19 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
             }}
             onFocus={() => {
                 //@ts-expect-error
-                if(editor.active_sub_file != value.id) {
-                    editorCallback({ ...editor, active_sub_file: value.id });
+                if(bookState?.active_sub_file != value.id) {
+                    if(bookState.type == "folder") {
+                        const new_book_state = bookState; 
+                        new_book_state.active_sub_file = value.id;
+
+                        const new_book = editors.map((e: File | Folder) => {
+                            if(e.id == value.id) {
+                                e = new_book_state;
+                            }
+                        });
+
+                        editorsCallback(new_book);
+                    }
                 }
             }}
             scrollingContainer={`#EditorDocument`}

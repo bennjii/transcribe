@@ -1,5 +1,5 @@
 import ProjectContext from "@public/@types/project_context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Bold, Book, Clipboard, Delete, File as FileIcon, FileText, Italic, MoreHorizontal, MoreVertical, Underline, X } from "react-feather";
 
 import styles from '@styles/Home.module.css'
@@ -9,17 +9,30 @@ import { Button, Popover, useModal } from "@geist-ui/react";
 import PrefrenceModal from "./preference_modal";
 
 const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent }) => {
-    const { project, editor, editorCallback } = useContext(ProjectContext);
+    const { project, editors, editorsCallback } = useContext(ProjectContext);
     const { visible, setVisible, bindings } = useModal();
+
+    const [ bookState, setBookState ] = useState<File | Folder>(null);
+    const [ active, setActive ] = useState(false);
+
+    useEffect(() => {
+        const ed = editors.findIndex(e => e?.id == data.id);
+        setBookState(editors[ed]);
+
+        editors.forEach(e => {
+            console.log(e?.active_sub_file, data.id);
+            if(e?.active_sub_file == data.id) {
+                setActive(true)
+            }
+        });
+    }, [editors]);
 
     return (
         <div 
         key={`FILECOMPONENT-${data.id}-`}
-        //@ts-expect-error
-        className={`${(editor?.id == data.id || editor?.active_sub_file == data.id) ? styles.openFile : styles.subFile}`} 
+        className={`${(bookState || active) ? styles.openFile : styles.subFile}`} 
         onClick={() => {
-            //@ts-expect-error
-            if(editor?.active_sub_file == data.id || editor?.id == data.id) return;
+            if(active || bookState) return;
 
             let book_parent;
 
@@ -29,9 +42,17 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
                         if(element.type == 'book' && !element?.settings?.performance) {
                             book_parent = element;
 
-                            editorCallback({ ...book_parent, active_sub_file: data.id });
+                            book_parent.active_sub_file = data.id;
+
+                            editors.forEach((e: File | Folder) => {
+                                if(e.id == book_parent.id) {
+                                    e = book_parent;
+                                }
+                            });
+
+                            editorCallback({ ...editors });
                         }else {
-                            editorCallback({ ...data });
+                            editorCallback({ ...editors });
                         }
 
                         return true;
@@ -39,14 +60,23 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
                 });
             }
 
-            reccursion(project.file_structure, project, editorCallback);
+            reccursion(project.file_structure, project, editorsCallback);
 
             if(book_parent && !book_parent?.settings?.performance) {
                 project.active_file = book_parent.id;
-                editorCallback({ ...book_parent, active_sub_file: data.id });
+
+                book_parent.active_sub_file = data.id;
+
+                editors.forEach((e: File | Folder) => {
+                    if(e.id == book_parent.id) {
+                        e = book_parent;
+                    }
+                });
+
+                editorsCallback({ ...editors });
             }else {
                 project.active_file = data.id;
-                editorCallback(data);
+                editorsCallback({ ...editors });
             }
         }} draggable>
             <div>
@@ -60,16 +90,14 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
                                 return (
                                     <FileText 
                                         size={18} 
-                                        //@ts-expect-error
-                                        color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}
+                                        color={(bookState || active) ? "var(--acent-text-color)" : "var(--text-color)"}
                                         />
                                 )
                             case "vision_board":
                                 return (
                                     <Clipboard 
                                         size={18} 
-                                        //@ts-expect-error
-                                        color={editor?.id == data.id || editor?.active_sub_file == data.id ? "var(--acent-text-color)" : "var(--text-color)"}
+                                        color={(bookState || active) ? "var(--acent-text-color)" : "var(--text-color)"}
                                         />
                                 )
                             default: 
@@ -77,8 +105,6 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
                                     <></>
                                 )
                         } 
-                        
-                        
                     })()
                 }
                 
@@ -86,18 +112,26 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
             </div>
             
             {
-                //@ts-expect-error
-                (parent?.type == "book" && editor?.id == data.id || editor?.active_sub_file == data.id) ?
+                (parent?.type == "book" && bookState || active) ?
                 <Popover style={{ backgroundColor: "transparent", display: "flex" }} placement={"right"} content={<div><Button type={"error"}  onClick={() => {
-                    //@ts-expect-error
-                    const new_children = editor?.children.filter(e => {
-                        return e.id !== data.id
-                    });
+                    if(bookState.is_folder) {
+                        const new_children = bookState?.children.filter(e => {
+                            return e.id !== data.id
+                        });
 
-                    editorCallback({
-                        ...editor,
-                        children: new_children
-                    });
+                        const new_book_state = {
+                            ...bookState,
+                            children: new_children
+                        }
+
+                        const new_book = editors.map((e: File | Folder) => {
+                            if(e.id == data.id) {
+                                e = new_book_state;
+                            }
+                        });
+    
+                        editorsCallback(new_book);
+                    }
                 }}>Confirm Remove</Button></div>}>
                     <X color={"var(--acent-text-color)"} size={16} />
                 </Popover>

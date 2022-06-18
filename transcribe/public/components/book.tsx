@@ -15,8 +15,8 @@ import PreferenceModal from "./preference_modal";
 import { useModal } from "@geist-ui/react";
 import VisualPreferenceModal from "./visual_preference_modal";
 
-const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
-    const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
+const Book: React.FC<{ viewOnly?: boolean, theme: "light" | "dark", id: string}> = ({ viewOnly, theme, id}) => {
+    const { project, projectCallback, editors, editorsCallback } = useContext(ProjectContext);
 
     const [ bookState, setBookState ] = useState<File | Folder>(null);
     const [ editorState, setEditorState ] = useState({
@@ -28,8 +28,9 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     });
 
     useEffect(() => {
-        setBookState(editor);
-    }, [editor]);
+        const ed = editors.findIndex(e => e.id == id);
+        setBookState(editors[ed]);
+    }, [editors]);
 
     useEffect(() => {
         // Book has been updated! Let's propogate the changes up the tree, to the root project node.
@@ -62,9 +63,9 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
         // https://github.com/quilljs/delta/#concat
 
         //@ts-expect-error
-        if(editor?.children) {
+        if(bookState?.children) {
             //@ts-expect-error
-            editor.children.forEach(element => {
+            bookState.children.forEach(element => {
                 if(element.data) {
                     const html = new QuillDeltaToHtmlConverter(element.data.ops, {}).convert();
 
@@ -74,9 +75,9 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
             });
         }else {
             //@ts-expect-error
-            if(!editor?.is_folder && editor?.data) {
+            if(!bookState?.is_folder && bookState?.data) {
                 //@ts-expect-error
-                const html = new QuillDeltaToHtmlConverter(editor.data.ops, {}).convert();
+                const html = new QuillDeltaToHtmlConverter(bookState.data.ops, {}).convert();
 
                 word_count += (html?.trim().match(/(\w+[^>\s])/g) || []).length;
                 char_count += (html?.trim().match(/\S/g) || []).length;
@@ -85,7 +86,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
         setEditorState({ ...editorState, words: word_count, chars: char_count, chapters: bookState?.type == "book" ? bookState.children.length : 0 });
 
-        localStorage.setItem(`transcribe-editor_${editor?.id}`, JSON.stringify(bookState));
+        localStorage.setItem(`transcribe-editor_${bookState?.id}`, JSON.stringify(bookState));
     }, [, bookState]);
 
     const { visible: exportVisible, setVisible: setExportVisible, bindings: exportBindings } = useModal();
@@ -94,24 +95,24 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
     return (
         <BookContext.Provider value={{ book: bookState, callback: setBookState, viewOnly: viewOnly }}>
-            <div className={`h-full flex flex-row flex-1 overflow-hidden ${editor?.settings?.theme == "light" ? "" : "bg-bgDarkDark"}`}>
+            <div className={`h-full flex flex-row flex-1 overflow-hidden ${theme == "light" ? "" : "bg-bgDarkDark"}`}>
                 {/* Content... */}
 
-                <ExportModal modal={{ exportVisible, setExportVisible, exportBindings }}/>
+                <ExportModal modal={{ exportVisible, setExportVisible, exportBindings }} id={id}/>
                 <PreferenceModal modal={{ preferencesVisible, setPreferencesVisible, preferenceBindings }}/>
                 <VisualPreferenceModal modal={{ vpVisible, setVPVisible, vpBindings }}/>
 
                 <div className="flex flex-col h-screen w-full relative">			
-                    <div className={`h-10 flex flex-row items-center justify-between gap-2 px-4 ${editor?.settings?.theme == "light" ? "bg-accentShadowColor" : "bg-[#00000047]"}`}>
+                    <div className={`h-10 flex flex-row items-center justify-between gap-2 px-4 ${theme == "light" ? "bg-accentShadowColor" : "bg-[#00000047]"}`}>
                         <div className="select-none w-72 flex flex-row items-center gap-2">
                             {
-                                editor?.type == "book" ? 
-                                <BookIcon size={18} color={editor?.settings?.theme == "light" ? "var(--acent-text-color)" : "var(--text-muted)"} />
+                                bookState?.type == "book" ? 
+                                <BookIcon size={18} color={theme == "light" ? "var(--acent-text-color)" : "var(--text-muted)"} />
                                 :
-                                <FileIcon size={18} color={editor?.settings?.theme == "light" ? "var(--acent-text-color)" : "var(--text-muted)"} />
+                                <FileIcon size={18} color={theme == "light" ? "var(--acent-text-color)" : "var(--text-muted)"} />
                             }
 
-                            <p className="font-normal text-textMuted text-sm">{editor?.name}</p>
+                            <p className="font-normal text-textMuted text-sm">{bookState?.name}</p>
                         </div>
 
                         {
@@ -180,14 +181,13 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                     
                     <div className="h-full w-full overflow-auto p-8 flex items-center flex-col gap-4 relative select-none" id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
                         {  
-                            editor?.type == "book" && editor?.active_sub_file
+                            bookState?.type == "book" && bookState?.active_sub_file
                             ?
-                            editor?.children?.map((chapter: File, index: number) => {
-                                return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} />
+                            bookState?.children?.map((chapter: File, index: number) => {
+                                return <BookChapter id={id} key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} />
                             })
                             :
-                            //@ts-expect-error
-                            !editor?.is_folder ? <BookDocument content={editor} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} /> : <></>
+                            !bookState?.is_folder ? <BookDocument id={id} content={bookState as File} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} /> : <></>
                         }
                     </div>
                 </div>

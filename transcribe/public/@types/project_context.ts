@@ -5,8 +5,8 @@ import { File, Folder, Project } from "./project";
 const ProjectContext = createContext<{ 
     project: Project,
     projectCallback: Function,
-    editor: File | Folder,
-    editorCallback: Function,
+    editors: File[] | Folder[],
+    editorsCallback: Function,
     synced: boolean
 }>(null);
 

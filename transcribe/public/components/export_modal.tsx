@@ -8,14 +8,22 @@ import styles from '@styles/Home.module.css'
 
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import Delta from "quill-delta";
+import { Folder } from "@public/@types/project";
 
-const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
+const ExportModal: React.FC<{ modal: any, id: string }> = ({ modal, id }) => {
     const { exportVisible: visible, setExportVisible: setVisible, exportBindings: bindings } = modal;
-    const { project, projectCallback, editor, editorCallback, synced } = useContext(ProjectContext);
+    const { project, projectCallback, editors, editorsCallback, synced } = useContext(ProjectContext);
 
     const [ theme, setTheme ] = useState<"normal" | "fancy">("normal");
     const [ exportFormat, setExportFormat ] = useState<"pdf" | "html" | "txt" | "ebook">("pdf");
     const [ creating, setCreating ] = useState(false);
+
+    const [ bookState, setBookState ] = useState<Folder>(null);
+
+    useEffect(() => {
+        const ed = editors.findIndex(e => e.id == id);
+        setBookState(editors[ed] as Folder);
+    }, [editors]);
 
     let html2pdf;
 
@@ -38,7 +46,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
             case "pdf":
                 const pdfExporter = require('quill-to-pdf').pdfExporter;
 
-                if(editor.is_folder) {
+                if(bookState.is_folder) {
                     const book = [];
                     //@ts-expect-error
                     editor?.children.map((e, i) => { book.push(...e?.data?.ops) });
@@ -64,7 +72,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                     await html2pdf().set(opt).from(elem).save();
 
                     pdfExporter.generatePdf(content).then(e => {
-                        saveAs(e, `${editor.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
+                        saveAs(e, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
                         setCreating(false);
                     })
                 }else {
@@ -72,15 +80,15 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                     const document = editor?.data.ops;
 
                     pdfExporter.generatePdf(new Delta(document)).then(e => {
-                        saveAs(e, `${editor.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
+                        saveAs(e, `${bookState.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
                         setCreating(false);
                     });
                 }
                 
                 break;
             case "html":
-                if(editor.is_folder) {
-                    const book = editor?.children.map((e, i) => { 
+                if(bookState.is_folder) {
+                    const book = bookState?.children.map((e, i) => { 
                         const theme_delta = new Delta({
                             ops: [
                                 //@ts-expect-error
@@ -123,7 +131,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                     const title = new Delta({ 
                         ops: [ 
                             {
-                                insert: `${editor?.name}\n\n`, 
+                                insert: `${bookState?.name}\n\n`, 
                                 attributes: { 
                                     color: "#202737",
                                     font: "PT Serf",
@@ -148,11 +156,11 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                         allowBackgroundClasses: true
                     }).convert();
 
-                    saveAs(new Blob([`<body>${html}</body>`], {type: "text/html;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.html`);
+                    saveAs(new Blob([`<body>${html}</body>`], {type: "text/html;charset=utf-8"}), `${bookState.name.replace(/\s/g, '_').toLowerCase()}.html`);
                     setCreating(false);
                 }else {
                     //@ts-expect-error
-                    const document = new Delta({ ops: [ { insert: `${editor.name}\n\n` } ] }).concat(new Delta(editor?.data.ops));
+                    const document = new Delta({ ops: [ { insert: `${bookState.name}\n\n` } ] }).concat(new Delta(bookState?.data.ops));
 
                     const html = new QuillDeltaToHtmlConverter(document.ops, {
                         encodeHtml: false,
@@ -164,37 +172,37 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                         }
                     }).convert();
 
-                    saveAs(new Blob([html], {type: "text/html;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.html`);
+                    saveAs(new Blob([html], {type: "text/html;charset=utf-8"}), `${bookState.name.replace(/\s/g, '_').toLowerCase()}.html`);
                     setCreating(false);
                 }
 
                 break;
             case "txt":
-                if(editor.is_folder) {
-                    const txt_raw = editor?.children.map(e => {
+                if(bookState.is_folder) {
+                    const txt_raw = bookState?.children.map(e => {
                         //@ts-expect-error
                         // return e.data.ops.map(e => e.insert).join("");
                         return `\n\n${e.name}\n\n ${e.data.ops.map(e => e.insert).join("")}`
                     }).join("");
 
-                    saveAs(new Blob([txt_raw], {type: "text/plain;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.txt`);
+                    saveAs(new Blob([txt_raw], {type: "text/plain;charset=utf-8"}), `${bookState.name.replace(/\s/g, '_').toLowerCase()}.txt`);
                     setCreating(false);
                 }else {
                     //@ts-expect-error
                     const txt_raw = `${editor.name}\n\n ${editor?.data?.ops?.map(e => e.insert).join("")}`;
 
-                    saveAs(new Blob([txt_raw], {type: "text/plain;charset=utf-8"}), `${editor.name.replace(/\s/g, '_').toLowerCase()}.txt`);
+                    saveAs(new Blob([txt_raw], {type: "text/plain;charset=utf-8"}), `${bookState.name.replace(/\s/g, '_').toLowerCase()}.txt`);
                     setCreating(false);
                 }
 
                 break;
             case "ebook":
-                if(editor.type == "book") {
+                if(bookState.type == "book") {
                     const option = {
                         title: project.settings?.book_title ?? "Book", 
                         author: project.settings?.author ?? "Author",
                         publisher: project.settings?.publisher ?? "transcribe",
-                        content: editor.children.map(chapter => {
+                        content: bookState.children.map(chapter => {
                             //@ts-expect-error
                             console.log(chapter?.data?.ops);
                             //@ts-expect-error
@@ -238,7 +246,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                 </div>
             </div>
 
-            <Modal.Title>Export  '{editor?.name}'</Modal.Title>
+            <Modal.Title>Export  '{bookState?.name}'</Modal.Title>
             <Text p style={{ marginTop: 0 }}>Choose how to generate and export your book.</Text>
 
             <Modal.Content className={styles.exportModalContent}>
@@ -270,7 +278,7 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                         </Grid>
 
                         <Grid xs={12}>
-                            <Radio value="ebook" disabled={editor?.type !== "book"}>
+                            <Radio value="ebook" disabled={bookState?.type !== "book"}>
                                 EBook
                                 <Radio.Desc>Ebook Format</Radio.Desc>
                             </Radio>

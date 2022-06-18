@@ -92,10 +92,10 @@ export type CanvasItem = {
 
 export const recursivelyIdentify = (state: Project, editorCallback: Function) => {
     if(state.file_structure.id == state.active_file) return state.file_structure;
-    else return reccursion(state.file_structure, state, editorCallback)
+    else return recursion(state.file_structure, state, editorCallback)
 } 
 
-const reccursion = (element, state: Project, editorCallback: Function) => {
+const recursion = (element, state: Project, editorCallback: Function) => {
     return element?.children?.forEach(_element => {
         if(_element.id == state.active_file) { 
             // editorCallback(_element);
@@ -109,7 +109,7 @@ const reccursion = (element, state: Project, editorCallback: Function) => {
         }
 
         if(_element.id == state.active_file) return;
-        else return reccursion(_element, state, editorCallback);
+        else return recursion(_element, state, editorCallback);
     });
 }
 

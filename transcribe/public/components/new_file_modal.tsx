@@ -14,7 +14,7 @@ import Delta from "quill-delta";
 
 const NewFileModal: React.FC<{ modal: any, location: Folder, isProjectRoot?: boolean }> = ({ modal, location, isProjectRoot }) => {
     const { visible, setVisible, bindings } = modal;
-    const { project, projectCallback, editor, editorCallback, synced } = useContext(ProjectContext);
+    const { project, projectCallback, synced } = useContext(ProjectContext);
 
     const [ type, setType ] = useState("file");
     const [ docType, setDocType ] = useState<"document" | "vision_board">("document");

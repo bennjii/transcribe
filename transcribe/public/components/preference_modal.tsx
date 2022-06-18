@@ -14,9 +14,11 @@ import Delta from "quill-delta";
 
 const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) => {
     const { preferencesVisible: visible, setPreferencesVisible: setVisible, preferenceBindings: bindings } = modal;
-    const { project, projectCallback, editor: editor__, editorCallback, synced } = useContext(ProjectContext);
+    const { project, projectCallback, editors, editorsCallback, synced } = useContext(ProjectContext);
+    const [ bookState, setBookState ] = useState<Folder>(null);
 
-    const editor = data ? data : editor__;
+    const ed = editors.findIndex(e => e?.id == data?.id);
+    const editor = editors[ed];
 
     const [ settings, setSettings ] = useState(editor?.settings);
     const [ utilName, setUtilName ] = useState(editor?.name);
@@ -36,8 +38,8 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
 
     const saveSettings = () => {
         setCreating(true);
-        if(utilName && utilName !== editor.name) editor.name = utilName;
-        if(settings && JSON.stringify(settings) !== JSON.stringify(editor.settings)) editor.settings = settings;
+        if(utilName && utilName !== editor?.name) editor.name = utilName;
+        if(settings && JSON.stringify(settings) !== JSON.stringify(editor?.settings)) editor.settings = settings;
 
         projectCallback({
             ...project,
@@ -47,8 +49,8 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
 
     return (
         <Modal visible={visible} {...bindings} style={{ borderRadius: 0 }} onClose={() => { setUnableToDelete(true); setVisible(false) }}>
-            <Modal.Title>'{editor?.name}' Prefrences</Modal.Title>
-            <Text p style={{ marginTop: 0 }}>Apply settings & prefrences</Text>
+            <Modal.Title>'{editor?.name}' Preferences</Modal.Title>
+            <Text p style={{ marginTop: 0 }}>Apply settings & preferences</Text>
 
             <Modal.Content className={styles.exportModalContent}>
                 <Divider align="start">details</Divider>
@@ -78,7 +80,7 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
                     <>
                         <Radio.Group                         
                             value={settings?.permType ? settings?.permType : "private"}
-                            onChange={(e) => setSettings({...settings, permType: e.toString()})} 
+                            onChange={(e) => setSettings({...settings, permType: e.toString() as "public" | "private"})} 
                             useRow
                         >
                             <Grid.Container gap={2} justify="center">
@@ -100,7 +102,7 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
 
                         <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Share URL, send this to your editors</Text>
                         <Snippet width="100%" className={styles.snippet} style={{ fontSize: '.8rem' }} symbol="">
-                            {`${process.browser ? window?.location?.host : ""}/share/${project.id}/${editor.id}`}
+                            {`${process.browser ? window?.location?.host : ""}/share/${project.id}/${editor?.id}`}
                         </Snippet>
                     </>
                     :
@@ -118,20 +120,20 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
                 <Text style={{ fontSize: 'calc(calc(1 * 16px) * 0.85)', color: '#999', margin: 0 }} p>Delete the document or book to remove it from the file view, once removed cannot be restored.</Text>
                 <Note label={false} type="error" style={{ opacity: 0.7 }} filled>Once deleted, a document cannot be restored.</Note>
                 
-                <Input type="default" clearable placeholder={`Enter ${editor.type.replace("_", " ").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))} Name`} width="100%" onChange={(e) => {
-                    if(e.target.value == editor.name) setUnableToDelete(false);
+                <Input type="default" clearable placeholder={`Enter ${editor?.type?.replace("_", " ").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))} Name`} width="100%" onChange={(e) => {
+                    if(e.target.value == editor?.name) setUnableToDelete(false);
                     else setUnableToDelete(true);
                 }} />
                 <Button ghost disabled={unableToDelete} type="error" iconRight={<ArrowRight />} onClick={() => {
                     setCreating(true);
 
-                    console.log(`Deleting ${editor.id} from ${project.name}`);
+                    console.log(`Deleting ${editor?.id} from ${project.name}`);
                     let parent;
 
                     // Reccursive Find.
                     const reccursion = (element: Folder) => {
                         return element?.children?.forEach(_element => {
-                            if(_element.id == editor.id) { 
+                            if(_element.id == editor?.id) { 
                                 parent = element;
                                 return true;
                             }else return _element.is_folder ? reccursion( _element) : null;
@@ -140,7 +142,7 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
 
                     reccursion(project.file_structure);
                     
-                    parent.children = parent.children.filter(e => e.id !== editor.id);
+                    parent.children = parent.children.filter(e => e.id !== editor?.id);
 
                     if(parent.children.filter(e => e.type !== "folder").length > 0) { 
                         editorCallback(parent.children[0]); 
@@ -159,7 +161,7 @@ const PreferenceModal: React.FC<{ modal: any, data?: any }> = ({ modal, data }) 
             <Modal.Action passive onClick={() => setVisible(false)}>
                 Cancel
             </Modal.Action>
-            <Modal.Action disabled={!((JSON.stringify(editor?.settings) !== JSON.stringify(settings)) || editor.name !== utilName)} loading={creating} onClick={() => saveSettings()}>
+            <Modal.Action disabled={!((JSON.stringify(editor?.settings) !== JSON.stringify(settings)) || editor?.name !== utilName)} loading={creating} onClick={() => saveSettings()}>
                 Save
             </Modal.Action>
         </Modal>

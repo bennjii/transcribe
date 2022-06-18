@@ -21,6 +21,7 @@
     "file-saver": "^2.0.5",
     "fs": "0.0.1-security",
     "html-pdf": "^3.0.1",
+    "html-to-pdf-js": "^0.9.3",
     "jspdf": "^2.3.1",
     "katex": "^0.13.17",
     "native-css": "^1.2.5",

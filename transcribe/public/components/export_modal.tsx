@@ -15,13 +15,21 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
 
     const [ theme, setTheme ] = useState<"normal" | "fancy">("normal");
     const [ exportFormat, setExportFormat ] = useState<"pdf" | "html" | "txt" | "ebook">("pdf");
-    const [ utilName, setUtilName ] = useState(null);
-
     const [ creating, setCreating ] = useState(false);
+
+    let html2pdf;
 
     useEffect(() => {
         if(creating == false) setVisible(false);
     }, [creating])
+
+    useEffect(() => {
+        (async () => {
+            const imp = await import('html-to-pdf-js');
+            console.log(imp.default);
+            html2pdf = imp.default;
+        })();
+    }, [])
 
     const exportBook = async () => {
         setCreating(true);
@@ -35,7 +43,27 @@ const ExportModal: React.FC<{ modal: any }> = ({ modal }) => {
                     //@ts-expect-error
                     editor?.children.map((e, i) => { book.push(...e?.data?.ops) });
 
-                    pdfExporter.generatePdf(new Delta(book)).then(e => {
+                    console.log(book);
+
+                    const content = new QuillDeltaToHtmlConverter(book, {
+                        encodeHtml: false
+                    }).convert();
+
+                    console.log(content);
+                    let elem = document.createElement("div")
+                    elem.innerHTML = content;
+
+                    var opt = {
+                        margin:       1,
+                        filename:     'myfile.pdf',
+                        image:        { type: 'jpeg', quality: 0.98 },
+                        html2canvas:  { scale: 2 },
+                        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+
+                    await html2pdf().set(opt).from(elem).save();
+
+                    pdfExporter.generatePdf(content).then(e => {
                         saveAs(e, `${editor.name.replace(/\s/g, '_').toLowerCase()}.pdf`);
                         setCreating(false);
                     })

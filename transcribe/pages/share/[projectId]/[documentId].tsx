@@ -1,6 +1,6 @@
 
 import Head from 'next/head'
-import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Plus, Settings } from 'react-feather'
+import { ArrowRight, Book as BookIcon, BookOpen, ChevronDown, Circle, Edit3, FileText, Maximize, Minimize, Plus, Settings } from 'react-feather'
 
 import Book from '@components/book';
 import BookChapter from '@components/book_chapter';
@@ -100,89 +100,146 @@ export default function Share({ project }) {
 				});
     }, [])
 
-	const { visible, setVisible, bindings } = useModal();
+	useEffect(() => {
+		const dStyle = document.getElementById('embeddedStyles');
+		if(activeEditor?.settings?.theme == "dark") {
+			dStyle.innerHTML = `.ql-snow * {
+				font-family: "Caecilia" !important;
+				color: #c1c1c1 !important;
+				line-height: 1.5rem !important;
+				font-size: 11px;
+			  }`;
+		}else {
+			dStyle.innerHTML = `.ql-snow * {
+				font-family: "Caecilia" !important;
+				color: #131214 !important;
+				line-height: 1.5rem !important;
+				font-size: 11px;
+			  }`;
+		}
+
+		const aStyle = document.getElementById("appliedStyles");
+		if(activeEditor?.settings?.theme == "dark") {
+			aStyle.innerHTML = `
+				::-webkit-scrollbar {
+					width: 4px;
+				}
+
+				/* Track */
+				::-webkit-scrollbar-track {
+					border-radius: 5px;
+				}
+				
+				/* Handle */
+				::-webkit-scrollbar-thumb {
+					background: #414141;
+					border-radius: 5px;
+				}
+
+				/* Handle on hover */
+				::-webkit-scrollbar-thumb:hover {
+					background: #c1c1c1; 
+				}
+			`
+		}else {
+			aStyle.innerHTML = `
+				::-webkit-scrollbar {
+					width: 4px;
+				}
+
+				/* Track */
+				::-webkit-scrollbar-track {
+					border-radius: 5px;
+				}
+				
+				/* Handle */
+				::-webkit-scrollbar-thumb {
+					background: #c1c1c1; 
+					border-radius: 5px;
+				}
+
+				/* Handle on hover */
+				::-webkit-scrollbar-thumb:hover {
+					background: #414141; 
+				}
+			`
+		}
+	}, [projectState])
+
+	const [ fullView, setFullView ] = useState(false);
 
 	return (
 		//@ts-expect-error
 		<ProjectContext.Provider value={{ project: projectState, projectCallback: setProjectState, editor: activeEditor, editorCallback: setActiveEditor, synced: synced }}>
-			<div className={styles.container}>
+			<style id="embeddedStyles"></style>
+			<style id="appliedStyles"></style>
+
+			<div className="flex flex-row h-screen overflow-hidden bg-bgLight">
 				<Head>
 					<meta name="viewport" content="maximum-scale=1.5, initial-scale: 1.5, width=device-width" />
 				</Head>
-				
-				<div className={styles.header}>
-					{/* Header */}
-					<Header />
 
-					<div className={styles.project}>
-						<div>
-							<h2>{projectState?.name}</h2>
-
-							<ArrowRight size={18} strokeWidth={2}/>
-						</div>
-
-						{
-							projectState.is_folder ? 
-							<div className={styles.folderStructure} key={`FOLDERCOMPONENT-${projectState.id}`}>
-								<div className={styles.folderTitle}>
-									<p>{projectState?.name}</p>
-								</div>
-								
-								{/* <FileStructure current_folder={projectState.file_structure} key={`FILESTRUCT-${projectState.id}`}/> */}
-								{
-									projectState?.children?.map((data, index) => {
-										return (
-											data.is_folder ? 
-											<FileStructure current_folder={data} key={`${index} -- ${data.name}`} />
-											:
-											//@ts-expect-error
-											<FileComponent data={data} key={`FILE-${data.id}`} />
-										)
-									})
-								}
-							</div>
-							:
-							<></>
-						}
-					</div>
-
-					<UserComponent user={user}/>
-				</div>
-
-				<div className={styles.content}>
-					<div className={styles.bookOverTools}>
-						<div className={styles.bookToolTable}> 
-							<CustomToolbar />
-						</div>
-						
-						<div className={`${styles.syncStatus} ${styles.viewOnlySync}`}>
+				{
+					fullView ? 
+					<div></div>
+					:
+					<div className="bg-[#fff] w-72 font-normal max-h-screen text-lg h-full border-r-borderDefault border-r-[1px] leading-5 grid">
+						<div className="p-4 font-psans flex flex-1 flex-col gap-4">
+							<p>Chapters</p>
 							{
-  							<Dot style={{ marginRight: '20px' }} type="warning">View Only</Dot>
+								projectState.is_folder ? 
+								<div className={styles.folderStructure} key={`FOLDERCOMPONENT-${projectState.id}`}>
+									{
+										projectState?.children?.map((data, index) => {
+											return (
+												data.is_folder ? 
+												<FileStructure current_folder={data} key={`${index} -- ${data.name}`} />
+												:
+												//@ts-expect-error
+												<FileComponent data={data} key={`FILE-${data.id}`} />
+											)
+										})
+									}
+								</div>
+								:
+								<></>
 							}
 						</div>
 					</div>
+				}
 
-					<div>
-						{
-							(() => {
-								switch(activeEditor?.type) {
-									case "document":
-										return <Book viewOnly/>
-									case "book":
-										return <Book viewOnly/>
-									case "artifact":
-										return <></>
-									case "vision_board":
-										return <VisionBoard viewOnly/>
-									case "folder":
-										return <></>
-								}
-							})()
-						}
-					</div>
-					
+				<div className="flex flex-row flex-1 bg-[#fff]">
+					{
+						(() => {
+							switch(activeEditor?.type) {
+								case "document":
+									return <Book viewOnly/>
+								case "book":
+									return <Book viewOnly/>
+								case "artifact":
+									return <></>
+								case "vision_board":
+									return <VisionBoard viewOnly/>
+								case "folder":
+									return <></>
+							}
+						})()
+					}
 				</div>
 				
+				{
+					fullView ? (
+						<div className="absolute left-0 bottom-0 p-5">
+							<Minimize color={activeEditor?.settings?.theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+								setFullView(false)
+							}}></Minimize>
+						</div>
+					) : <div className="absolute left-0 bottom-0 p-5">
+						<Maximize color={activeEditor?.settings?.theme == "light" ? "#000" : "#c1c1c1"}  onClick={() => {
+							setFullView(true)
+						}}></Maximize>
+					</div>
+				}
 			</div>
 		</ProjectContext.Provider>
 	)

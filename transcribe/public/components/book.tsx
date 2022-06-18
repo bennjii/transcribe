@@ -102,7 +102,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                 <VisualPreferenceModal modal={{ vpVisible, setVPVisible, vpBindings }}/>
 
                 <div className="flex flex-col h-screen w-full relative">			
-                    <div className="h-10 flex flex-row items-center justify-between gap-2 px-4">
+                    <div className={`h-10 flex flex-row items-center justify-between gap-2 px-4 ${editor?.settings?.theme == "light" ? "bg-accentShadowColor" : "bg-[#00000047]"}`}>
                         <div className="select-none w-72 flex flex-row items-center gap-2">
                             {
                                 editor?.type == "book" ? 
@@ -114,27 +114,27 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                             <p className="font-normal text-textMuted text-sm">{editor?.name}</p>
                         </div>
 
-                        <div className={styles.centerActions}>
-                            {
-                                bookState?.type == "book" && !viewOnly ? 
-                                <div className={styles.addChapter} onClick={() => {
-                                    //@ts-expect-error
-                                    bookState?.children.push(newChapter())
+                        {
+                            !viewOnly ? 
+                            <div className={styles.centerActions}>
+                                {
+                                    bookState?.type == "book" && !viewOnly ? 
+                                    <div className={styles.addChapter} onClick={() => {
+                                        //@ts-expect-error
+                                        bookState?.children.push(newChapter())
 
-                                    projectCallback({
-                                        ...project
-                                    })
-                                }}>
-                                    <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
+                                        projectCallback({
+                                            ...project
+                                        })
+                                    }}>
+                                        <Plus size={18} color={"var(--text-muted)"} strokeWidth={1.5}  />
 
-                                    <p className="font-normal text-textMuted select-none text-xs">Add Chapter</p>
-                                </div>
-                                :
-                                <></>
-                            }
-                            
-                            {
-                                !viewOnly ?
+                                        <p className="font-normal text-textMuted select-none text-xs">Add Chapter</p>
+                                    </div>
+                                    :
+                                    <></>
+                                }
+                                
                                 <div className={styles.export} onClick={async () => {
                                     setExportVisible(!exportVisible)
                                 }}>
@@ -142,12 +142,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     
                                     <p className="font-normal text-textMuted select-none text-xs">Export</p>
                                 </div>
-                                :
-                                <></>
-                            }
 
-                            {
-                                !viewOnly ?
                                 <div className={styles.export} onClick={async () => {
                                     setPreferencesVisible(true)
                                 }}>
@@ -155,12 +150,7 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     
                                     <p className="font-normal text-textMuted select-none text-xs">Options</p>
                                 </div>
-                                :
-                                <></>
-                            }
 
-                            {
-                                !viewOnly ?
                                 <div className={styles.export} onClick={async () => {
                                     setVPVisible(!vpVisible)
                                 }}>
@@ -168,10 +158,10 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
 
                                     <p className="font-normal text-textMuted select-none text-xs">Preferences</p>
                                 </div>
-                                :
-                                <></>
-                            }
-                        </div>
+                            </div>
+                        :
+                            <></>
+                        }
 
                         <div className="flex flex-row items-center gap-2 select-none">
                             <Plus size={18} color={"var(--text-muted)"} strokeWidth={1} onClick={() => setEditorState({...editorState, zoom_level: editorState.zoom_level < 2.5 ? editorState.zoom_level + 0.1 : 2.5 })}/>

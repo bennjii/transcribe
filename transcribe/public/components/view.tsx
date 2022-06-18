@@ -38,7 +38,7 @@ const View: React.FC<{ client: SupabaseClient }> = ({ client }) => {
                 creation_date,
                 projects:projects ( name, id, owner, creation_date, last_edited )
             `)
-            .eq('id', client.auth.user().id)
+            .eq('id', client?.auth?.user()?.id)
             .then(e => {
                 if(!e.error) setData(e.data[0]);
             });

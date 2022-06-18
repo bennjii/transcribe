@@ -6,8 +6,6 @@ import _ from 'underscore'
 import ProjectContext from "@public/@types/project_context";
 import { File } from "@public/@types/project";
 
-import styles from '@styles/Home.module.css'
-
 const Editor: React.FC<{ value: File }> = ({ value }) => {
     const { editor, project, editorCallback } = useContext(ProjectContext);
     const { book, callback, viewOnly } = useContext(BookContext);

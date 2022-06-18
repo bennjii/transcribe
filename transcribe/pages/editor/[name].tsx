@@ -90,7 +90,6 @@ export default function Home({ project }) {
 		else if(activeEditor.id !== projectState.active_file && activeEditor) recursivelyIdentify(projectState, setActiveEditor);
 	}, [])
 
-
 	useEffect(() => {
 		const dStyle = document.getElementById('embeddedStyles');
 		if(activeEditor?.settings?.theme == "dark") {
@@ -155,8 +154,6 @@ export default function Home({ project }) {
 				}
 			`
 		}
-		
-		
 	}, [projectState])
 
 	const verif = useCallback(
@@ -285,7 +282,6 @@ export default function Home({ project }) {
 						) : <></>
 					}
 				</div>
-				
 			</div>
 		</ProjectContext.Provider>
 	)

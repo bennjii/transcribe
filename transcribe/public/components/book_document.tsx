@@ -1,3 +1,4 @@
+import BookContext from "@public/@types/book_context";
 import { File } from "@public/@types/project";
 import ProjectContext from "@public/@types/project_context";
 
@@ -11,6 +12,7 @@ const BookDocument: React.FC<{ content: File, domWidth: string }> = ({ content, 
     const { editor, editorCallback } = useContext(ProjectContext);
     const [ editingTitle, setEditingTitle ] = useState(false);
     const [ bookTitle, setBookTitle ] = useState(content?.name);
+    const { viewOnly } = useContext(BookContext);
 
     const input_field = useRef(null);
 
@@ -23,6 +25,8 @@ const BookDocument: React.FC<{ content: File, domWidth: string }> = ({ content, 
     return (
         <div className={styles.page} key={editor.id} style={{ minWidth: domWidth }}> 
             <input 
+                readOnly={viewOnly}
+                className={`${editor?.settings?.theme == "light" ? "" : "text-textColorDark"}`}
                 type="text"
                 ref={input_field}
                 defaultValue={bookTitle}

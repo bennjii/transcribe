@@ -6,8 +6,8 @@ import _ from 'underscore'
 import ProjectContext from "@public/@types/project_context";
 import { File } from "@public/@types/project";
 
-const Editor: React.FC<{ value: File }> = ({ value }) => {
-    const { editor, project, editorCallback } = useContext(ProjectContext);
+const ReadonlyEditor: React.FC<{ value: File }> = ({ value }) => {
+    const { project } = useContext(ProjectContext);
     const { book, callback, viewOnly } = useContext(BookContext);
 
     const input_ref = useRef(null);
@@ -15,7 +15,6 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
 
     useEffect(() => {
         input_ref.current?.focus();
-        console.log(value);
     }, [project?.active_file])
 
     const handleChange = (raw_content) => {
@@ -43,41 +42,20 @@ const Editor: React.FC<{ value: File }> = ({ value }) => {
     if(!process.browser) return null;
 
     const ReactQuill = require('react-quill');
-    const { Quill } = require('react-quill');
-    
-    if(process.browser) {
-        const Font = ReactQuill.Quill.import('formats/font');
-        Font.whitelist = ['pt-serif', 'public-sans', 'arial', 'times-new-roman']
-
-        ReactQuill.Quill.register(Font, true);
-
-        const Size = ReactQuill.Quill.import('attributors/style/size');
-        Size.whitelist = ['11px', '12px', '13px', '14px', '16px', '18px'];
-        ReactQuill.Quill.register(Size, true);
-    }
 
     return process.browser && value?.data ? (
         <ReactQuill 
-            readOnly={viewOnly}
+            readOnly={true}
             ref={input_ref}
             theme={"snow"}
             defaultValue={value?.data} 
             placeholder={"Start Typing Here..."}
-            onChange={handleChange}
             modules={{
-                // table: true, // npm i react-quill-with-table
                 toolbar: false
-                    // handlers: {
-                    //     customBold: function(value) {
-                    //         console.log(this.quill)
-                    //         this.quill.formatText(this.quill.selection.savedRange.index, this.quill.selection.savedRange.length, 'bold', 'bold', '');
-                    //      }
-                    // }
-                
             }}
             scrollingContainer={`#EditorDocument`}
             />  
     ) : null;
 }
 
-export default Editor;
+export default ReadonlyEditor;

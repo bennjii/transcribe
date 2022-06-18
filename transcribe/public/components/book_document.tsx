@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 
 import styles from '../../styles/Home.module.css'
 import Editor from "./editor";
+import ReadonlyEditor from "./readonly_editor";
 
 const BookDocument: React.FC<{ content: File, domWidth: string }> = ({ content, domWidth }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
@@ -40,10 +41,7 @@ const BookDocument: React.FC<{ content: File, domWidth: string }> = ({ content, 
                 }}
             />
 
-            <Editor 
-            //@ts-expect-error
-            content={editor} 
-            />
+            <Editor value={content} />
         </div>
     )
 }

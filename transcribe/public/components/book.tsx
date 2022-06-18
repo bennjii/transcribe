@@ -14,6 +14,7 @@ import ExportModal from "./export_modal";
 import PreferenceModal from "./preference_modal";
 import { useModal } from "@geist-ui/react";
 import VisualPreferenceModal from "./visual_preference_modal";
+import DropZone from "./open_space";
 
 const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
     const { project, projectCallback, editor, editorCallback } = useContext(ProjectContext);
@@ -178,17 +179,21 @@ const Book: React.FC<{ viewOnly?: boolean }> = ({ viewOnly }) => {
                         </div>
                     </div>
                     
-                    <div className="h-full w-full overflow-auto p-8 flex items-center flex-col gap-4 relative select-none" id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
-                        {  
-                            editor?.type == "book" && editor?.active_sub_file
-                            ?
-                            editor?.children?.map((chapter: File, index: number) => {
-                                return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} />
-                            })
-                            :
-                            //@ts-expect-error
-                            !editor?.is_folder ? <BookDocument content={editor} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} /> : <></>
-                        }
+                    <div className="h-full w-full overflow-auto p-8 flex items-center flex-row gap-4 relative select-none" id={"EditorDocument"} style={{ zoom: `${editorState.zoom_level * 100}%` }}>
+                        <DropZone />
+
+                        <div className="h-full w-fit flex-1 overflow-auto p-8 flex items-center flex-col gap-4 relative select-nonel">
+                            {  
+                                editor?.type == "book" && editor?.active_sub_file
+                                ?
+                                editor?.children?.map((chapter: File, index: number) => {
+                                    return <BookChapter key={`Chapter${index}BOOK-CHAPTER`} chapter={index} content={chapter} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} />
+                                })
+                                :
+                                //@ts-expect-error
+                                !editor?.is_folder ? <BookDocument content={editor} domWidth={`${bookState?.settings?.view_mode == 'wide' ? '60%' : bookState?.settings?.view_mode == 'full' ? '100%' : '480px'}`} /> : <></>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

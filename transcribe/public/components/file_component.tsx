@@ -15,6 +15,9 @@ const FileComponent: React.FC<{ data: File, parent: Folder }> = ({ data, parent 
     return (
         <div 
         key={`FILECOMPONENT-${data.id}-`}
+        onDragStart={(ev) => {
+            ev.dataTransfer.setData("identifier", data.id);
+        }}
         //@ts-expect-error
         className={`${(editor?.id == data.id || editor?.active_sub_file == data.id) ? styles.openFile : styles.subFile}`} 
         onClick={() => {

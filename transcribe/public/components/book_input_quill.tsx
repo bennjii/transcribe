@@ -5,6 +5,7 @@ import BookContext from "../@types/book_context";
 import _ from 'underscore'
 import ProjectContext from "@public/@types/project_context";
 import { File, Folder } from "@public/@types/project";
+import PlainClipboard from '@public/components/clipboard'
 
 const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, chapter }) => {
     const { editor, editorCallback } = useContext(ProjectContext);
@@ -60,6 +61,8 @@ const BookInputQuill: React.FC<{ value: File, chapter: number }> = ({ value, cha
         const Size = ReactQuill.Quill.import('attributors/style/size');
         Size.whitelist = ['11px', '12px', '13px', '14px', '16px', '18px'];
         ReactQuill.Quill.register(Size, true);
+
+        ReactQuill.Quill.register('modules/clipboard', PlainClipboard, true);
     }
 
     return process.browser ? (
